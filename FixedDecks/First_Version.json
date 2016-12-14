@@ -1,0 +1,829 @@
+{
+    "blackCards": [
+        {
+            "pick": 1,
+            "text": "Why can't I sleep at night?"
+        },
+        {
+            "pick": 1,
+            "text": "I got 99 problems but ____ ain't one."
+        },
+        {
+            "pick": 1,
+            "text": "What's a girl's best friend?"
+        },
+        {
+            "pick": 1,
+            "text": "What's that smell?"
+        },
+        {
+            "pick": 1,
+            "text": "____? There's an app for that."
+        },
+        {
+            "pick": 1,
+            "text": "This is the way the world ends \\ This is the way the world ends \\ Not with a bang but with ____."
+        },
+        {
+            "pick": 1,
+            "text": "What is Batman's guilty pleasure?"
+        },
+        {
+            "pick": 1,
+            "text": "TSA guidelines now prohibit ____ on airplanes."
+        },
+        {
+            "pick": 1,
+            "text": "What ended my last relationship?"
+        },
+        {
+            "pick": 1,
+            "text": "MTV's new reality show features eight washed-up celebrities living with ____."
+        },
+        {
+            "pick": 1,
+            "text": "I drink to forget ____."
+        },
+        {
+            "pick": 1,
+            "text": "I'm sorry, Professor, but I couldn't complete my homework because of ____."
+        },
+        {
+            "pick": 1,
+            "text": "During Picasso's often-overlooked Brown Period, he produced hundreds of paintings of ____."
+        },
+        {
+            "pick": 1,
+            "text": "Alternative medicine is now embracing the curative powers of ____."
+        },
+        {
+            "pick": 1,
+            "text": "What's that sound?"
+        },
+        {
+            "pick": 1,
+            "text": "What's the next Happy Meal&reg; toy?"
+        },
+        {
+            "pick": 1,
+            "text": "Who stole the cookies from the cookie jar?"
+        },
+        {
+            "pick": 1,
+            "text": "It's a pity that kids these days are all getting involved with ____."
+        },
+        {
+            "pick": 1,
+            "text": "Anthropologists have recently discovered a primitive tribe that worships ____."
+        },
+        {
+            "pick": 1,
+            "text": "In the new Disney Channel Original Movie, Hannah Montana struggles with ____ for the first time."
+        },
+        {
+            "pick": 1,
+            "text": "____. That's how I want to die."
+        },
+        {
+            "pick": 1,
+            "text": "I wish I hadn't lost the instruction manual for ____."
+        },
+        {
+            "pick": 1,
+            "text": "What does Dick Cheney prefer?"
+        },
+        {
+            "pick": 1,
+            "text": "What's the most emo?"
+        },
+        {
+            "pick": 1,
+            "text": "Instead of coal, Santa now gives the bad children ____."
+        },
+        {
+            "pick": 1,
+            "text": "What's the next superhero?"
+        },
+        {
+            "pick": 1,
+            "text": "In 1,000 years, when paper money is but a distant memory, ____ will be our currency."
+        },
+        {
+            "pick": 1,
+            "text": "Next from J.K. Rowling: Harry Potter and the Chamber of ____."
+        },
+        {
+            "pick": 1,
+            "text": "A romantic, candlelit dinner would be incomplete without ____."
+        },
+        {
+            "pick": 1,
+            "text": "White people like ____."
+        },
+        {
+            "pick": 1,
+            "text": "____. Betcha can't have just one!"
+        },
+        {
+            "pick": 1,
+            "text": "War!<br><br>What is it good for?"
+        },
+        {
+            "pick": 1,
+            "text": "BILLY MAYS HERE FOR ____."
+        },
+        {
+            "pick": 1,
+            "text": "____. High five, bro."
+        },
+        {
+            "pick": 1,
+            "text": "During sex, I like to think about ____."
+        },
+        {
+            "pick": 1,
+            "text": "What did I bring back from Mexico?"
+        },
+        {
+            "pick": 1,
+            "text": "What are my parents hiding from me?"
+        },
+        {
+            "pick": 1,
+            "text": "What will always get you laid?"
+        },
+        {
+            "pick": 1,
+            "text": "When I'm in prison, I'll have ____ smuggled in."
+        },
+        {
+            "pick": 1,
+            "text": "What would grandma find disturbing, yet oddly charming?"
+        },
+        {
+            "pick": 1,
+            "text": "What did the U.S. airdrop to the children of Afghanistan?"
+        },
+        {
+            "pick": 1,
+            "text": "What helps Obama unwind?"
+        },
+        {
+            "pick": 1,
+            "text": "What's there a ton of in heaven?"
+        },
+        {
+            "pick": 1,
+            "text": "Major League Baseball has banned ____ for giving players an unfair advantage."
+        },
+        {
+            "pick": 1,
+            "text": "When I am a billionare, I shall erect a 50-foot statue to commemorate ____."
+        },
+        {
+            "pick": 1,
+            "text": "What's the new fad diet?"
+        },
+        {
+            "pick": 1,
+            "text": "When I am the President of the United States, I will create the Department of ____."
+        },
+        {
+            "pick": 1,
+            "text": "____. It's a trap!"
+        },
+        {
+            "pick": 1,
+            "text": "How am I maintaining my relationship status?"
+        },
+        {
+            "pick": 1,
+            "text": "What will I bring back in time to convince people that I am a powerful wizard?"
+        },
+        {
+            "pick": 1,
+            "text": "What don't you want to find in your Chinese food?"
+        },
+        {
+            "pick": 1,
+            "text": "Due to a PR fiasco, Walmart no longer offers ____."
+        },
+        {
+            "pick": 1,
+            "text": "After Hurricane Katrina, Sean Penn brought ____ to all the people of New Orleans."
+        },
+        {
+            "pick": 1,
+            "text": "While the United States raced the Soviet Union to the moon, the Mexican government funneled millions of pesos into research on ____."
+        },
+        {
+            "pick": 1,
+            "text": "Coming to Broadway this season, ____: The Musical."
+        },
+        {
+            "pick": 1,
+            "text": "What's my secret power?"
+        },
+        {
+            "pick": 1,
+            "text": "What gives me uncontrollable gas?"
+        },
+        {
+            "pick": 1,
+            "text": "But before I kill you, Mr. Bond, I must show you ____."
+        },
+        {
+            "pick": 1,
+            "text": "What never fails to liven up the party?"
+        },
+        {
+            "pick": 1,
+            "text": "What am I giving up for Lent?"
+        },
+        {
+            "pick": 1,
+            "text": "What do old people smell like? "
+        },
+        {
+            "pick": 1,
+            "text": "The class field trip was completely ruined by ____."
+        },
+        {
+            "pick": 1,
+            "text": "When Pharaoh remained unmoved, Moses called down a plague of ____."
+        },
+        {
+            "pick": 1,
+            "text": "I do not know with which weapons World War III will be fought, but World War IV will be fought with ____."
+        },
+        {
+            "pick": 1,
+            "text": "Life was difficult for cavemen before ____."
+        },
+        {
+            "pick": 1,
+            "text": "What's Teach for America using to inspire inner city students to succeed?"
+        },
+        {
+            "pick": 1,
+            "text": "What's the crustiest?"
+        },
+        {
+            "pick": 1,
+            "text": "In Michael Jackson's final moments, he thought about ____."
+        },
+        {
+            "pick": 1,
+            "text": "In an attempt to reach a wider audience, the Smithsonian Museum of Natural History has opened an interactive exhibit on ____."
+        },
+        {
+            "pick": 1,
+            "text": "Why do I hurt all over?"
+        },
+        {
+            "pick": 1,
+            "text": "Studies show that lab rats navigate mazes 50% faster after being exposed to ____."
+        },
+        {
+            "pick": 1,
+            "text": "Why am I sticky?"
+        },
+        {
+            "pick": 1,
+            "text": "What's my anti-drug?"
+        },
+        {
+            "pick": 2,
+            "text": "And the Academy Award for ____ goes to ____."
+        },
+        {
+            "pick": 2,
+            "text": "For my next trick, I will pull ____ out of ____."
+        },
+        {
+            "pick": 1,
+            "text": "____: Good to the last drop."
+        },
+        {
+            "pick": 1,
+            "text": "What did Vin Diesel eat for dinner?"
+        },
+        {
+            "pick": 1,
+            "text": "____: kid-tested, mother-approved."
+        },
+        {
+            "pick": 1,
+            "text": "What gets better with age?"
+        },
+        {
+            "pick": 2,
+            "text": "I never truly understood ____ until I encountered ____."
+        },
+        {
+            "pick": 2,
+            "text": "Rumor has it that Vladimir Putin's favorite delicacy is ____ stuffed with ____."
+        },
+        {
+            "pick": 2,
+            "text": "Lifetime&reg; presents ____, the story of ____."
+        },
+        {
+            "pick": 3,
+            "text": "Make a haiku."
+        },
+        {
+            "pick": 2,
+            "text": "In M. Night Shyamalan's new movie, Bruce Willis discovers that ____ had really been ____ all along."
+        },
+        {
+            "pick": 2,
+            "text": "____ is a slippery slope that leads to ____."
+        },
+        {
+            "pick": 2,
+            "text": "In his new summer comedy, Rob Schneider is ____ trapped in the body of ____."
+        },
+        {
+            "pick": 2,
+            "text": "In a world ravaged by ____, our only solace is ____."
+        },
+        {
+            "pick": 2,
+            "text": "That's right, I killed ____. How, you ask? ____."
+        },
+        {
+            "pick": 2,
+            "text": "When I was tripping on acid, ____ turned into ____."
+        },
+        {
+            "pick": 3,
+            "text": "____ + ____ = ____."
+        }
+    ],
+    "description": "The original version of the Cards Against Humanity base game.",
+    "name": "First Version",
+    "tag": null,
+    "whiteCards": [
+        "Coat hanger abortions.",
+        "Man meat.",
+        "Autocannibalism.",
+        "Vigorous jazz hands.",
+        "Flightless birds.",
+        "Pictures of boobs.",
+        "Doing the right thing.",
+        "Hunting accidents.",
+        "A cartoon camel enjoying the smooth, refreshing taste of a cigarette.",
+        "The violation of our most basic human rights.",
+        "Viagra&reg;.",
+        "Self-loathing.",
+        "Spectacular abs.",
+        "An honest cop with nothing left to lose.",
+        "Abstinence.",
+        "Mountain Dew Code Red.",
+        "A balanced breakfast.",
+        "Roofies.",
+        "Concealing a boner.",
+        "Tweeting.",
+        "Glenn Beck convulsively vomiting as a brood of crab spiders hatches in his brain and erupts from his tear ducts.",
+        "Amputees.",
+        "The Big Bang.",
+        "Former President George W. Bush.",
+        "The Rev. Dr. Martin Luther King, Jr.",
+        "Smegma.",
+        "Being marginalized.",
+        "Cuddling.",
+        "Laying an egg.",
+        "The Pope.",
+        "Aaron Burr.",
+        "Genital piercings.",
+        "Fingering.",
+        "A bleached asshole.",
+        "Horse meat.",
+        "Fear itself.",
+        "Science.",
+        "Elderly Japanese men.",
+        "Stranger danger.",
+        "The terrorists.",
+        "Making sex at her.",
+        "Praying the gay away.",
+        "Same-sex ice dancing.",
+        "Ethnic cleansing.",
+        "Cheating in the Special Olympics.",
+        "German dungeon porn.",
+        "Bingeing and purging.",
+        "Making a pouty face.",
+        "William Shatner.",
+        "Heteronormativity.",
+        "Nickelback.",
+        "Tom Cruise.",
+        "The profoundly handicapped.",
+        "The placenta.",
+        "Chainsaws for hands.",
+        "Arnold Schwarzenegger.",
+        "An icepick lobotomy.",
+        "Goblins.",
+        "Object permanence.",
+        "Dying.",
+        "Foreskin.",
+        "A falcon with a cap on its head.",
+        "Hormone injections.",
+        "Flash flooding.",
+        "Flavored condoms.",
+        "Dying of dysentery.",
+        "Sexy pillow fights.",
+        "Stunt doubles.",
+        "The invisible hand.",
+        "Jew-fros.",
+        "A really cool hat.",
+        "Sean Penn.",
+        "Heartwarming orphans.",
+        "Waterboarding.",
+        "The clitoris.",
+        "The Three-Fifths compromise.",
+        "A sad handjob.",
+        "Men.",
+        "Historically black colleges.",
+        "A micropenis.",
+        "Raptor attacks.",
+        "Agriculture.",
+        "A Gypsy curse.",
+        "Friends who eat all the snacks.",
+        "Vikings.",
+        "Pretending to care.",
+        "The Underground Railroad.",
+        "My humps.",
+        "Consultants.",
+        "Being a dick to children.",
+        "Geese.",
+        "A clandestine butt scratch.",
+        "Bling.",
+        "Sniffing glue.",
+        "The South.",
+        "An Oedipus complex.",
+        "Eating all of the cookies before the AIDS bake-sale.",
+        "Heath Ledger.",
+        "Sexting.",
+        "YOU MUST CONSTRUCT ADDITIONAL PYLONS.",
+        "Mutually-assured destruction.",
+        "Party poopers.",
+        "Sunshine and rainbows.",
+        "Muzzy.",
+        "Count Chocula.",
+        "Sharing needles.",
+        "Being rich.",
+        "Skeletor.",
+        "Chivalry.",
+        "A sausage festival.",
+        "Michael Jackson.",
+        "Uppercuts.",
+        "Emotions.",
+        "Farting and walking away.",
+        "Global warming.",
+        "The Chinese gymnastics team.",
+        "Necrophilia.",
+        "College.",
+        "Spontaneous human combustion.",
+        "Yeast.",
+        "Leaving an awkward voicemail.",
+        "Dick Cheney.",
+        "White people.",
+        "Letting yourself go.",
+        "Penis envy.",
+        "Stifling a giggle at the mention of Hutus and Tutsis.",
+        "Cookie Monster devouring the Eucharist wafers.",
+        "Teaching a robot to love.",
+        "Sperm whales.",
+        "A drive-by shooting.",
+        "Scrubbing under the folds.",
+        "Panda sex.",
+        "Whipping it out.",
+        "Will Smith.",
+        "Catapults.",
+        "Masturbation.",
+        "Natural selection.",
+        "A LAN party.",
+        "Twinkies&reg;.",
+        "A grande sugar-free iced soy caramel macchiato.",
+        "Opposable thumbs.",
+        "A sassy black woman.",
+        "Soiling oneself.",
+        "AIDS.",
+        "The KKK.",
+        "Figgy pudding.",
+        "Seppuku.",
+        "Marky Mark and the Funky Bunch.",
+        "Gandhi.",
+        "Dave Matthews Band.",
+        "Preteens.",
+        "Toni Morrison's vagina.",
+        "Five-Dollar Footlongs&trade;.",
+        "Land mines.",
+        "A sea of troubles.",
+        "A zesty breakfast burrito.",
+        "Christopher Walken.",
+        "Friction.",
+        "Balls.",
+        "Dental dams.",
+        "A can of whoop-ass.",
+        "A tiny horse.",
+        "Waiting 'til marriage.",
+        "Authentic Mexican cuisine.",
+        "Genghis Khan.",
+        "Old-people smell.",
+        "Feeding Rosie O'Donnell.",
+        "Pixelated bukkake.",
+        "Re-gifting.",
+        "Friends with benefits.",
+        "The token minority.",
+        "The Tempur-Pedic&reg; Swedish Sleep System&trade;.",
+        "A thermonuclear detonation.",
+        "Take-backsies.",
+        "Substitute teachers.",
+        "A moment of silence.",
+        "The Rapture.",
+        "Child abuse.",
+        "A cooler full of organs.",
+        "That one gay Teletubby.",
+        "Sweet, sweet vengeance.",
+        "Keeping Christ in Christmas.",
+        "RoboCop.",
+        "Keanu Reeves.",
+        "Drinking alone.",
+        "Oversized lollipops.",
+        "Garth Brooks.",
+        "Giving 110%.",
+        "Flesh-eating bacteria.",
+        "The American Dream.",
+        "Taking off your shirt.",
+        "Me time.",
+        "A murder most foul.",
+        "Nocturnal emissions.",
+        "The inevitable heat death of the universe.",
+        "The folly of man.",
+        "That thing that electrocutes your abs.",
+        "Cards Against Humanity.",
+        "Fiery poops.",
+        "Poor people.",
+        "Edible underpants.",
+        "Britney Spears at 55.",
+        "All-you-can-eat shrimp for $4.99.",
+        "Pooping back and forth. Forever.",
+        "Fancy Feast&reg;.",
+        "Jewish fraternities.",
+        "Being a motherfucking sorcerer.",
+        "Pulling out.",
+        "Picking up girls at the abortion clinic.",
+        "The homosexual agenda.",
+        "The Holy Bible.",
+        "Passive-agression.",
+        "Ronald Reagan.",
+        "Vehicular manslaughter.",
+        "Menstruation.",
+        "Nipple blades.",
+        "Assless chaps.",
+        "Full frontal nudity.",
+        "Hulk Hogan.",
+        "Daddy issues.",
+        "The hardworking Mexican.",
+        "Natalie Portman.",
+        "Waking up half-naked in a Denny's parking lot.",
+        "God.",
+        "Sean Connery.",
+        "Saxophone solos.",
+        "Gloryholes.",
+        "The World of Warcraft.",
+        "Homeless people.",
+        "Scalping.",
+        "Darth Vader.",
+        "Eating the last known bison.",
+        "Guys who don't call.",
+        "Hot Pockets&reg;.",
+        "A time travel paradox.",
+        "The milk man.",
+        "Testicular torsion.",
+        "Dropping a chandelier on your enemies and riding the rope up.",
+        "World peace.",
+        "A salty surprise.",
+        "Poorly-timed Holocaust jokes.",
+        "Smallpox blankets.",
+        "Licking things to claim them as your own.",
+        "The heart of a child.",
+        "Seduction.",
+        "The People's Elbow.",
+        "Robert Downey, Jr.",
+        "Lockjaw.",
+        "A neglected Tamagotchi&trade;.",
+        "Eugenics.",
+        "A good sniff.",
+        "Friendly fire.",
+        "Keg stands.",
+        "Intelligent design.",
+        "The taint; the grundle; the fleshy fun-bridge.",
+        "Wearing underwear inside-out to avoid doing laundry.",
+        "Hurricane Katrina.",
+        "Douchebags on their iPhones.",
+        "Free samples.",
+        "Jerking off into a pool of children's tears.",
+        "A foul mouth.",
+        "The glass ceiling.",
+        "Republicans.",
+        "Explosions.",
+        "Michelle Obama's arms.",
+        "The deformed.",
+        "Getting really high.",
+        "Attitude.",
+        "Sarah Palin.",
+        "Donald Trump.",
+        "The &Uuml;bermensch.",
+        "Pterodactyl eggs.",
+        "Altar boys.",
+        "My soul.",
+        "My sex life.",
+        "Raping and pillaging.",
+        "Pedophiles.",
+        "Forgetting the Alamo.",
+        "72 virgins.",
+        "Pabst Blue Ribbon.",
+        "Domino's&trade; Oreo&trade;\u00a0Dessert Pizza.",
+        "Eastern European Turbo-Folk music.",
+        "A snapping turtle biting the tip of your penis.",
+        "The Blood of Christ.",
+        "Half-assed foreplay.",
+        "My collection of high-tech sex toys.",
+        "A middle-aged man on roller skates.",
+        "Bitches.",
+        "Bill Nye the Science Guy.",
+        "Have some more kugel.",
+        "Italians.",
+        "Her Royal Highness, Queen Elizabeth II.",
+        "A windmill full of corpses.",
+        "Adderall&trade;.",
+        "Crippling debt.",
+        "Shorties and blunts.",
+        "A stray pube.",
+        "Prancing.",
+        "Passing a kidney stone.",
+        "A brain tumor.",
+        "Leprosy.",
+        "Puppies!",
+        "Bees?",
+        "This answer is postmodern.",
+        "Crumpets with the Queen.",
+        "Frolicking.",
+        "Team-building exercises.",
+        "Repression.",
+        "Road head.",
+        "A bag of magic beans.",
+        "An asymmetric boob job.",
+        "Dead parents.",
+        "Public ridicule.",
+        "A mating display.",
+        "A mime having a stroke.",
+        "Stephen Hawking talking dirty.",
+        "African children.",
+        "Mouth herpes.",
+        "Overcompensation.",
+        "Riding off into the sunset.",
+        "A vajazzled vagina.",
+        "The Thong Song.",
+        "Being on fire.",
+        "Tangled Slinkys.",
+        "Inappropriate yelling.",
+        "Civilian casualties.",
+        "Auschwitz.",
+        "My genitals.",
+        "Sobbing into a Hungry-Man&reg; Frozen Dinner.",
+        "Not reciprocating oral sex.",
+        "Lactation.",
+        "Being fabulous.",
+        "Shaquille O'Neal's acting career.",
+        "My relationship status.",
+        "Exchanging pleasantries.",
+        "Asians who aren't good at math.",
+        "Alcoholism.",
+        "Incest.",
+        "Grave robbing.",
+        "Hope.",
+        "8 oz. of sweet Mexican black-tar heroin.",
+        "Cockfights.",
+        "Kim Jong-il.",
+        "Kids with ass cancer.",
+        "Loose lips.",
+        "Winking at old people.",
+        "Drum circles.",
+        "The Jews.",
+        "Bestiality.",
+        "(I am doing Kegels right now.)",
+        "Justin Bieber.",
+        "Doin' it in the butt.",
+        "A lifetime of sadness.",
+        "The Hamburglar.",
+        "Swooping.",
+        "Booby-trapping the house to foil burglars.",
+        "Classist undertones.",
+        "PCP.",
+        "New Age music.",
+        "American Gladiators.",
+        "Not giving a shit about the Third World.",
+        "Mr. Snuffleupagus.",
+        "The Kool-Aid Man.",
+        "A hot mess.",
+        "Tentacle porn.",
+        "A look-see.",
+        "Too much hair gel.",
+        "Lumberjack fantasies.",
+        "The gays.",
+        "Scientology.",
+        "Estrogen.",
+        "Date rape.",
+        "Ring Pops&trade;.",
+        "GoGurt&reg;.",
+        "Judge Judy.",
+        "Dick fingers.",
+        "Racism.",
+        "Glenn Beck being harried by a swarm of buzzards.",
+        "Surprise sex!",
+        "Police brutality.",
+        "Passable transvestites.",
+        "The Virginia Tech Massacre.",
+        "Tiger Woods.",
+        "When you fart and a little bit comes out.",
+        "Oompa-Loompas.",
+        "A fetus.",
+        "Obesity.",
+        "Tasteful sideboob.",
+        "Hot people.",
+        "BATMAN!!!",
+        "Black people.",
+        "A gassy antelope.",
+        "Those times when you get sand in your vagina.",
+        "Sexual tension.",
+        "Third base.",
+        "Racially-biased SAT questions.",
+        "Porn stars.",
+        "A Super Soaker&trade; full of cat pee.",
+        "Muhammed (Praise Be Unto Him).",
+        "Puberty.",
+        "A disappointing birthday party.",
+        "An erection that lasts longer than four hours.",
+        "White privilege.",
+        "Getting so angry that you pop a boner.",
+        "The forbidden fruit.",
+        "Wifely duties.",
+        "Two midgets shitting into a bucket.",
+        "Queefing.",
+        "Wiping her butt.",
+        "Golden showers.",
+        "Barack Obama.",
+        "Nazis.",
+        "A robust mongoloid.",
+        "An M. Night Shyamalan plot twist.",
+        "Getting drunk on mouthwash.",
+        "Lunchables&trade;.",
+        "Women in yogurt commercials.",
+        "John Wilkes Booth.",
+        "Powerful thighs.",
+        "Mr. Clean, right behind you.",
+        "Multiple stab wounds.",
+        "Cybernetic enhancements.",
+        "Serfdom.",
+        "Kanye West.",
+        "Women's suffrage.",
+        "Children on leashes.",
+        "Harry Potter erotica.",
+        "The Dance of the Sugar Plum Fairy.",
+        "Lance Armstrong's missing testicle.",
+        "Dwarf tossing.",
+        "Mathletes.",
+        "Parting the Red Sea.",
+        "Faith healing.",
+        "The Amish.",
+        "Dead babies.",
+        "Child beauty pageants.",
+        "Impotence.",
+        "AXE Body Spray.",
+        "Centaurs.",
+        "Copping a feel.",
+        "Grandma.",
+        "Famine.",
+        "The Trail of Tears.",
+        "The miracle of childbirth.",
+        "Finger painting.",
+        "A monkey smoking a cigar.",
+        "Goats eating coins.",
+        "The Make-A-Wish&reg; Foundation.",
+        "Anal beads.",
+        "The Force.",
+        "Kamikaze pilots.",
+        "Dry heaving.",
+        "Active listening.",
+        "Bananas in Pajamas.",
+        "Ghosts.",
+        "The Hustle.",
+        "Peeing a little bit.",
+        "A big hoopla about nothing.",
+        "Glenn Beck catching his scrotum on a curtain hook.",
+        "Another goddamn vampire movie."
+    ]
+}

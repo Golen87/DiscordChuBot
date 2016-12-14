@@ -1,0 +1,109 @@
+{
+    "blackCards": [
+        {
+            "pick": 1,
+            "text": "Nothing can bring down Ruslana's chippy mood,, not even ____."
+        },
+        {
+            "pick": 2,
+            "text": "The correct procedure for listening to Fairytale is:"
+        },
+        {
+            "pick": 1,
+            "text": "The BBC have decided to dig up another old relic and send ____ to represent the UK."
+        },
+        {
+            "pick": 1,
+            "text": "Krista Siegfrids' chronic marrying spree added ____ to her victims list."
+        },
+        {
+            "pick": 1,
+            "text": "____. As guaranteed as Cyprus giving Greece 12 points."
+        },
+        {
+            "pick": 2,
+            "text": "HELLO EUROPE, ____ CALLING! 12 POINTS GO TO ____!"
+        },
+        {
+            "pick": 1,
+            "text": "Lena goes from Eurovision winner, to participant, to score reader. Her next job is ____."
+        },
+        {
+            "pick": 1,
+            "text": "Women kissing each other on stage, men kissing each other on stage, what next?"
+        },
+        {
+            "pick": 2,
+            "text": "In an attempt to foster friendly attitudes between ESC entrants, the host country made them ____ and ____."
+        },
+        {
+            "pick": 1,
+            "text": "I'm in loooooooove with a fairytaaaale, even thouuugh it ____."
+        },
+        {
+            "pick": 3,
+            "text": "The winning act had ____ and ____ as the singer belted out lyrics about ____."
+        },
+        {
+            "pick": 1,
+            "text": "Johnny Logan is a man of many talents; he wins Eurovisions and ____."
+        },
+        {
+            "pick": 1,
+            "text": "A (few) word(s) synonymous with Eurovision fans: ____"
+        },
+        {
+            "pick": 1,
+            "text": "This country has declined to participate due to ____."
+        },
+        {
+            "pick": 1,
+            "text": "Misheard lyrics of Verjamem resulted in people thinking Eva Boto screeched ____."
+        },
+        {
+            "pick": 2,
+            "text": "This performance contains flashing images, ____ and ____."
+        },
+        {
+            "pick": 2,
+            "text": "Serbia entered magical girls. How horribly will their contract end?"
+        },
+        {
+            "pick": 1,
+            "text": "There's rumours of a country buying votes with ____."
+        },
+        {
+            "pick": 3,
+            "text": "Your ideal interval act."
+        },
+        {
+            "pick": 1,
+            "text": "Azerbaijan, Land of ____."
+        }
+    ],
+    "description": "",
+    "name": "[C] Eurovision Song Contest",
+    "tag": "ESC",
+    "whiteCards": [
+        "Verka Serduchka.",
+        "Cezar Ouatu, his opera falsetto voice, his lifting dress and his naked dancers.",
+        "EUUUUUUPHOOOORIAAAA.",
+        "Loreen's hammertime dance.",
+        "Ruslana's vast array of animals she may or may not have slain with her bare hands.",
+        "Alexander Rybak.",
+        "Eldar Gasimov's stone cold,, dead eyes.",
+        "The Eurovision Song Contest.",
+        "Loreen Talhaoui.",
+        "Epic Sax Guy.",
+        "Not being Jedward.",
+        "Lena Meyer-Landrut.",
+        "Helena Paparizou breathing a sigh of relief that she didn't win during the economic crisis.",
+        "Emmelie de Forest's big doe-eyed look.",
+        "ZELJKO YOU CHEAAAAAT.",
+        "Lordi's entire army of makeup artists.",
+        "Malena Ernman's massive arms.",
+        "The shock and anger you feel when your neighbour doesn't give you 12 points.",
+        "Showing you the Maiden Tower 15 times.",
+        "The ABBApocalypse."
+    ]
+}

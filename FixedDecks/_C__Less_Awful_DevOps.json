@@ -1,0 +1,548 @@
+{
+    "blackCards": [
+        {
+            "pick": 1,
+            "text": "How hard could it be to port Linux to ____."
+        },
+        {
+            "pick": 1,
+            "text": "640k should be enough for ____."
+        },
+        {
+            "pick": 1,
+            "text": "Security through ____."
+        },
+        {
+            "pick": 1,
+            "text": "Implementing ____ should take only 2 lines of code."
+        },
+        {
+            "pick": 1,
+            "text": "C will finally be displaced by ____"
+        },
+        {
+            "pick": 1,
+            "text": "I'm writing my next IRC bot with ____."
+        },
+        {
+            "pick": 1,
+            "text": "I was hired to maintain this 20 year old script that runs our critical ____ infrastructure."
+        },
+        {
+            "pick": 1,
+            "text": "The client says it needs more ____ ."
+        },
+        {
+            "pick": 1,
+            "text": "Developers need access to production machines because ____."
+        },
+        {
+            "pick": 1,
+            "text": "Learn ____ the hard way"
+        },
+        {
+            "pick": 1,
+            "text": "____ with this one weird trick."
+        },
+        {
+            "pick": 1,
+            "text": "We don't need backups, we've got ____."
+        },
+        {
+            "pick": 1,
+            "text": "____ all the things."
+        },
+        {
+            "pick": 1,
+            "text": "It looks like you're trying to ____. Can I help?"
+        },
+        {
+            "pick": 1,
+            "text": "bash: command not found: ____"
+        },
+        {
+            "pick": 1,
+            "text": "Doge ____."
+        },
+        {
+            "pick": 1,
+            "text": "Ask Me Anything about ____."
+        },
+        {
+            "pick": 1,
+            "text": "____ or it didn't happen."
+        },
+        {
+            "pick": 2,
+            "text": "Instead of installing ____, what if we just used ____?"
+        },
+        {
+            "pick": 1,
+            "text": "____ as a service."
+        },
+        {
+            "pick": 1,
+            "text": "____ all the way down."
+        },
+        {
+            "pick": 1,
+            "text": "Fuck it: ____ looks good to me."
+        },
+        {
+            "pick": 1,
+            "text": "We turned off ____ and everything magically got better."
+        },
+        {
+            "pick": 1,
+            "text": "Network dropped connection because of ____."
+        },
+        {
+            "pick": 1,
+            "text": "____. What could go wrong?"
+        },
+        {
+            "pick": 1,
+            "text": "I installed ____ by accident."
+        },
+        {
+            "pick": 1,
+            "text": "Install ____"
+        },
+        {
+            "pick": 1,
+            "text": "Wrap it with the ____ duct tape"
+        },
+        {
+            "pick": 1,
+            "text": "Put some ____ on it"
+        },
+        {
+            "pick": 1,
+            "text": "____coin."
+        },
+        {
+            "pick": 1,
+            "text": "____ computing"
+        },
+        {
+            "pick": 1,
+            "text": "____-to-butt plugin"
+        },
+        {
+            "pick": 1,
+            "text": "____ is the newest gTLD"
+        },
+        {
+            "pick": 1,
+            "text": "\"Our release schedule doesn't have time for ____.\""
+        },
+        {
+            "pick": 1,
+            "text": "Running Windows in production leads to ____."
+        },
+        {
+            "pick": 1,
+            "text": "The Internet is for cat memes and ____,"
+        },
+        {
+            "pick": 1,
+            "text": "I tried ____. The doctors say I'll never walk again."
+        },
+        {
+            "pick": 1,
+            "text": "If you're ____, you're gonna have a bad time."
+        },
+        {
+            "pick": 1,
+            "text": "Nobody ever got fired for buying ____."
+        },
+        {
+            "pick": 1,
+            "text": "I can haz ____."
+        },
+        {
+            "pick": 1,
+            "text": "The ____ Public License."
+        },
+        {
+            "pick": 1,
+            "text": "Enterprise ____ in the cloud."
+        },
+        {
+            "pick": 1,
+            "text": "Enterprise-ready ____."
+        },
+        {
+            "pick": 1,
+            "text": "I don't have any UNIX Beards in stock, but we do have  ____"
+        },
+        {
+            "pick": 1,
+            "text": "I got paged at 3am because of ____."
+        },
+        {
+            "pick": 1,
+            "text": "90% of everything is ____."
+        },
+        {
+            "pick": 1,
+            "text": "When I write a book about my experiences, it'll be called \"____, the good parts\""
+        },
+        {
+            "pick": 1,
+            "text": "Restoring from backups failed due to ____."
+        },
+        {
+            "pick": 1,
+            "text": "The production datacenter burned down because of ____."
+        },
+        {
+            "pick": 1,
+            "text": "It turns out that the button labeled \"Don't Push\" actually does ____."
+        },
+        {
+            "pick": 1,
+            "text": "Those who don't understand ____ are condemned to reinvent it, poorly"
+        },
+        {
+            "pick": 1,
+            "text": "I find Java to be way too ____."
+        },
+        {
+            "pick": 1,
+            "text": "I ended up having to buy a replacement ____ on eBay."
+        },
+        {
+            "pick": 1,
+            "text": "Apple just patented ____."
+        },
+        {
+            "pick": 1,
+            "text": "Of course culture is important to us, that's why we have ____."
+        },
+        {
+            "pick": 1,
+            "text": "Just change the ____, it'll be fine. "
+        },
+        {
+            "pick": 1,
+            "text": "We can't pay you, but we can offer ____ in compensation."
+        },
+        {
+            "pick": 1,
+            "text": "A soiled napkin with the contents of ____ scribbled on it"
+        },
+        {
+            "pick": 1,
+            "text": "Who thought that ____ was a good idea?"
+        },
+        {
+            "pick": 1,
+            "text": "...and then there was the time I found ____ on the root partition."
+        },
+        {
+            "pick": 1,
+            "text": "\"There was no good solution for ____, so we built our own.\""
+        },
+        {
+            "pick": 1,
+            "text": "Never question the ____"
+        },
+        {
+            "pick": 2,
+            "text": "A sales rep just tried to pitch me on ____; I told them we already have ____."
+        },
+        {
+            "pick": 2,
+            "text": "You know what our app needs? More ____, less ____."
+        },
+        {
+            "pick": 1,
+            "text": "A lot of disk space is needed for ____"
+        },
+        {
+            "pick": 1,
+            "text": "Our production backups are stored using ____."
+        },
+        {
+            "pick": 1,
+            "text": "____ make me a sandwich"
+        },
+        {
+            "pick": 1,
+            "text": "Every time someone brings up ____, I throw up a little in my mouth."
+        },
+        {
+            "pick": 1,
+            "text": "Our entire app is geared towards providing ____."
+        },
+        {
+            "pick": 2,
+            "text": "____ has just discovered ____.  We're doomed."
+        },
+        {
+            "pick": 1,
+            "text": "When I hooked the 3D printer up to the Internet, it accidentally created ____."
+        },
+        {
+            "pick": 1,
+            "text": "I think maybe I'll leave ____ off my resum\u00e9."
+        },
+        {
+            "pick": 2,
+            "text": "The first rule of ____ is: You do not talk about ____."
+        },
+        {
+            "pick": 1,
+            "text": "My eyes started bleeding when I opened the editor and saw ____."
+        },
+        {
+            "pick": 1,
+            "text": "____? I'd hit that."
+        },
+        {
+            "pick": 1,
+            "text": "____, the final solution."
+        },
+        {
+            "pick": 1,
+            "text": "I ssh'd into a server running ____ and promptly noped the fuck out of there."
+        },
+        {
+            "pick": 1,
+            "text": "____ has root access."
+        },
+        {
+            "pick": 1,
+            "text": "We're running ____ in production?!"
+        },
+        {
+            "pick": 2,
+            "text": "____ is more reliable than ____"
+        },
+        {
+            "pick": 1,
+            "text": "We accidently the whole ____.."
+        },
+        {
+            "pick": 1,
+            "text": "I assure you ____ is secure!"
+        },
+        {
+            "pick": 2,
+            "text": "____, ____ and just a few lines of Perl."
+        },
+        {
+            "pick": 1,
+            "text": "NoSQL is superior to SQL because ____"
+        },
+        {
+            "pick": 1,
+            "text": "On a scale from 1 to 10, this is ____!"
+        },
+        {
+            "pick": 2,
+            "text": "According to the logs, ____ was initially caused by ____."
+        },
+        {
+            "pick": 3,
+            "text": "You can have ____, ____, or ____.  Pick two."
+        },
+        {
+            "pick": 2,
+            "text": "The ____ on the server were deleted because ____ ."
+        },
+        {
+            "pick": 1,
+            "text": "Artisanally crafted ____."
+        },
+        {
+            "pick": 1,
+            "text": "Developers do not get access to production machines, because of ____."
+        },
+        {
+            "pick": 2,
+            "text": "____ should be deprecated in favour of ____ ."
+        },
+        {
+            "pick": 1,
+            "text": "I opened the server cabinet and it was full of ____."
+        },
+        {
+            "pick": 2,
+            "text": "I'd like ____, ____, and a pony."
+        },
+        {
+            "pick": 1,
+            "text": "Nine circles of ____ hell."
+        },
+        {
+            "pick": 2,
+            "text": "Hello. My name is ____ and I am addicted to ____ ."
+        },
+        {
+            "pick": 1,
+            "text": "Say concurrent threads again and I will ____ you."
+        },
+        {
+            "pick": 1,
+            "text": "Just think of the Internet as ____."
+        },
+        {
+            "pick": 1,
+            "text": "____ it; ship it."
+        },
+        {
+            "pick": 1,
+            "text": "My editor of choice is ____."
+        },
+        {
+            "pick": 1,
+            "text": "npm install ____."
+        },
+        {
+            "pick": 1,
+            "text": "Would you like ____ with that?"
+        },
+        {
+            "pick": 1,
+            "text": "____? We've got that."
+        }
+    ],
+    "description": "Less junk! Hopefully!",
+    "name": "[C] Less Awful DevOps",
+    "tag": "DevOp",
+    "whiteCards": [
+        "Brogrammers",
+        "Copypasta",
+        "Developers",
+        "Git",
+        "Golang",
+        "MongoDB",
+        "Node.js",
+        "Python",
+        "Python datetime module",
+        "Ruby",
+        "Running out of IPv4 addresses",
+        "Sysadmins",
+        "Twitter",
+        "Unicode errors",
+        "Women in tech",
+        "OpenSSL",
+        "Heartbleed",
+        "The NSA",
+        "Edward Snowden",
+        "Windows XP",
+        "Perl 6",
+        "A squirrel with a taste for fiber",
+        "A GitHub Outage",
+        "VisualBasic DLLs",
+        "Business logic in PowerPoint slides",
+        "An angry badger with an electromagnet on its back",
+        "A shared root password",
+        "Parsing HTML with regex",
+        "A 3.5\" floppy disk",
+        "Cloud-based business strategy",
+        "Cloud 2.0",
+        "A custom kernel with Frontpage Extensions installed",
+        "Hand-crafted artisan x86 assembly code",
+        "A self-aware PHP script",
+        "A 500-megabyte UDP packet",
+        "A Null-modem cable",
+        "Netscape Navigator 3.2 support",
+        "Maven downloading the entire internet",
+        "IE6",
+        "Tcl",
+        "Accidentally the entire data center",
+        "Steve Balmer wielding a battleaxe",
+        "A 50k line Bash script that's achieved self awareness",
+        "Enterprise Grade Bash scripts",
+        "CouchDB",
+        "Web Scale?",
+        "Erlang",
+        "a non-ironic BSOD",
+        "Systemd",
+        "Regex",
+        "A violation of the most basic engineering principles.",
+        "The BOFH",
+        "Bitcoin mining",
+        "a jailbroken iPad",
+        "\"Fuck it, we'll do it live!\"",
+        "a cold cup of coffee",
+        "Destroying your tools with your tools",
+        "UTF-9",
+        "UTF-7",
+        "rm -rf /",
+        "kill -9",
+        "Dogecoin",
+        "Kernel panic",
+        "IE 7 Support",
+        "A new printer.",
+        "A potato",
+        "Developers! Developers! Developers! Developers!",
+        "Single stepping through the kernel",
+        "Smart quotes",
+        "# What is this used for?",
+        "Beating the server into submission with your bare hands.",
+        "# we *LIE* about what happened and return a \"success\"",
+        "Too big to fail",
+        "An IRC bot written entirely in sed",
+        "COBOL",
+        "DNS",
+        "SIGHUP",
+        "Animated GIF",
+        "PC LOAD LETTER",
+        "Networking",
+        "Blue Screen Of Death",
+        "Linus Torvalds",
+        "Broadcom chipset",
+        "iso 8859",
+        "A pimply faced youth with nothing to lose",
+        "/dev/null as a service",
+        "GNU/Linux",
+        "Stringing cloudtobutt.pl into postfix.",
+        "SQLite",
+        "Leap second bug",
+        "The fucking JVM",
+        "bash",
+        "SIGKILL",
+        "Your private browsing history",
+        "Arguing over the internet.",
+        "profanity in the git log",
+        "The CEO",
+        "FAT32",
+        "sudo",
+        "echo shell_exec(\"sudo ./smbkill \".escapeshellcmd($_GET['kill']).\" 2&gt;&amp;1\");",
+        "Neckbeards",
+        "A German installation of Windows NT4",
+        "raspberryPI",
+        "Windows ME",
+        "Microsoft\u00ae Azure",
+        "That moment when you realize CTRL-Z cannot save you",
+        "127.0.0.1",
+        "Re-writing deployment scripts at 2 AM",
+        "phpMyAdmin",
+        "/etc/hosts",
+        "Mechanically Recovered Turkey",
+        "Piping random scripts from the internet into bash",
+        "Cats",
+        "Picking the best color to paint your bike shed",
+        "BOFH",
+        "The Ballmer Peak",
+        "A 1996 Java applet",
+        "A virtual machine running a virtual machine until it brings on the Singularity",
+        ":(){:|:&amp;};:",
+        "The library that imports all other libraries",
+        "A pull request with a winking smiley ;)",
+        "Former employees who still have admin access to live production servers",
+        "The mysql client",
+        "ReiserFS",
+        "/dev/null",
+        "Re-implementing TCP over TCP",
+        "Works on my machine!",
+        "Penetration test",
+        "java",
+        "hunter2",
+        "Halt and Catch Fire"
+    ]
+}

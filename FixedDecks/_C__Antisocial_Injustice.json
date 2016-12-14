@@ -1,0 +1,72 @@
+{
+    "blackCards": [
+        {
+            "pick": 1,
+            "text": "Technology improves every day. One day soon, surfing the web will be replaced by ____."
+        },
+        {
+            "pick": 1,
+            "text": "Despite our Administration's best efforts, we are still incapable of ____."
+        },
+        {
+            "pick": 1,
+            "text": "At camp, we'd scare each other by telling stories about ____ around the fire."
+        },
+        {
+            "pick": 1,
+            "text": "Choosy Moms Choose ____."
+        },
+        {
+            "pick": 1,
+            "text": "The reason I go to church is to learn about ____."
+        },
+        {
+            "pick": 2,
+            "text": "Show me on ____, where he ____."
+        },
+        {
+            "pick": 2,
+            "text": "I wouldn't ____ you with ____."
+        },
+        {
+            "pick": 1,
+            "text": "All attempts at ____, have met with failure and crippling economic sanctions."
+        },
+        {
+            "pick": 2,
+            "text": "Eating ____ gave me ____."
+        }
+    ],
+    "description": "",
+    "name": "[C] Antisocial Injustice",
+    "tag": "AI",
+    "whiteCards": [
+        "The syrupy goop inside a Stretch Armstrong doll.",
+        "Rocky Dennis and John Merrick's lovechild.",
+        "Life after Parole.",
+        "Finding an adhesive bandage at the bottom of your ice cream.",
+        "A Pit Bull named Genghis.",
+        "A cat's sand papery tongue bath.",
+        "Bringing the Hamburglar to Justice.",
+        "Sphincter Bleaching.",
+        "An Amputee's chapped limb nub.",
+        "Toilet Wine.",
+        "Leftist Propaganda.",
+        "Febreezing your Taint.",
+        "Cookie Monster's substance abuse issues.",
+        "An ingrown toenail on the tip of a penis.",
+        "Feline Leukemia.",
+        "Marky Mark's foam rubber penis from Boogie Nights.",
+        "My Spankerchief.",
+        "Pumping a chemical toilet.",
+        "The fine line between kinky and perverted.",
+        "A Rotisserie Chicken.",
+        "Vultures circling a birthday party.",
+        "An All White Jury.",
+        "Frottage.",
+        "Michael J. Fox trying to use a rotary phone.",
+        "The Five Knuckle Truffle Punch.",
+        "Flipper Babies.",
+        "Ejaculating into an insulin pump."
+    ]
+}

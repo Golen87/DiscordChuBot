@@ -1,0 +1,282 @@
+{
+    "blackCards": [
+        {
+            "pick": 1,
+            "text": "That was more awkward than ____."
+        },
+        {
+            "pick": 1,
+            "text": "Boardgame Online is more fun than ____."
+        },
+        {
+            "pick": 2,
+            "text": "I hate My Little Pony more than ____ hates ____."
+        },
+        {
+            "pick": 2,
+            "text": "I love My Little Pony more than ____ loves ____."
+        },
+        {
+            "pick": 1,
+            "text": "Cat gifs are cuter than ____. "
+        },
+        {
+            "pick": 1,
+            "text": "If it fits, I ____. "
+        },
+        {
+            "pick": 1,
+            "text": "____. My moon and my stars. "
+        },
+        {
+            "pick": 1,
+            "text": "A ____ always pays his debts. "
+        },
+        {
+            "pick": 1,
+            "text": "My ovaries just exploded because of ____. "
+        },
+        {
+            "pick": 1,
+            "text": "Chewie, ____ it!"
+        },
+        {
+            "pick": 1,
+            "text": "Steven Moffat has no ____. "
+        },
+        {
+            "pick": 1,
+            "text": "Dobby is ____!!"
+        },
+        {
+            "pick": 2,
+            "text": "If ____ happens because of ____, I will eat my socks."
+        },
+        {
+            "pick": 1,
+            "text": "Put that ____ back where it came from or so help me."
+        },
+        {
+            "pick": 1,
+            "text": "No, no, you leave ____. We no like you."
+        },
+        {
+            "pick": 1,
+            "text": "FOR ____!!!!"
+        },
+        {
+            "pick": 2,
+            "text": "Confession Bear: When I was 6, I ____ on my ____."
+        },
+        {
+            "pick": 1,
+            "text": "Actual Advice Mallard: Always ____."
+        },
+        {
+            "pick": 1,
+            "text": "Yer a wizard ____"
+        },
+        {
+            "pick": 1,
+            "text": "Am I the only one around here who ____?"
+        },
+        {
+            "pick": 1,
+            "text": "____. Forever Alone."
+        },
+        {
+            "pick": 1,
+            "text": "____. TOO SAD AND TOO TINY!"
+        },
+        {
+            "pick": 1,
+            "text": "For every upvote I will ____."
+        },
+        {
+            "pick": 1,
+            "text": "____. Awkward boner. "
+        },
+        {
+            "pick": 1,
+            "text": "You know nothing ____."
+        },
+        {
+            "pick": 1,
+            "text": "Most of the time you can only fit one____ in there."
+        },
+        {
+            "pick": 2,
+            "text": "I\u2019ve never seen anyone so ____ while ____."
+        },
+        {
+            "pick": 1,
+            "text": "OH MY GOD ____. ARE YOU FUCKING KIDDING ME!?"
+        },
+        {
+            "pick": 1,
+            "text": "SAY GOODBYE TO____."
+        },
+        {
+            "pick": 1,
+            "text": "+1 for ____."
+        },
+        {
+            "pick": 2,
+            "text": "I don\u2019t always ____. But when I do____.."
+        },
+        {
+            "pick": 1,
+            "text": "That ____ tasted so bad, I needed a Jolly Rancher. "
+        },
+        {
+            "pick": 1,
+            "text": "Any love for ____?"
+        },
+        {
+            "pick": 2,
+            "text": "The ____ for this ____ is TOO DAMN HIGH. "
+        },
+        {
+            "pick": 1,
+            "text": "France is ____"
+        },
+        {
+            "pick": 1,
+            "text": "When I found ____ in usersubmitted, I was flabbergasted. "
+        },
+        {
+            "pick": 1,
+            "text": "Justin Bieber is a ____."
+        },
+        {
+            "pick": 2,
+            "text": "A hipster needs a ____ as much as a fish needs a ____."
+        },
+        {
+            "pick": 2,
+            "text": "I love bacon as much as ____ loves ____."
+        },
+        {
+            "pick": 1,
+            "text": "In Japan, ____ is the new sexual trend."
+        },
+        {
+            "pick": 1,
+            "text": "I am a leaf on the ____."
+        },
+        {
+            "pick": 1,
+            "text": "I have a bad feeling about ____."
+        },
+        {
+            "pick": 1,
+            "text": "Weasley is our ____."
+        },
+        {
+            "pick": 1,
+            "text": "Are you my ____?"
+        },
+        {
+            "pick": 1,
+            "text": "____ for temperature. "
+        },
+        {
+            "pick": 1,
+            "text": "I always ____ ass - razor1000."
+        },
+        {
+            "pick": 1,
+            "text": "I got ____ to the frontpage "
+        },
+        {
+            "pick": 1,
+            "text": "Not asking for upvotes but ____."
+        },
+        {
+            "pick": 1,
+            "text": "Not sure if Imgur reference or ____."
+        },
+        {
+            "pick": 1,
+            "text": "ERMAGERD! ____."
+        },
+        {
+            "pick": 1,
+            "text": "Press 0 twice for ____."
+        },
+        {
+            "pick": 1,
+            "text": "Having a bit of fun with the new ____."
+        },
+        {
+            "pick": 1,
+            "text": "I know this is a selfie but ____."
+        },
+        {
+            "pick": 1,
+            "text": "I know this is going to get downvoted to hell but ____."
+        },
+        {
+            "pick": 1,
+            "text": "If you could stop ____, that\u2019d be greeeeattt. "
+        },
+        {
+            "pick": 1,
+            "text": "Imgur: where the points don\u2019t matter and the ____ is made up."
+        }
+    ],
+    "description": "",
+    "name": "[C] Imgur",
+    "tag": "Imgur",
+    "whiteCards": [
+        "Ewoks.",
+        "#SOCKS.",
+        "OP Delivers.",
+        "Expelliarmus!",
+        "Hagrid.",
+        "Buckbeak.",
+        "Luke Skywalker making out with his sister, Leia.",
+        "Sonic Screwdriver. ",
+        "Chak\u00b4s homemade maple bacon jam.",
+        "Moisturize me.",
+        "Mummy.",
+        "Demonstrating how to properly put on a condom using a cucumber as substitute for a penis.",
+        "Katie the Cock Cozy.",
+        "NobodySaysThis.",
+        "Nargles.",
+        "Annie\u00b4s boobs.",
+        "An overpriced cup of coffee.",
+        "This was a grave mistake.",
+        "ANUSTART.",
+        "Imgurgiraffe.",
+        "Edward Macaroni Fork.",
+        "Lechuga.",
+        "Not since the accident.",
+        "Theon Greyjoy\u2019s dismembered member.",
+        "Ass.",
+        "Erotic fiction featuring Snape and Hermione.",
+        "Bacon.",
+        "Potato. ",
+        "Tard.",
+        "Nevernudes.",
+        "STEVE HOLT.",
+        "Cousin Maeby.",
+        "BAZINGA!",
+        "Troy and Abed.",
+        "MOON MOON.",
+        "Juan.",
+        "Sir Patrick Stewart.",
+        "Banana.",
+        "Read me 10 for all coffee.",
+        "Oh look! A cat!",
+        "I am not a clever man.",
+        "Tesla.",
+        "Jon Snow.",
+        "11.",
+        "BOOM! Pregnant.",
+        "9.",
+        "10.",
+        "Nathan Fillion.",
+        "Felica Day."
+    ]
+}

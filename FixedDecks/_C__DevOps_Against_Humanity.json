@@ -1,0 +1,2160 @@
+{
+    "blackCards": [
+        {
+            "pick": 1,
+            "text": "____ worked in dev."
+        },
+        {
+            "pick": 1,
+            "text": "You can't fix ____"
+        },
+        {
+            "pick": 1,
+            "text": "How hard could it be to port Linux to ____."
+        },
+        {
+            "pick": 1,
+            "text": "I just finished working on my rocket powered ____."
+        },
+        {
+            "pick": 1,
+            "text": "____? You can safely ignore that. Usually."
+        },
+        {
+            "pick": 2,
+            "text": "____ isn't cool. You know what's cool? ____"
+        },
+        {
+            "pick": 1,
+            "text": "I made a new editor, better than vim and emacs. It's called ____"
+        },
+        {
+            "pick": 1,
+            "text": "640k should be enough for ____."
+        },
+        {
+            "pick": 1,
+            "text": "I accidentally the entire ____ is this dangerous?"
+        },
+        {
+            "pick": 1,
+            "text": "Good enough for ____ work"
+        },
+        {
+            "pick": 1,
+            "text": "Yeah, but can it run ____?"
+        },
+        {
+            "pick": 1,
+            "text": "Security through ____."
+        },
+        {
+            "pick": 1,
+            "text": "bollocks up ____"
+        },
+        {
+            "pick": 2,
+            "text": "You can fix  ____ with ____ ."
+        },
+        {
+            "pick": 1,
+            "text": "We took the plunge and rewrote ____ in Go"
+        },
+        {
+            "pick": 1,
+            "text": "Implementing ____ should take only 2 lines of code."
+        },
+        {
+            "pick": 1,
+            "text": "10 PRINT \"____\"; GOTO 10"
+        },
+        {
+            "pick": 2,
+            "text": "I aliased ____ to git ____."
+        },
+        {
+            "pick": 1,
+            "text": "It is completely dark. You are likely to be eaten by a ____."
+        },
+        {
+            "pick": 1,
+            "text": "alt.binaries.____"
+        },
+        {
+            "pick": 1,
+            "text": "We can discuss ____ at the stand-up meeting."
+        },
+        {
+            "pick": 1,
+            "text": "r/____."
+        },
+        {
+            "pick": 2,
+            "text": "We're demoing ____ for ____ at SXSW."
+        },
+        {
+            "pick": 1,
+            "text": "A Beowulf cluster of ____."
+        },
+        {
+            "pick": 1,
+            "text": "Please bring back ____. You broke my workflow."
+        },
+        {
+            "pick": 1,
+            "text": "____ on XEN"
+        },
+        {
+            "pick": 1,
+            "text": "I'm just finishing up my manifesto on ____."
+        },
+        {
+            "pick": 1,
+            "text": "I cut-and-pasted this StackOverflow code for my ____."
+        },
+        {
+            "pick": 1,
+            "text": "DB tuning wiith ____."
+        },
+        {
+            "pick": 1,
+            "text": "Richard Stallman will kill you with his teeth for ____."
+        },
+        {
+            "pick": 2,
+            "text": "Real ____ don't use ____"
+        },
+        {
+            "pick": 1,
+            "text": "Can anyone help me get ____ running on Cisco IOS?"
+        },
+        {
+            "pick": 1,
+            "text": "C will finally be displaced by ____"
+        },
+        {
+            "pick": 1,
+            "text": "____.io"
+        },
+        {
+            "pick": 1,
+            "text": "SIG____"
+        },
+        {
+            "pick": 1,
+            "text": "I cannot wait until someone makes a ____ cluster out of these."
+        },
+        {
+            "pick": 1,
+            "text": "I'll just have Ops spin up a couple of ____ environments."
+        },
+        {
+            "pick": 1,
+            "text": "I'm writing my next IRC bot with ____."
+        },
+        {
+            "pick": 1,
+            "text": "Amazon Elastic ____"
+        },
+        {
+            "pick": 2,
+            "text": "I know we use ____, but I wrote this critical program in ____."
+        },
+        {
+            "pick": 2,
+            "text": "The RFO for the global outage was ____ compunded by ____"
+        },
+        {
+            "pick": 1,
+            "text": "I was hired to maintain this 20 year old script that runs our critical ____ infrastructure."
+        },
+        {
+            "pick": 1,
+            "text": "I could hire a ____ to do your job!"
+        },
+        {
+            "pick": 1,
+            "text": "My next Velocity talk is called \"____ops\""
+        },
+        {
+            "pick": 1,
+            "text": "The client says it needs more ____ ."
+        },
+        {
+            "pick": 1,
+            "text": "We're a ____ as a Service company."
+        },
+        {
+            "pick": 1,
+            "text": "Developers need access to production machines because ____."
+        },
+        {
+            "pick": 1,
+            "text": "We run ____ in a cron job every 15 minutes."
+        },
+        {
+            "pick": 1,
+            "text": "vagrant up ____"
+        },
+        {
+            "pick": 1,
+            "text": "Learn ____ the hard way"
+        },
+        {
+            "pick": 2,
+            "text": "How is ____ better than ____ ?"
+        },
+        {
+            "pick": 2,
+            "text": "Puppet is better than Chef because ____ and ____"
+        },
+        {
+            "pick": 1,
+            "text": "____ isn't new, we used to do it in the '70s on mainframes."
+        },
+        {
+            "pick": 1,
+            "text": "____ with this one weird trick."
+        },
+        {
+            "pick": 1,
+            "text": "it's always a ____ DNS problem"
+        },
+        {
+            "pick": 1,
+            "text": "Fixing your fathers computer with ____."
+        },
+        {
+            "pick": 1,
+            "text": "We don't need backups, we've got ____."
+        },
+        {
+            "pick": 1,
+            "text": "ERROR: ____ NOT FOUND"
+        },
+        {
+            "pick": 1,
+            "text": "____ all the things."
+        },
+        {
+            "pick": 1,
+            "text": "How do I even ____ ?"
+        },
+        {
+            "pick": 2,
+            "text": "Oh, the ____ is just a hack to get the ____ to run."
+        },
+        {
+            "pick": 1,
+            "text": "FC067: ____"
+        },
+        {
+            "pick": 1,
+            "text": "Why is ____ better than Hadoop?"
+        },
+        {
+            "pick": 1,
+            "text": "We don't need to worry about ____, We're using MongoDB."
+        },
+        {
+            "pick": 1,
+            "text": "It looks like you're trying to ____. Can I help?"
+        },
+        {
+            "pick": 1,
+            "text": "bash: command not found: ____"
+        },
+        {
+            "pick": 1,
+            "text": "ETOOMUCH____"
+        },
+        {
+            "pick": 1,
+            "text": "How did ____ ever work?"
+        },
+        {
+            "pick": 2,
+            "text": "Whoops, I thought that method was supposed to ____ the ____."
+        },
+        {
+            "pick": 1,
+            "text": "I thought you said ____ was secure?"
+        },
+        {
+            "pick": 1,
+            "text": "git: You are in detached ____ state."
+        },
+        {
+            "pick": 1,
+            "text": "Why don't we just fork ____ ?"
+        },
+        {
+            "pick": 2,
+            "text": "So I just found ____ and ____ running in a screen session."
+        },
+        {
+            "pick": 1,
+            "text": "Why is root running ____ under tmux?"
+        },
+        {
+            "pick": 2,
+            "text": "Instead of installing ____, what if we just used ____?"
+        },
+        {
+            "pick": 1,
+            "text": "I need a webinar like I need ____."
+        },
+        {
+            "pick": 1,
+            "text": "Fuck it, time to break out the emergency ____."
+        },
+        {
+            "pick": 1,
+            "text": "On the plus side, we finally got rid of ____."
+        },
+        {
+            "pick": 1,
+            "text": "____ thought leader."
+        },
+        {
+            "pick": 1,
+            "text": "Fuck it: ____ looks good to me."
+        },
+        {
+            "pick": 1,
+            "text": "Hack ____ into redis."
+        },
+        {
+            "pick": 1,
+            "text": "Is ____ something we need to optimize for?"
+        },
+        {
+            "pick": 1,
+            "text": "never ____ before a demonstration"
+        },
+        {
+            "pick": 1,
+            "text": "____ Considered Harmful"
+        },
+        {
+            "pick": 1,
+            "text": "modperl can be used to implement ____"
+        },
+        {
+            "pick": 1,
+            "text": "The ____ is used when the CPU is on fire"
+        },
+        {
+            "pick": 1,
+            "text": "Larry Wall trained as missonary then ____"
+        },
+        {
+            "pick": 1,
+            "text": "____ runs Ruby as root"
+        },
+        {
+            "pick": 1,
+            "text": "We turned off ____ and everything magically got better."
+        },
+        {
+            "pick": 1,
+            "text": "Network dropped connection because of ____."
+        },
+        {
+            "pick": 1,
+            "text": "____. What could go wrong?"
+        },
+        {
+            "pick": 1,
+            "text": "I found a Samba share full of ____"
+        },
+        {
+            "pick": 1,
+            "text": "I installed ____ by accident."
+        },
+        {
+            "pick": 1,
+            "text": "Install ____"
+        },
+        {
+            "pick": 1,
+            "text": "We should try it with an actual ____."
+        },
+        {
+            "pick": 1,
+            "text": "Read-eval-____-loop."
+        },
+        {
+            "pick": 1,
+            "text": "It compiles ____ to JavaScript."
+        },
+        {
+            "pick": 1,
+            "text": "____. What the fuck does that mean?"
+        },
+        {
+            "pick": 1,
+            "text": "____"
+        },
+        {
+            "pick": 1,
+            "text": "____ is dead."
+        },
+        {
+            "pick": 1,
+            "text": "____coin."
+        },
+        {
+            "pick": 1,
+            "text": "____ computing"
+        },
+        {
+            "pick": 1,
+            "text": "____-to-butt plugin"
+        },
+        {
+            "pick": 1,
+            "text": "Make it ____."
+        },
+        {
+            "pick": 2,
+            "text": "s/____/____/g"
+        },
+        {
+            "pick": 1,
+            "text": "____ is the newest gTLD"
+        },
+        {
+            "pick": 1,
+            "text": "Conway's Game of ____."
+        },
+        {
+            "pick": 1,
+            "text": "Next year I'll start learning ____"
+        },
+        {
+            "pick": 1,
+            "text": "Sorry, you'll need to open a ticket before we can ____."
+        },
+        {
+            "pick": 2,
+            "text": "ln -s ____ ____"
+        },
+        {
+            "pick": 1,
+            "text": "Works on my ____."
+        },
+        {
+            "pick": 1,
+            "text": "One does not simply ____"
+        },
+        {
+            "pick": 1,
+            "text": "git --____"
+        },
+        {
+            "pick": 1,
+            "text": "I tried ____. The doctors say I'll never walk again."
+        },
+        {
+            "pick": 1,
+            "text": "____. You don't exist, go away!"
+        },
+        {
+            "pick": 1,
+            "text": "/dev/____: Device is busy"
+        },
+        {
+            "pick": 1,
+            "text": "____ would be so much better if we rewrote it in Clojure."
+        },
+        {
+            "pick": 1,
+            "text": "Couldn't we use ____?"
+        },
+        {
+            "pick": 2,
+            "text": "____ begins with ____."
+        },
+        {
+            "pick": 1,
+            "text": "The ____ Public License."
+        },
+        {
+            "pick": 1,
+            "text": "Software Defined ____."
+        },
+        {
+            "pick": 2,
+            "text": "It's like ____, but with ____ and list comprehensions."
+        },
+        {
+            "pick": 1,
+            "text": "____ just got pwned."
+        },
+        {
+            "pick": 2,
+            "text": "grep ____ | mail ____"
+        },
+        {
+            "pick": 1,
+            "text": "I can't believe you're still using ____."
+        },
+        {
+            "pick": 1,
+            "text": "____ nagios"
+        },
+        {
+            "pick": 1,
+            "text": "Amazon does ____, why can't we?"
+        },
+        {
+            "pick": 1,
+            "text": "I don't have any UNIX Beards in stock, but we do have  ____"
+        },
+        {
+            "pick": 1,
+            "text": "Sorry, I'm all out of ____-fu."
+        },
+        {
+            "pick": 1,
+            "text": "Everytime you allocate you have to ____ when you're done"
+        },
+        {
+            "pick": 2,
+            "text": "Given enough ____, all bugs are ____."
+        },
+        {
+            "pick": 1,
+            "text": "90% of everything is ____."
+        },
+        {
+            "pick": 1,
+            "text": "I just finished writing an API for ____."
+        },
+        {
+            "pick": 1,
+            "text": "____ makes robots moves"
+        },
+        {
+            "pick": 1,
+            "text": "____.  Failed to cache catalog."
+        },
+        {
+            "pick": 1,
+            "text": "____ is a batch command to shut the fuck up"
+        },
+        {
+            "pick": 1,
+            "text": "We don't have to worry about CAP Theorem because of ____."
+        },
+        {
+            "pick": 1,
+            "text": "I'm pretty sure ____ isn't thread safe"
+        },
+        {
+            "pick": 1,
+            "text": "Those who don't understand ____ are condemned to reinvent it, poorly"
+        },
+        {
+            "pick": 1,
+            "text": "I don't always test my code, but when I do I do it in ____."
+        },
+        {
+            "pick": 2,
+            "text": "The first 90% of development is ____. The second 90% is ____."
+        },
+        {
+            "pick": 1,
+            "text": "____ never use on git"
+        },
+        {
+            "pick": 1,
+            "text": "Purely numeric hostname and not a ____ -----rejecting!"
+        },
+        {
+            "pick": 2,
+            "text": "When you logged in there, did you see a ____ that said ____"
+        },
+        {
+            "pick": 1,
+            "text": "Oh, we're devops! We have ____ in the office, but only the DBA can touch it."
+        },
+        {
+            "pick": 1,
+            "text": "We're spending 20% of this sprint doing ____."
+        },
+        {
+            "pick": 2,
+            "text": "____ found a new OpenSSL vulernability people are calling ____."
+        },
+        {
+            "pick": 1,
+            "text": "Management has changed all our job titles to ____."
+        },
+        {
+            "pick": 1,
+            "text": "Of course culture is important to us, that's why we have ____."
+        },
+        {
+            "pick": 1,
+            "text": "The NSA is really interested in our latest project: ____."
+        },
+        {
+            "pick": 1,
+            "text": "Just change the ____, it'll be fine. "
+        },
+        {
+            "pick": 2,
+            "text": "Yeah, you need to modprobe ____ to get it to recognize the ____"
+        },
+        {
+            "pick": 1,
+            "text": "We can't pay you, but we can offer ____ in compensation."
+        },
+        {
+            "pick": 1,
+            "text": "A soiled napkin with the contents of ____ scribbled on it"
+        },
+        {
+            "pick": 1,
+            "text": "Who thought that ____ was a good idea?"
+        },
+        {
+            "pick": 2,
+            "text": "It's not the recommended configuration to use ____ with ____ but it's in production right now."
+        },
+        {
+            "pick": 1,
+            "text": "while true; do ____; done"
+        },
+        {
+            "pick": 2,
+            "text": "The consultant we hired is certain that ____ will drastically increase the performance of ____"
+        },
+        {
+            "pick": 1,
+            "text": "Could you just push this update for ____?  It should be a no-op."
+        },
+        {
+            "pick": 1,
+            "text": "If we're all going to get fired, let's get fired for ____."
+        },
+        {
+            "pick": 1,
+            "text": "I can't wait until we no longer use ____"
+        },
+        {
+            "pick": 1,
+            "text": "Never question the ____"
+        },
+        {
+            "pick": 1,
+            "text": "Whoever made the unscheduled change to production on Friday will be forced to use ____."
+        },
+        {
+            "pick": 1,
+            "text": "automagical ____"
+        },
+        {
+            "pick": 1,
+            "text": "A lot of disk space is needed for ____"
+        },
+        {
+            "pick": 2,
+            "text": "____ and ____ are rumoured to be working on a python module for a helicam"
+        },
+        {
+            "pick": 1,
+            "text": "Listening to the fans in the server farm leads to ____"
+        },
+        {
+            "pick": 1,
+            "text": "____ make me a sandwich"
+        },
+        {
+            "pick": 2,
+            "text": "Our new startup is the ____ for ____."
+        },
+        {
+            "pick": 1,
+            "text": "No, ____ being hopelessly broken is NOT an emergency."
+        },
+        {
+            "pick": 2,
+            "text": "____ running on a rack of ____."
+        },
+        {
+            "pick": 2,
+            "text": "False alarm, it was just ____ running ____."
+        },
+        {
+            "pick": 1,
+            "text": "A neckbeard made of ____."
+        },
+        {
+            "pick": 2,
+            "text": "____ has just discovered ____.  We're doomed."
+        },
+        {
+            "pick": 1,
+            "text": "I bet if we switch to ____ it will just work"
+        },
+        {
+            "pick": 1,
+            "text": "____ is how I resolve all merge conflicts."
+        },
+        {
+            "pick": 1,
+            "text": "Why does someone keep re-implementing system utilities in ____?"
+        },
+        {
+            "pick": 1,
+            "text": "____will never get job in Microsoft"
+        },
+        {
+            "pick": 1,
+            "text": "We can ____ just like Netflix"
+        },
+        {
+            "pick": 2,
+            "text": "The first rule of ____ is: You do not talk about ____."
+        },
+        {
+            "pick": 1,
+            "text": "Google Analytics says 100% of my website visitors are ____"
+        },
+        {
+            "pick": 1,
+            "text": "____ over IP"
+        },
+        {
+            "pick": 1,
+            "text": "I AM working, I'm waiting for the ____ run to finish."
+        },
+        {
+            "pick": 1,
+            "text": "The ____ certification program."
+        },
+        {
+            "pick": 1,
+            "text": "____? I'd hit that."
+        },
+        {
+            "pick": 1,
+            "text": "Problem exists between Keyboard and ____"
+        },
+        {
+            "pick": 1,
+            "text": "100% government funded ____!"
+        },
+        {
+            "pick": 1,
+            "text": "____: the gift that keeps on giving."
+        },
+        {
+            "pick": 1,
+            "text": "____ has been killed with fire.  My work is done here."
+        },
+        {
+            "pick": 2,
+            "text": "Remember when you told me to tell you when you were acting ____ and ____? ---you're doing it now. "
+        },
+        {
+            "pick": 1,
+            "text": "Our only hope at recovering the data is ____"
+        },
+        {
+            "pick": 1,
+            "text": "____ will help you remember to sanitze your database inputs."
+        },
+        {
+            "pick": 2,
+            "text": "It's like ____ on ____."
+        },
+        {
+            "pick": 1,
+            "text": "____ took EBS down again today."
+        },
+        {
+            "pick": 1,
+            "text": "abcdef"
+        },
+        {
+            "pick": 1,
+            "text": "____, the final solution."
+        },
+        {
+            "pick": 1,
+            "text": "I ssh'd into a server running ____ and promptly noped the fuck out of there."
+        },
+        {
+            "pick": 1,
+            "text": "____ has root access."
+        },
+        {
+            "pick": 1,
+            "text": "We're running ____ in production?!"
+        },
+        {
+            "pick": 2,
+            "text": "____ is more reliable than ____"
+        },
+        {
+            "pick": 1,
+            "text": "We don't have enough package managers said ____"
+        },
+        {
+            "pick": 1,
+            "text": "We accidently the whole ____.."
+        },
+        {
+            "pick": 1,
+            "text": "____ ate all my memory"
+        },
+        {
+            "pick": 1,
+            "text": "I assure you ____ is secure!"
+        },
+        {
+            "pick": 1,
+            "text": "It's easy! Just run ____"
+        },
+        {
+            "pick": 1,
+            "text": "Our backup policy is ____"
+        },
+        {
+            "pick": 1,
+            "text": "The ticket to install ____?  I deletegated it."
+        },
+        {
+            "pick": 2,
+            "text": "We rewrote ____ in ____"
+        },
+        {
+            "pick": 1,
+            "text": "I've received a Microsoft MVP Award for ____"
+        },
+        {
+            "pick": 1,
+            "text": "We wrote our own build tool based on ____"
+        },
+        {
+            "pick": 1,
+            "text": "Move ____ and break things."
+        },
+        {
+            "pick": 1,
+            "text": "The ____ that ops provides developers."
+        },
+        {
+            "pick": 1,
+            "text": "The backups are fine, but the restore process is ____"
+        },
+        {
+            "pick": 1,
+            "text": "Artisanally crafted ____."
+        },
+        {
+            "pick": 1,
+            "text": "I____your stupid issue!"
+        },
+        {
+            "pick": 1,
+            "text": "Crossing ____ could lead to total protonic reversal."
+        },
+        {
+            "pick": 1,
+            "text": "I opened the server cabinet and it was full of ____."
+        },
+        {
+            "pick": 1,
+            "text": "____: ci or not ci?"
+        },
+        {
+            "pick": 1,
+            "text": "Only the Enterprise Edition(tm) has ____."
+        },
+        {
+            "pick": 2,
+            "text": "I'd like ____, ____, and a pony."
+        },
+        {
+            "pick": 2,
+            "text": "I asked the contractor for ____ and they delivered ____."
+        },
+        {
+            "pick": 1,
+            "text": "Nine circles of ____ hell."
+        },
+        {
+            "pick": 2,
+            "text": "____ is the new ____"
+        },
+        {
+            "pick": 1,
+            "text": "With ____, you write once, run nowhere."
+        },
+        {
+            "pick": 1,
+            "text": "The trouble with kids these days is ____"
+        },
+        {
+            "pick": 1,
+            "text": "____ for the win!"
+        },
+        {
+            "pick": 2,
+            "text": "____ implements every single standard for ____.  Poorly."
+        },
+        {
+            "pick": 1,
+            "text": "Just think of the Internet as ____."
+        },
+        {
+            "pick": 1,
+            "text": "____ discontinued support for the Linux version."
+        },
+        {
+            "pick": 2,
+            "text": "A manager told me I couldn't remove our dependency on ____, but I got around it with ____."
+        },
+        {
+            "pick": 1,
+            "text": "It took over 40 hours to document ____. "
+        },
+        {
+            "pick": 1,
+            "text": "npm install ____."
+        },
+        {
+            "pick": 1,
+            "text": "Would you like ____ with that?"
+        },
+        {
+            "pick": 1,
+            "text": "____? We've got that."
+        },
+        {
+            "pick": 1,
+            "text": "____ is the only reason the jDBA survived typing rm -rf /"
+        },
+        {
+            "pick": 1,
+            "text": "End-to-end ____."
+        },
+        {
+            "pick": 1,
+            "text": "Circular imports import ____. "
+        },
+        {
+            "pick": 1,
+            "text": "____ is why the jDBA thought it might be time to go to #mysql on freenode"
+        },
+        {
+            "pick": 2,
+            "text": "Disrupting the established players in ____ via ____."
+        },
+        {
+            "pick": 1,
+            "text": "Called on account of ____."
+        },
+        {
+            "pick": 1,
+            "text": "Employees must ____ before returning to work."
+        },
+        {
+            "pick": 1,
+            "text": "Doge ____."
+        },
+        {
+            "pick": 1,
+            "text": "____, as one does."
+        },
+        {
+            "pick": 1,
+            "text": "____ with one weird trick."
+        },
+        {
+            "pick": 1,
+            "text": "Ask Me Anything about ____."
+        },
+        {
+            "pick": 2,
+            "text": "____, for some values of ____."
+        },
+        {
+            "pick": 1,
+            "text": "____ is weaponized privilege."
+        },
+        {
+            "pick": 1,
+            "text": "____ is for closers."
+        },
+        {
+            "pick": 1,
+            "text": "____ or it didn't happen."
+        },
+        {
+            "pick": 1,
+            "text": "____ is webscale."
+        },
+        {
+            "pick": 1,
+            "text": "____ as a service."
+        },
+        {
+            "pick": 1,
+            "text": "____ all the way down."
+        },
+        {
+            "pick": 1,
+            "text": "____ is a feature, not a bug."
+        },
+        {
+            "pick": 1,
+            "text": "____ dooms any project to epic failure."
+        },
+        {
+            "pick": 1,
+            "text": "Googelure.js"
+        },
+        {
+            "pick": 1,
+            "text": "140 characters is just enough to explain ____."
+        },
+        {
+            "pick": 1,
+            "text": "Etsy says we should ____ everything."
+        },
+        {
+            "pick": 1,
+            "text": "But Google is using ____ so we should too!"
+        },
+        {
+            "pick": 1,
+            "text": "Wrap it with the ____ duct tape"
+        },
+        {
+            "pick": 1,
+            "text": "Put some ____ on it"
+        },
+        {
+            "pick": 3,
+            "text": "____ - the idiots guide to ____ and ____."
+        },
+        {
+            "pick": 1,
+            "text": "____, the only thing worse than recruiting spam."
+        },
+        {
+            "pick": 1,
+            "text": "It worked on my ____."
+        },
+        {
+            "pick": 1,
+            "text": "Time to schedule the postmortem for ____ ."
+        },
+        {
+            "pick": 1,
+            "text": "Zero-day ____."
+        },
+        {
+            "pick": 1,
+            "text": "Will merge pull requests for ____."
+        },
+        {
+            "pick": 1,
+            "text": "WARN: ____ has been deprecated."
+        },
+        {
+            "pick": 1,
+            "text": "Uber is on surge pricing because of ____."
+        },
+        {
+            "pick": 1,
+            "text": "The only thing necessary for evil to triumph is ____."
+        },
+        {
+            "pick": 1,
+            "text": "The Internet of Things will be controlled by ____."
+        },
+        {
+            "pick": 1,
+            "text": "\"Our release schedule doesn't have time for ____.\""
+        },
+        {
+            "pick": 1,
+            "text": "Running Windows in production leads to ____."
+        },
+        {
+            "pick": 1,
+            "text": "The Internet is for cat memes and ____,"
+        },
+        {
+            "pick": 1,
+            "text": "If you're ____, you're gonna have a bad time."
+        },
+        {
+            "pick": 1,
+            "text": "Nobody ever got fired for buying ____."
+        },
+        {
+            "pick": 1,
+            "text": "I saw the best minds of my generation ____."
+        },
+        {
+            "pick": 1,
+            "text": "If ____ is the answer, you are asking the wrong question."
+        },
+        {
+            "pick": 1,
+            "text": "I can haz ____."
+        },
+        {
+            "pick": 1,
+            "text": "I don't own any jeans skinny enough to wear to a ____ meetup."
+        },
+        {
+            "pick": 2,
+            "text": "Hi, I'm Troy McClure. You may remember me from such commit messages as ____ and ____."
+        },
+        {
+            "pick": 1,
+            "text": "How even is ____ formed?"
+        },
+        {
+            "pick": 1,
+            "text": "Free as in ____."
+        },
+        {
+            "pick": 1,
+            "text": "Glitter-bombed with ____."
+        },
+        {
+            "pick": 1,
+            "text": "Epic yak-shave caused by ____."
+        },
+        {
+            "pick": 2,
+            "text": "Facebook has acquired ____ for $10b and ____."
+        },
+        {
+            "pick": 1,
+            "text": "Enterprise ____ in the cloud."
+        },
+        {
+            "pick": 1,
+            "text": "Enterprise-ready ____."
+        },
+        {
+            "pick": 1,
+            "text": "In order to improve security, we're upgrading to ____."
+        },
+        {
+            "pick": 2,
+            "text": "The two pillars of our Continuous Deployment pipeline are ____ and ____."
+        },
+        {
+            "pick": 1,
+            "text": "I got paged at 3am because of ____."
+        },
+        {
+            "pick": 1,
+            "text": "The most stable part of our infrastructure? ____"
+        },
+        {
+            "pick": 1,
+            "text": "When I told Jez Humble about our ____, he actually cried."
+        },
+        {
+            "pick": 1,
+            "text": "When I write a book about my experiences, it'll be called \"____, the good parts\""
+        },
+        {
+            "pick": 1,
+            "text": "Restoring from backups failed due to ____."
+        },
+        {
+            "pick": 2,
+            "text": "My two most indispensable tools are ____ and ____."
+        },
+        {
+            "pick": 1,
+            "text": "The production datacenter burned down because of ____."
+        },
+        {
+            "pick": 1,
+            "text": "It turns out that the button labeled \"Don't Push\" actually does ____."
+        },
+        {
+            "pick": 2,
+            "text": "You should think of your servers like ____ and not like ____."
+        },
+        {
+            "pick": 1,
+            "text": "I find Java to be way too ____."
+        },
+        {
+            "pick": 1,
+            "text": "It's like trying to herd ____."
+        },
+        {
+            "pick": 1,
+            "text": "I ended up having to buy a replacement ____ on eBay."
+        },
+        {
+            "pick": 1,
+            "text": "____ is more memory than anyone will ever need on a computer."
+        },
+        {
+            "pick": 1,
+            "text": "____ Driven Development."
+        },
+        {
+            "pick": 1,
+            "text": "This isn't going to be all unicorns and ____."
+        },
+        {
+            "pick": 1,
+            "text": "xkcd.com just made a hilarious comic making fun of ____."
+        },
+        {
+            "pick": 1,
+            "text": "When I was a kid we didn't have ____."
+        },
+        {
+            "pick": 1,
+            "text": "Apple just patented ____."
+        },
+        {
+            "pick": 1,
+            "text": "The status console is green, but I can't access ____."
+        },
+        {
+            "pick": 1,
+            "text": "Root cause of the outage? ____."
+        },
+        {
+            "pick": 1,
+            "text": "DevOps: Now with 100% more ____!"
+        },
+        {
+            "pick": 1,
+            "text": "No route to host: ____."
+        },
+        {
+            "pick": 1,
+            "text": "Chef convergence failed due to ____."
+        },
+        {
+            "pick": 2,
+            "text": "Main benefits of automation: ____ and ____."
+        },
+        {
+            "pick": 2,
+            "text": "We run production on ____ and ____."
+        },
+        {
+            "pick": 1,
+            "text": "...and then there was the time I found ____ on the root partition."
+        },
+        {
+            "pick": 1,
+            "text": "Did you know that we have ____ on pager rotation?"
+        },
+        {
+            "pick": 1,
+            "text": "Management said it's OK to deploy ____ at 5pm on Friday "
+        },
+        {
+            "pick": 1,
+            "text": "Amazon built a datacenter on the moon to lessen the risk of ____ causing problems."
+        },
+        {
+            "pick": 1,
+            "text": "\"There was no good solution for ____, so we built our own.\""
+        },
+        {
+            "pick": 1,
+            "text": "Who would have known that ____ could destroy an entire datacenter?"
+        },
+        {
+            "pick": 1,
+            "text": "To secure our next round of funding, Management says we need ____."
+        },
+        {
+            "pick": 1,
+            "text": "We really need to open-source our ____."
+        },
+        {
+            "pick": 2,
+            "text": "A sales rep just tried to pitch me on ____; I told them we already have ____."
+        },
+        {
+            "pick": 1,
+            "text": "After ____ came up, the retrospective really went downhill."
+        },
+        {
+            "pick": 2,
+            "text": "You know what our app needs? More ____, less ____."
+        },
+        {
+            "pick": 1,
+            "text": "Our production backups are stored using ____."
+        },
+        {
+            "pick": 2,
+            "text": "We replaced our ____ with ____"
+        },
+        {
+            "pick": 1,
+            "text": "Our competitive advantage is our ____."
+        },
+        {
+            "pick": 1,
+            "text": "Every time someone brings up ____, I throw up a little in my mouth."
+        },
+        {
+            "pick": 2,
+            "text": "It figures - an article about our ____ was posted just as we're pivoting to ____."
+        },
+        {
+            "pick": 2,
+            "text": "In the next planning session, we'll cover ____ and ____."
+        },
+        {
+            "pick": 1,
+            "text": "Our entire app is geared towards providing ____."
+        },
+        {
+            "pick": 1,
+            "text": "____-ility"
+        },
+        {
+            "pick": 1,
+            "text": "Continuous ____."
+        },
+        {
+            "pick": 1,
+            "text": "All that we had to do to halve our response times was implement ____"
+        },
+        {
+            "pick": 1,
+            "text": "When I hooked the 3D printer up to the Internet, it accidentally created ____."
+        },
+        {
+            "pick": 2,
+            "text": "I came up with an awesome regex that converts ____ to ____."
+        },
+        {
+            "pick": 1,
+            "text": "Security? We've got that! We use ____."
+        },
+        {
+            "pick": 1,
+            "text": "RIAA is suing me for downloading ____."
+        },
+        {
+            "pick": 1,
+            "text": "I think maybe I'll leave ____ off my resum\u00e9."
+        },
+        {
+            "pick": 1,
+            "text": "My eyes started bleeding when I opened the editor and saw ____."
+        },
+        {
+            "pick": 1,
+            "text": "So, I was using Wireshark to check network traffic... Did you know we have ____ in production?"
+        },
+        {
+            "pick": 2,
+            "text": "My next blog post will be about how we used ____ to create ____."
+        },
+        {
+            "pick": 2,
+            "text": "Marketing says we're leaders in the ____ space, but I think it's more accurate to say we specialize in ____."
+        },
+        {
+            "pick": 2,
+            "text": "Our app is like ____, but for ____."
+        },
+        {
+            "pick": 1,
+            "text": "Management just told me I need to get certified in ____."
+        },
+        {
+            "pick": 2,
+            "text": "We don't need ____ - we have ____ !"
+        },
+        {
+            "pick": 2,
+            "text": "Last week, I created a Chef recipe for ____; this week, it's an entire cookbook for ____. Automation FTW!"
+        },
+        {
+            "pick": 1,
+            "text": "Sweet! I just found a Puppet module for ____!"
+        },
+        {
+            "pick": 1,
+            "text": "If we make this deadline, Management has promised us ____."
+        },
+        {
+            "pick": 1,
+            "text": "Our greatest achievement in the last year is ____."
+        },
+        {
+            "pick": 1,
+            "text": "I was 6 beers in when I got the pager alert that ____was down."
+        },
+        {
+            "pick": 2,
+            "text": "Notice: Building ____ for ____"
+        },
+        {
+            "pick": 1,
+            "text": "I laughed when they said I'd be on call 24/7 but wouldn't receive a stipend for ____."
+        },
+        {
+            "pick": 2,
+            "text": "If it weren't for ____ we'd all be ____."
+        },
+        {
+            "pick": 1,
+            "text": "RedHat has announced that RHEL 8 will ship with ____."
+        },
+        {
+            "pick": 1,
+            "text": "\"Hey, ____ is down. Can you fix it?\""
+        },
+        {
+            "pick": 1,
+            "text": "I grabbed ____ on my way out the door after our paychecks bounced and management stopped answering their phones."
+        },
+        {
+            "pick": 1,
+            "text": "Did you try ____ yet?"
+        },
+        {
+            "pick": 2,
+            "text": "Disturbing ____ leaves ____ fucked"
+        },
+        {
+            "pick": 1,
+            "text": "Rub a little ____ on it"
+        },
+        {
+            "pick": 1,
+            "text": "WAIT, YOU DELETED ____\u203d\u203d\u203d"
+        },
+        {
+            "pick": 1,
+            "text": "@____borat"
+        },
+        {
+            "pick": 2,
+            "text": "____, ____ and just a few lines of Perl."
+        },
+        {
+            "pick": 1,
+            "text": "NoSQL is superior to SQL because ____"
+        },
+        {
+            "pick": 2,
+            "text": "Script kiddies got into ____ because ____."
+        },
+        {
+            "pick": 2,
+            "text": "____is better than hadoop because ____"
+        },
+        {
+            "pick": 1,
+            "text": "Robots are going to make ____ obsolete."
+        },
+        {
+            "pick": 1,
+            "text": "Users are ____."
+        },
+        {
+            "pick": 1,
+            "text": "An error occurred: E____"
+        },
+        {
+            "pick": 1,
+            "text": "Accidental ____."
+        },
+        {
+            "pick": 1,
+            "text": "http://i.imgur.com/546N4FR.jpg"
+        },
+        {
+            "pick": 1,
+            "text": "We just achieved ____s per second!"
+        },
+        {
+            "pick": 1,
+            "text": "My Linkedin Endorsements include ____."
+        },
+        {
+            "pick": 1,
+            "text": "____, is that even HA?"
+        },
+        {
+            "pick": 1,
+            "text": "On a scale from 1 to 10, this is ____!"
+        },
+        {
+            "pick": 2,
+            "text": "Functional programming - if you can't ____ it, ____ it."
+        },
+        {
+            "pick": 2,
+            "text": "____, now with ____ support."
+        },
+        {
+            "pick": 1,
+            "text": "We don't need configuration management, we have ____!"
+        },
+        {
+            "pick": 1,
+            "text": "We can just fix that with a little ____."
+        },
+        {
+            "pick": 2,
+            "text": "According to the logs, ____ was initially caused by ____."
+        },
+        {
+            "pick": 2,
+            "text": "A monad is just a ____ in the category of ____, what's the problem?"
+        },
+        {
+            "pick": 3,
+            "text": "You can have ____, ____, or ____.  Pick two."
+        },
+        {
+            "pick": 1,
+            "text": "This week, Aphyr runs ____ through jepsen."
+        },
+        {
+            "pick": 1,
+            "text": "The intern just ran ____ on the load balancer."
+        },
+        {
+            "pick": 2,
+            "text": "I've ____ things you people wouldn't ____"
+        },
+        {
+            "pick": 2,
+            "text": "The ____ on the server were deleted because ____ ."
+        },
+        {
+            "pick": 1,
+            "text": "That's not a hacker, that's my ____!"
+        },
+        {
+            "pick": 2,
+            "text": "It has been ____ days since the last ____"
+        },
+        {
+            "pick": 1,
+            "text": "____-Stack Developer"
+        },
+        {
+            "pick": 1,
+            "text": "____SQL"
+        },
+        {
+            "pick": 1,
+            "text": "I put ____ on the scripts to make it run faster."
+        },
+        {
+            "pick": 1,
+            "text": "Developers do not get access to production machines, because of ____."
+        },
+        {
+            "pick": 2,
+            "text": "____ should be deprecated in favour of ____ ."
+        },
+        {
+            "pick": 3,
+            "text": "____ mismatch between ____ and ____"
+        },
+        {
+            "pick": 1,
+            "text": "C-x; C-____"
+        },
+        {
+            "pick": 2,
+            "text": "This users wants ____ because ____ ."
+        },
+        {
+            "pick": 3,
+            "text": "I need you to do a ____ with ____ before ____ ."
+        },
+        {
+            "pick": 1,
+            "text": "Lambdas are just a lame implementation of ____."
+        },
+        {
+            "pick": 2,
+            "text": "Hello. My name is ____ and I am addicted to ____ ."
+        },
+        {
+            "pick": 2,
+            "text": "github.com/____/____"
+        },
+        {
+            "pick": 1,
+            "text": "Facebook changed their profiles today because ____."
+        },
+        {
+            "pick": 2,
+            "text": "\"Guys, seriously, if we just use ____ it will solve all our problems with ____!\""
+        },
+        {
+            "pick": 1,
+            "text": "Say concurrent threads again and I will ____ you."
+        },
+        {
+            "pick": 1,
+            "text": "Asynchronous REST API calls are the solution to ____"
+        },
+        {
+            "pick": 1,
+            "text": "The tech support hotline told me to ____"
+        },
+        {
+            "pick": 1,
+            "text": "It's not web scale, it's ____"
+        },
+        {
+            "pick": 1,
+            "text": "____ it; ship it."
+        },
+        {
+            "pick": 1,
+            "text": "My editor of choice is ____."
+        },
+        {
+            "pick": 2,
+            "text": "For the next project we are going to use ____ to solve ____ ."
+        },
+        {
+            "pick": 1,
+            "text": "____ isn't a job title"
+        },
+        {
+            "pick": 2,
+            "text": "Jordan Sissel hates ____ so much that he created a new opensource project called ____ to work around it."
+        },
+        {
+            "pick": 1,
+            "text": "I will replace you with a very small ____."
+        },
+        {
+            "pick": 2,
+            "text": "That talk outline said it would be about ____, but it ended up being more like ____."
+        },
+        {
+            "pick": 1,
+            "text": "____ dependency hell."
+        }
+    ],
+    "description": "https://github.com/bridgetkromhout/devops-against-humanity",
+    "name": "[C] DevOps Against Humanity",
+    "tag": "DevOp",
+    "whiteCards": [
+        "RTFM",
+        "A 1996 Java applet",
+        "A coked-up tech recruiter",
+        "A contractor that tells you it was a real learning experience",
+        "The Ballmer Peak",
+        "0xDEADBEEF",
+        "Program Management",
+        "Product Managers",
+        ":(){:|:&amp;};:",
+        "Patrick Debois",
+        "git merge --force",
+        "#And right here, we'd like a miracle.",
+        "Sparkly Devops Princess",
+        "A virtual machine running a virtual machine until it brings on the Singularity",
+        "Ops doing dev = technical debt",
+        "Ponies",
+        "Cats",
+        "Webscale",
+        "optimistic transactions",
+        "Your code featured on The Daily WTF.",
+        "RFC 2324",
+        "Production deployments that depend on GitHub",
+        "Github selfies",
+        "BOFH",
+        "LART",
+        "deduplication",
+        "Copy-on-write",
+        "Server cages",
+        "Picking the best color to paint your bike shed",
+        "Using Brain Fuck in production",
+        "Your Mum",
+        "Bingo Balls",
+        "Mechanically Recovered Turkey",
+        "ChatOps",
+        "Scala",
+        "memegen",
+        "Flynn",
+        "eventual persistence",
+        "Jenkins",
+        "YoloDB",
+        "Piping random scripts from the internet into bash",
+        "post-mortems",
+        "WONTFIX",
+        "Trello board",
+        "Big ball of mud",
+        "Friday afternoon deployment",
+        "/etc/hosts",
+        "Crowdsourced Architecture",
+        "Automagic Metaprogramming",
+        "CEOs with root access",
+        "Richard Stallman's Neckbeard",
+        "one giant SPOF",
+        "Righteous Anger",
+        "phpMyAdmin",
+        "Haskell",
+        "git submodules",
+        "Functional Reactive",
+        "Rewriting bash scripts as CMD batch jobs",
+        "Re-implementing TCP over UDP",
+        "Microsoft Access over a WAN",
+        "#define BEGIN  {",
+        "syntax error",
+        "killall -9",
+        "RHEL4",
+        "DevOps Reactions",
+        "RAID 0",
+        "PIP",
+        "pre caffeine typos",
+        "banana pi",
+        "dev",
+        "java",
+        "PyPy",
+        "Synergy",
+        "hunter2",
+        "geometric distances",
+        "Indian Ocean",
+        "buffer overflow",
+        "malloc",
+        "Works on my machine!",
+        "losing the root password",
+        "Deploying on a Friday afternoon",
+        "Penetration test",
+        "server logs",
+        "StackOverflow is offline?!",
+        "kremvax",
+        "two single quotes",
+        "too many authorization failures",
+        "Quipu",
+        "puppet",
+        "tribal knowledge",
+        "0 day exploits",
+        "the unix epoch",
+        "PEBKAC",
+        "ReiserFS",
+        "/dev/null",
+        "little Bobby Tables",
+        "solar flares",
+        "global warming",
+        "Short Stroking",
+        "Reticulating Splines",
+        "RAID 3 SSD cluster",
+        "Re-implementing TCP over TCP",
+        "Mixed endianness",
+        "OAuth",
+        "traceroute",
+        "rockstar",
+        "packet loss",
+        "smokeping",
+        "The library that imports all other libraries",
+        "A literal cluster fuck",
+        "An entirely commented out file",
+        "The tech lead's shitty pet project",
+        "Circular imports",
+        "A constructor for RandomThing",
+        "Syntactic sugar coma",
+        "A pull request with a winking smiley ;)",
+        "The ib_logfiles",
+        "Former employees who still have admin access to live production servers",
+        "Paul Graham",
+        "The mysql client",
+        "cron jobs that edit cron jobs",
+        "The much neglected IPv5",
+        "Testing positive for mongonucleosis",
+        "snail scale",
+        "Halt and Catch Fire",
+        "GCHQ",
+        "NSA FOIA request",
+        "wat",
+        "kanban",
+        "curl 4chan | sudo sh",
+        "kill -9 -1",
+        "echo shell_exec(\"sudo ./smbkill \".escapeshellcmd($_GET['kill']).\" 2&gt;&amp;1\");",
+        "sudo",
+        "runlists",
+        "fork() on Windows",
+        "winsock",
+        "FAT32",
+        "Paxos",
+        "Forcing push to master",
+        "git reset --hard origin/master",
+        "Bus error",
+        "A Certified SCRUM Master",
+        "Neckbeards",
+        "HTML9 Responsive Boilerstrap JS",
+        "cassandra",
+        "rsync",
+        "CFLAGS",
+        "dd",
+        "pdisk",
+        "Arguing over the internet.",
+        "year 2038",
+        "Wearing protection during peer programing.",
+        "top",
+        "PAM Happy Hour",
+        "Complex systems usually operate in failure mode.",
+        "Ping Pong",
+        "Dennis Ritchie",
+        "Gentoo",
+        "The CEO",
+        "cowsay",
+        "profanity in the git log",
+        "IPv6",
+        "Ethernet",
+        "Piping /var/log/messages to Twitter",
+        "Re-writing deployment scripts at 2 AM",
+        "Pinging the broadcast address",
+        "Microsoft\u00ae Azure",
+        "127.0.0.1",
+        "That moment when you realize CTRL-Z cannot save you",
+        "catastrophic cancellation",
+        "fpm",
+        "f00d",
+        "termcap",
+        "A pseudorandom number generator",
+        "Bare metal",
+        "Sentinel System Driver",
+        "An outage window",
+        "Spot Instances",
+        "Those ksh scripts",
+        "/cgi-bin/php5",
+        "A $60 QNAP and some positive thinking",
+        "LogFiles\\W3SVC1",
+        "A German installation of Windows NT4",
+        "curl | sh -c",
+        "OpenLDAP",
+        "conflict minerals",
+        "continuous incineration",
+        "The gentle sound of weeping drifting from the server room",
+        "eventual consistency",
+        "raspberryPI",
+        "Windows ME",
+        "@echo off",
+        "Active Directory",
+        "Cache",
+        "Delightful",
+        "Automate",
+        "PC LOAD LETTER",
+        "Pete Cheslock",
+        "Dust Bunnies",
+        "an online book seller",
+        "Proxy",
+        "iso 8601",
+        "Blue Screen Of Death",
+        "A sad log with a mustache",
+        "Networking",
+        "Moe",
+        "Broadcom chipset",
+        "Linus Torvalds",
+        "Daniel J. Bernstein",
+        "An IRC bot written entirely in sed",
+        "(\u256f\u00b0\u25a1\u00b0\uff09\u256f\ufe35 \u253b\u2501\u253b",
+        "cubism farm",
+        "HipChat",
+        "COBOL",
+        "in b4 FIRST",
+        "works for me",
+        "a torrent of Torrenters torrenting",
+        "Running Openstack in Production",
+        "the Berkshelf way",
+        "Donald Knuth",
+        "Rebooting All The Things",
+        "Animated GIF",
+        "DNS",
+        "SIGHUP",
+        "continuous deployment",
+        "The fucking JVM",
+        "bash",
+        "Tor",
+        "zsh",
+        "numactl",
+        "Vegan friendly init scripts.",
+        "Standing around outside on the streets of SOMA with an overheating laptop drunk while fixing your god damn Saturday night deployment.",
+        "Servers that follow daylight savings time.",
+        "Committing from the bar.",
+        "command line options",
+        "Rolling Grubhub into the build failed script.",
+        "jsLinux",
+        "Temporary hotfixes",
+        "Your private browsing history",
+        "SIGKILL",
+        "That XKCD comic about sysadmins",
+        "iso 8859",
+        "RFC 1149",
+        "A pimply faced youth with nothing to lose",
+        "Theo de Raadt yelling at newbs",
+        "Hate driven development",
+        "Lotus123",
+        "/dev/null as a service",
+        "Hackathons",
+        "GNU/Linux",
+        "ZeroVM",
+        "Stringing cloudtobutt.pl into postfix.",
+        "ZeroMQ over SSH",
+        "SQLite",
+        "LevelDB",
+        "Leap second bug",
+        "A new printer.",
+        "A potato",
+        "Andrew Clay Shaffer",
+        "Jordan Sissel",
+        "RFC1178",
+        "Full-stack developer",
+        "Silos",
+        "Elastic Load Balancers",
+        "A server rack full of crushed dreams",
+        "Unix philosophy",
+        "Trying to install MongoDB on AIX 3",
+        "IE 7 Support",
+        "Hangops",
+        "Culture",
+        "Percussive maintenance",
+        "Lolcats",
+        "Hugops!",
+        "Kernel panic",
+        "Dogecoin",
+        "a series of tiny shellscripts",
+        "kill -9",
+        "rm -rf /",
+        "out-of-band access",
+        "UTF-7",
+        "unlimited data plan",
+        "a dozen vendor t-shirts",
+        "UTF-9",
+        "Destroying your tools with your tools",
+        "a cold cup of coffee",
+        "ssh in a for loop",
+        "a posting on Craigslist \"internet engineers\" jobs forum",
+        "NoQA Movement",
+        "A few instances",
+        "operations hipster",
+        "Cowboy developer",
+        "Unplugging a server and waiting to see who complains",
+        "THE MAGMA PEOPLE ARE WAITING FOR OUR MISTAKES.",
+        "a tiny ounce of knowledge",
+        "Too big to fail",
+        "Distributed Computing",
+        "Sprint Planning",
+        "Merge Conflicts",
+        "# we *LIE* about what happened and return a \"success\"",
+        "A cluster of applications on a cluster of servers",
+        "Beating the server into submission with your bare hands.",
+        "Read-only Fridays",
+        "r/sysadmin",
+        "Nagios",
+        "ASAP",
+        "Authentication and authorization",
+        "The Goddamn CDN",
+        "secret sauce",
+        "A series of tubes",
+        "# FIXME: For now, just don't validate",
+        "# What is this used for?",
+        "De-linting source code",
+        "Single stepping through the kernel",
+        "Smart quotes",
+        "Significant whitespace",
+        "Git Blame",
+        "Office Space",
+        "Your account",
+        "Developers! Developers! Developers! Developers!",
+        "Half open TCP connections",
+        "Steve Balmer wielding a battleaxe",
+        "freebasing caffeine",
+        "Fat fingered",
+        "Enterprise Grade Bash scripts",
+        "Agile",
+        "A 50k line Bash script that's achieved self awareness",
+        "Gigadevops",
+        "Tcl",
+        "NoOps",
+        "4chan Party Van",
+        "Adderall",
+        "Too Big Data",
+        "Accidentally the entire data center",
+        "An angry whale shitting containers",
+        ":(){ :|:&amp;};:",
+        "Magic Smoke",
+        "Scrum Master",
+        "IE6",
+        "Continuous Disintegration",
+        "uucp",
+        "Log Shipping",
+        "Tech Debt Day",
+        "done done",
+        "Netscape Navigator 3.2 support",
+        "PagerDuty configured with a random number generator",
+        "Write-only code",
+        "A turducken made entirely of bash scripts",
+        "Maven downloading the entire internet",
+        "Mutation of immutable data",
+        "A Pi\u00f1ata full of error messages",
+        "3 hour standups",
+        "Ycombinator",
+        "a jailbroken iPad",
+        "\"Fuck it, we'll do it live!\"",
+        "Vagrant",
+        "Nokogiri Gem",
+        "Docker",
+        "a \"MRW\" animated gif",
+        "$HOME/.gem",
+        "The BOFH",
+        "A water buffalo",
+        "a routing loop",
+        "a queue with no consumers",
+        "Bitcoin mining",
+        "A firewall full of holes",
+        "An uncontrollable deluge of emails",
+        "I heard about it on hacker news",
+        "a non-ironic BSOD",
+        "Erlang",
+        "Systemd",
+        "ntpdate",
+        "Fail early, fail often",
+        "12 factor application",
+        "A violation of the most basic engineering principles.",
+        "Regex",
+        "A simple 15 level Hiera hierarachy",
+        "A pink sombrero and a fifth of tequila",
+        "CouchDB",
+        "lolscale.",
+        "High Availability",
+        "GeoCouchDB",
+        "Web Scale?",
+        "Map-Reduce",
+        "Edward Snowden",
+        "Digital Ocean",
+        "Magic Spray",
+        "Web scale",
+        "OpenSSL",
+        "Heartbleed",
+        "The NSA",
+        "O'Reilly",
+        "Windows XP",
+        "Perl 6",
+        "COTS Shareware",
+        "2400 baud modem",
+        "Functional programming",
+        "Stack trace generator",
+        "Patent",
+        "NoSQL",
+        "NullPointerException: null",
+        "A Cisco router with a flaky chip",
+        "More buzzwords than you can shake a scrum at",
+        "Apache 1.2 running as root",
+        "Zombie processes",
+        "A squirrel with a taste for fiber",
+        "Snowflake server",
+        "CAP Theorem",
+        "The Sales &amp; Marketing department",
+        "A WSDL from 2003",
+        "/var/log symlinked to /dev/null",
+        "Business logic in PowerPoint slides",
+        "VisualBasic DLLs",
+        "A GitHub Outage",
+        "An epic caffeine bender",
+        "A JAR full of spaghetti",
+        "An untested restore process",
+        "A cron job that reboots the server every 5 minutes",
+        "Parsing HTML with regex",
+        "A 3.5\" floppy disk",
+        "A shared root password",
+        "Private keys in /var/www",
+        "Hypervisors running hypervisors running hypervisors",
+        "An angry badger with an electromagnet on its back",
+        "A CORBA service written in Ada which communicates using JSONx",
+        "A home-rolled systemd replacement",
+        "The next Y2K",
+        "An army of chaos monkeys, all carrying flamethrowers",
+        "Cloud-based business strategy",
+        "Cloud 2.0",
+        "Apache Zookeeper on a 286",
+        "Sadness as a Service",
+        "Hand-crafted artisan x86 assembly code",
+        "75-tier architecture",
+        "A global write lock",
+        "10,000 Nagios alerts per second",
+        "Catastrophic Failure as a Service",
+        "Agony-Driven Development",
+        "A mobile web 2.0 RIA",
+        "A custom kernel with Frontpage Extensions installed",
+        "A Null-modem cable",
+        "The last remaining Multics server on Earth",
+        "A 500-megabyte UDP packet",
+        "A self-aware PHP script",
+        "A Volker-Craig terminal",
+        "An Exchange email loop",
+        "A proof that P=NP written in BASIC",
+        "The world's only fully-functional ROFLcopter",
+        "A former MENSA member",
+        "Angular js",
+        "Brogrammers",
+        "Being acquired by Oracle",
+        "Continuous integration",
+        "Command-line magic",
+        "The Cult of Mac",
+        "Copypasta",
+        "Developers",
+        "Degraded performance in some AWS availability zones",
+        "Eating sushi with Andrew Clay Shafer",
+        "DevOps",
+        "Golang",
+        "Growth hacking",
+        "fuckedcompany.com",
+        "Git",
+        "Leaky abstractions",
+        "LinkedIn",
+        "Hacker News",
+        "Larry Ellison",
+        "Node.js",
+        "NPM",
+        "Meritocracy",
+        "MongoDB",
+        "Python",
+        "Python datetime module",
+        "Pareto Inefficient Nash Equilibriums",
+        "Posting on Etsy's codeascraft blog",
+        "Running out of IPv4 addresses",
+        "Ruby",
+        "RecruiterFail",
+        "Rebasing the entire fucking repo",
+        "Twitter",
+        "Thought leadership",
+        "The Stanford of Canada",
+        "Sysadmins",
+        "Women in tech",
+        "Waiting for console.aws.amazon.com",
+        "Unknown source in your stack trace",
+        "Unicode errors",
+        "Bullshit.io",
+        "DevOps Days",
+        "Our Release Engineer",
+        "Yet another package manager"
+    ]
+}

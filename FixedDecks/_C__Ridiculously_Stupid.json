@@ -1,0 +1,312 @@
+{
+    "blackCards": [
+        {
+            "pick": 1,
+            "text": "In a news conference, Obama pulled out ____, to everyone's surprise."
+        },
+        {
+            "pick": 1,
+            "text": "Nights filled with ____."
+        },
+        {
+            "pick": 1,
+            "text": "____ Game of the Year Edition."
+        },
+        {
+            "pick": 1,
+            "text": "What was going through Osama Bin Laden's head before he died?"
+        },
+        {
+            "pick": 1,
+            "text": "The lion, the witch, and ____."
+        },
+        {
+            "pick": 1,
+            "text": "In the next episode, SpongeBob gets introduced to ____. "
+        },
+        {
+            "pick": 1,
+            "text": "Praise ____!"
+        },
+        {
+            "pick": 1,
+            "text": "Justin Beiber's new song is all about ____."
+        },
+        {
+            "pick": 1,
+            "text": "Keith Richards enjoys ____ on his food."
+        },
+        {
+            "pick": 2,
+            "text": "The new fad diet is all about making people do ____ and eat ____."
+        },
+        {
+            "pick": 1,
+            "text": "What can you always find in between the couch cushions?"
+        },
+        {
+            "pick": 1,
+            "text": "Grand Theft Auto&trade;: ____."
+        },
+        {
+            "pick": 1,
+            "text": "The victim was found with ____."
+        },
+        {
+            "pick": 1,
+            "text": "I whip my ____ back and forth."
+        },
+        {
+            "pick": 1,
+            "text": "What is love without ____?"
+        },
+        {
+            "pick": 1,
+            "text": "What is the next great Kickstarter project?"
+        },
+        {
+            "pick": 1,
+            "text": "Who let the dogs out?"
+        },
+        {
+            "pick": 1,
+            "text": "____ 2012."
+        },
+        {
+            "pick": 1,
+            "text": "In his next movie, Will Smith saves the world from ____."
+        },
+        {
+            "pick": 1,
+            "text": "What is Curious George so curious about?"
+        },
+        {
+            "pick": 1,
+            "text": "Lady Gaga has revealed her new dress will be made of ____."
+        },
+        {
+            "pick": 1,
+            "text": "What is the next big sideshow attraction?"
+        },
+        {
+            "pick": 1,
+            "text": "____ ruined many people's childhood."
+        },
+        {
+            "pick": 2,
+            "text": "____ and ____ are the new hot couple."
+        },
+        {
+            "pick": 1,
+            "text": "Who needs college when you have ____."
+        },
+        {
+            "pick": 1,
+            "text": "When short on money, you can always ____."
+        },
+        {
+            "pick": 1,
+            "text": "When North Korea gets ____, it will be the end of the world."
+        },
+        {
+            "pick": 1,
+            "text": "My life for ____!"
+        },
+        {
+            "pick": 3,
+            "text": "Plan a three course meal."
+        },
+        {
+            "pick": 1,
+            "text": "Tastes like ____."
+        },
+        {
+            "pick": 1,
+            "text": "What is literally worse than Hitler?"
+        },
+        {
+            "pick": 2,
+            "text": "I wouldn't fuck ____ with ____'s dick."
+        },
+        {
+            "pick": 1,
+            "text": "The next Assassin's Creed game will take place in ____."
+        },
+        {
+            "pick": 1,
+            "text": "In the next Punch Out!!, ____ will be the secret final boss."
+        },
+        {
+            "pick": 1,
+            "text": "One does not simply walk into ____."
+        },
+        {
+            "pick": 2,
+            "text": "The next pokemon will combine ____ and ____."
+        },
+        {
+            "pick": 1,
+            "text": "What will Xyzzy take over the world with?"
+        },
+        {
+            "pick": 1,
+            "text": "Instead of playing Cards Against Humanity, you could be ____."
+        },
+        {
+            "pick": 1,
+            "text": "Who is GLaDOS's next test subject?"
+        },
+        {
+            "pick": 1,
+            "text": "In his second term, Obama will rid America of ____."
+        },
+        {
+            "pick": 1,
+            "text": "I never thought ____ would be so enjoyable."
+        },
+        {
+            "pick": 1,
+            "text": "In the future, ____ will fuel our cars."
+        },
+        {
+            "pick": 1,
+            "text": "What is Japan's national pastime?"
+        },
+        {
+            "pick": 1,
+            "text": "Dustin Browder demands more ____ in StarCraft&reg;."
+        },
+        {
+            "pick": 1,
+            "text": "Welcome to my secret lair on ____."
+        },
+        {
+            "pick": 1,
+            "text": "I've got the whole world in my ____."
+        },
+        {
+            "pick": 1,
+            "text": "What is the answer to life's question?"
+        }
+    ],
+    "description": "",
+    "name": "[C] Ridiculously Stupid",
+    "tag": "RS",
+    "whiteCards": [
+        "Hoola hoops.",
+        "A walrus with a beret.",
+        "Speedrunning life.",
+        "Demi Moore's bush.",
+        "Eating 120 White Castle burgers&reg;.",
+        "Mr. Fancy Pants.",
+        "TotalBiscuit's top hat.",
+        "Blowing the President.",
+        "Skullcrusher Mountain.",
+        "Indentured servants.",
+        "Sex in your mouth.",
+        "Bong hits for Jesus.",
+        "Penn and Teller.",
+        "An 8-ball.",
+        "Quiznos&reg;.",
+        "Scotsmen marrying their sheep.",
+        "The truffle shuffle.",
+        "Nurse Joy.",
+        "Barney's rape dungeon.",
+        "Tickle Me Elmo.",
+        "Viking Metal.",
+        "Teh Urn.",
+        "Spanish soap operas.",
+        "Made-for-TV movies.",
+        "Rule 34.",
+        "Terabytes of horse porn.",
+        "The hero of time.",
+        "Ringworm.",
+        "Rich, chocolatey Ovaltine&reg;.",
+        "Abusive fathers.",
+        "The smallest, whitest dick.",
+        "Hungry Hungry Hippos.",
+        "Canadian tuxedo.",
+        "Insane Clown Posse.",
+        "Nu Metal.",
+        "The Wiggles.",
+        "Blue's Clues.",
+        "Kaizo Mario.",
+        "FrankerZ.",
+        "Spontaneous Combustion.",
+        "Kappa.",
+        "Fruit Fuckers.",
+        "Blowing your hand off with a firework.",
+        "Beer Pong.",
+        "Duke Nukem Forever.",
+        "Using hot sauce as lube.",
+        "Mating season.",
+        "The Ouya.",
+        "Jew-Fros.",
+        "Catdog.",
+        "Hipsters on their iPhones at Starbucks.",
+        "Smooth jazz.",
+        "A boat load of cocaine.",
+        "Song of Storms.",
+        "Gerudo Valley.",
+        "A giant purple dildo sword.",
+        "Bill Gates pissing on Steve Jobs's grave.",
+        "Outsourcing jobs to India.",
+        "The Mushroom Kingdom.",
+        "The Hokey Pokey.",
+        "Hooters.",
+        "Blue Waffles.",
+        "Lemon grenades.",
+        "Soviet Russia.",
+        "360 no scopes.",
+        "The brown note.",
+        "Tits.",
+        "Rainbows and magic.",
+        "Monkeys throwing shit.",
+        "Hitler's mustache.",
+        "ALL the things!",
+        "Indiana Jones.",
+        "Hentai.",
+        "Sheepskin Condoms.",
+        "Hump Day.",
+        "Yankee Stadium.",
+        "Air Bud.",
+        "Hordes of zombies.",
+        "Donkey Shows.",
+        "The DK Rap.",
+        "Cranky Kong.",
+        "The Eiffel Tower.",
+        "Chicken and Waffles.",
+        "The Columbine Shooting.",
+        "Shag carpeting.",
+        "Dirty hippies.",
+        "Hey Arnold!",
+        "The Oculus Rift.",
+        "Banana Hammocks.",
+        "Nessie.",
+        "Princess Peach's Cake.",
+        "Shitting on the White House lawn.",
+        "Mountain Dew&reg; Baja Blast.",
+        "The tears of a college student.",
+        "Mr. Hankey the Christmas Poo.",
+        "Two midgets stacked up pretending to be one person.",
+        "Apples to Apples&reg;.",
+        "Snorting Pixie Stix.",
+        "Getting high on bath salts.",
+        "The final circle of Hell.",
+        "Poorly written Star Wars&reg; fan fiction.",
+        "Borat's one piece.",
+        "The Bible.",
+        "A 1971 Ford Pinto.",
+        "LOOK AT THIS PHOTOGRAPH!",
+        "Master Chief.",
+        "The shitty remains of Taco Bell&reg;.",
+        "Xyzzy playing around with gender roles.",
+        "Four Loko.",
+        "Sponge baths.",
+        "Walt Disney's frozen head.",
+        "Mario brutally murdering Sonic.",
+        "Sonic brutally murdering Mario.",
+        "Canadian Kindness.",
+        "The world's tallest midget."
+    ]
+}
