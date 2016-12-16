@@ -5,10 +5,14 @@ import cards, re
 
 client = discord.Client()
 colors = True
+BLA = colors * "\033[30;5m"
 RED = colors * "\033[31;5m"
 GRE = colors * "\033[32;5m"
+YEL = colors * "\033[33;5m"
 BLU = colors * "\033[34;5m"
-CYA = "\033[36;5m"
+MAG = colors * "\033[35;5m"
+CYA = colors * "\033[36;5m"
+WHI = colors * "\033[37;5m"
 WHI = colors * "\033[0m"
 
 response_history = []
@@ -29,11 +33,8 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-	if message.author == client.user:
-		print('{}: {}'.format(message.author, CYA + message.content + WHI))
-		return
-	else:
-		print('{}: {}'.format(message.author, GRE + message.content + WHI))
+	logMessage(message)
+	if message.author == client.user: return
 
 	# whatis (alt)
 	#content = message.content
@@ -59,11 +60,8 @@ async def on_message(message):
 
 @client.event
 async def on_message_edit(oldMessage, newMessage):
-	if newMessage.author == client.user:
-		print('{}: {} {}'.format(newMessage.author, RED+'(edit)'+WHI, CYA + newMessage.content + WHI))
-		return
-	else:
-		print('{}: {} {}'.format(newMessage.author, RED+'(edit)'+WHI, GRE + newMessage.content + WHI))
+	logMessage(newMessage, "edit")
+	if newMessage.author == client.user: return
 
 	global response_history
 	for i in range(len(response_history)):
@@ -79,10 +77,33 @@ async def on_message_edit(oldMessage, newMessage):
 				response_history[i] = (newMessage, response)
 
 @client.event
+async def on_message_delete(message):
+	logMessage(message, "delete")
+
+@client.event
 async def on_member_join(member):
 	server = member.server
 	fmt = 'Welcome {0.mention} to {1.name}!'
 	await client.send_message(server, fmt.format(member, server))
+
+
+# Pretty print message
+def logMessage(message, msgtype = ''):
+	time = message.timestamp.strftime('[%H:%M:%S]')
+
+	userColor = WHI
+	if message.author == client.user:
+		userColor = CYA
+
+	extra = '{}({}){} '.format(RED, msgtype, WHI) if msgtype else ''
+
+	print('{} {} {} {}: {}'.format(
+		BLA + time,
+		MAG + message.server.name,
+		'#' + message.channel.name,
+		YEL + message.author.name,
+		userColor + extra + message.content + WHI)
+	)
 
 # Discord send_message
 async def SEND(message, content):
