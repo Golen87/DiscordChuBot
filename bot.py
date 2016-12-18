@@ -1,19 +1,12 @@
-import discord, asyncio, json, random, re
+import discord, asyncio, random, re, time
 import speech
-import cards, re
+import cards
+import utils
+import databaseManager as database
+from constants import *
 #import commands
 
 client = discord.Client()
-colors = True
-BLA = colors * "\033[30;5m"
-RED = colors * "\033[31;5m"
-GRE = colors * "\033[32;5m"
-YEL = colors * "\033[33;5m"
-BLU = colors * "\033[34;5m"
-MAG = colors * "\033[35;5m"
-CYA = colors * "\033[36;5m"
-WHI = colors * "\033[37;5m"
-WHI = colors * "\033[0m"
 
 response_history = []
 
@@ -54,7 +47,7 @@ async def on_message(message):
 			response = await commandlist[command][0](message, send)
 		global response_history
 		if not response:
-			print(RED + 'Warning: Function did not return sent message!' + WHI)
+			print(RED + 'Warning: Function "{}" did not return sent message!'.format(command) + WHI)
 		response_history.append((message, response))
 		response_history = response_history[-10:]
 
@@ -91,18 +84,18 @@ async def on_member_join(member):
 def logMessage(message, msgtype = ''):
 	time = message.timestamp.strftime('[%H:%M:%S]')
 
-	userColor = WHI
+	userColor = YEL
 	if message.author == client.user:
 		userColor = CYA
 
-	extra = '{}({}){} '.format(RED, msgtype, WHI) if msgtype else ''
+	extra = '{}({}) '.format(RED, msgtype) if msgtype else ''
 
 	print('{} {} {} {}: {}'.format(
 		BLA + time,
 		MAG + message.server.name,
 		'#' + message.channel.name,
-		YEL + message.author.name,
-		userColor + extra + message.content + WHI)
+		userColor + message.author.name,
+		extra + WHI + message.content)
 	)
 
 # Discord send_message
@@ -145,18 +138,6 @@ async def checkArgs(message, send):
 			return None
 	return await send(commandlist[getCommand(message)][1])
 
-# Save whatis to database
-def saveDatabase(database):
-	with open('database.json', 'w') as f:
-		json.dump(database, f)
-
-# Load whatis from database
-def loadDatabase():
-	f = open('database.json')
-	database = json.load(f)
-	f.close()
-	return database
-
 
 # Help
 async def help(message, send):
@@ -172,6 +153,7 @@ async def help(message, send):
 			message.content = ''
 			return await help(message, send)
 
+"""
 # I am
 async def iam(message, send):
 	content = getContent(message)
@@ -180,7 +162,8 @@ async def iam(message, send):
 	saveDatabase(database)
 	m = '{} is now {}'.format(message.author.mention, content)
 	return await send(m)
-
+"""
+"""
 # What is
 async def whatis(message, send):
 	content = getContent(message)
@@ -205,6 +188,7 @@ async def whatis(message, send):
 	else:
 		m = 'There is no description for {}.'.format(mention)
 	return await send(m)
+"""
 
 # Sleep
 async def sleep(message, send):
@@ -290,13 +274,41 @@ async def tcah(message, send):
 
 # Test
 async def test(message, send):
-	await send('Yes, hello!')
+	balance = database.getBalance(message.author)
+	return await send('You have {} coins!'.format(balance))
+
+# Check balance
+async def checkBalance(message, send):
+	balance = database.getBalance(message.author)
+	return await send('{}, you have a balance of **{:,}** {}.'.format(message.author.mention, balance, Currency))
+
+# Beg for coins
+async def beg(message, send):
+	coins = random.randint(0, 5)
+	if coins > 1:
+		database.incBalance(message.author, coins)
+		return await send('_tosses you **{:,}** coins!_'.format(coins))
+	else:
+		return await send('_spits on you for begging!_'.format(coins))
+
+# Acquire daily coin bonus
+async def claimDaily(message, send):
+	lastClaim = database.getDailyTimestamp(message.author)
+	remaining = DailyCooldown - (time.time() - lastClaim)
+	if remaining > 0:
+		waitTime = utils.getDurationString(remaining)
+		return await send('{}, your daily bonus refreshes in _{}_.'.format(message.author.mention, waitTime))
+	else:
+		database.setDailyTimestamp(message.author, time.time())
+		database.incBalance(message.author, DailyReward)
+		return await send('{}, you received your **{:,}** daily {}!'.format(message.author.mention, DailyReward, Currency))
+
 
 # List of commands
 commandlist = {
 	'help': [help, '!help [*command*]', 'args'],
-	'iam': [iam, '!iam *description*', 'content'],
-	'whatis': [whatis, '!whatis *username*', 'args'],
+	#'iam': [iam, '!iam *description*', 'content'],
+	#'whatis': [whatis, '!whatis *username*', 'args'],
 	'sleep': [sleep, '!sleep', 'args'],
 	'count': [count, '!count', 'args'],
 	'hello': [hello, '!hello', 'args'],
@@ -304,6 +316,9 @@ commandlist = {
 	'choose': [choose, '!choose *item* [, *item* ...] [or *item*]', 'content'],
 	'tcah': [tcah, '!tcah [*phrase* ...]', 'content'],
 	'test': [test, '!test', 'args'],
+	'balance': [checkBalance, '!balance', 'args'],
+	'beg': [beg, '!beg', 'args'],
+	'daily': [claimDaily, '!daily', 'args'],
 }
 
 
