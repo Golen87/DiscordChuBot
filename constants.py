@@ -1,7 +1,7 @@
 
 Currency = 'pokécoins'
 
-DailyCooldown = 60 * 60 * 8
+DailyCooldown = 60 * 60 * 21
 DailyReward = 100
 
 

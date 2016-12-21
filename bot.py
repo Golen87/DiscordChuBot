@@ -1,9 +1,9 @@
 import discord, asyncio, random, re, time
 import speech
 import cards
-import utils
+from utils import *
 import databaseManager as database
-from constants import *
+#from constants import *
 #import commands
 
 client = discord.Client()
@@ -46,10 +46,13 @@ async def on_message(message):
 		if not response:
 			response = await commandlist[command][0](message, send)
 		global response_history
+		if response == 'delete':
+			return
 		if not response:
 			print(RED + 'Warning: Function "{}" did not return sent message!'.format(command) + WHI)
+		await clearPreviousCommands(message.author)
 		response_history.append((message, response))
-		response_history = response_history[-10:]
+		response_history = response_history[-100:]
 
 @client.event
 async def on_message_edit(oldMessage, newMessage):
@@ -67,6 +70,8 @@ async def on_message_edit(oldMessage, newMessage):
 				response = await checkArgs(newMessage, send)
 				if not response:
 					response = await commandlist[command][0](newMessage, send)
+				if response == 'delete':
+					return
 				response_history[i] = (newMessage, response)
 
 @client.event
@@ -98,6 +103,7 @@ def logMessage(message, msgtype = ''):
 		extra + WHI + message.content)
 	)
 
+
 # Discord send_message
 async def SEND(message, content):
 	return await client.send_message(message.channel, content)
@@ -106,21 +112,9 @@ async def SEND(message, content):
 async def EDIT(message, content):
 	return await client.edit_message(message, content)
 
-# Collect command call
-def getCommand(message):
-	if message.content.startswith('!'):
-		return message.content.split(' ')[0][1:].lower()
-	return ''
-
-# Collect command args content
-def getContent(message):
-	if len(message.content.split(' ', 1)) > 1:
-		return message.content.split(' ', 1)[1]
-	return ''
-	
-# Collect command args
-def getArgs(message):
-	return message.content.split(' ')[1:]
+# Discord edit_message
+async def DELETE(message):
+	return await client.delete_message(message)
 
 # Check if args are OK
 async def checkArgs(message, send):
@@ -210,7 +204,7 @@ async def count(message, send):
 # Hello
 async def hello(message, send):
 	m = 'Hello {0.author.mention}!'.format(message)
-	await send(m)
+	return await send(m)
 
 # Guess
 async def guess(message, send):
@@ -272,36 +266,95 @@ async def tcah(message, send):
 			m = random.choice(stuttering)
 			return await send(m)
 
-# Test
-async def test(message, send):
-	balance = database.getBalance(message.author)
-	return await send('You have {} coins!'.format(balance))
-
 # Check balance
 async def checkBalance(message, send):
 	balance = database.getBalance(message.author)
 	return await send('{}, you have a balance of **{:,}** {}.'.format(message.author.mention, balance, Currency))
+
+# Check top list of balance
+async def checkTop(message, send):
+	args = getArgs(message)
+	#print(args)
+	
+	toplist = database.getTopList()[:5]
+	nameWidth = len(sorted(toplist, key=lambda x:len(x[0]))[-1][0])
+	message = '```#--name{}+-{}-\n'.format('-'*(nameWidth-3), Currency)
+
+	for i in range(len(toplist)):
+		name, balance = toplist[i]
+		message += '{}. {} | {:,}\n'.format(i+1, name.ljust(nameWidth), balance)
+	message += '```'
+	return await send(message)
 
 # Beg for coins
 async def beg(message, send):
 	coins = random.randint(0, 5)
 	if coins > 1:
 		database.incBalance(message.author, coins)
-		return await send('_tosses you **{:,}** coins!_'.format(coins))
+		return await send('_tosses you **{:,}** {}!_'.format(coins, Currency))
 	else:
-		return await send('_spits on you for begging!_'.format(coins))
+		return await send('_spits on you for begging!_')
 
 # Acquire daily coin bonus
 async def claimDaily(message, send):
 	lastClaim = database.getDailyTimestamp(message.author)
 	remaining = DailyCooldown - (time.time() - lastClaim)
 	if remaining > 0:
-		waitTime = utils.getDurationString(remaining)
+		waitTime = getDurationString(remaining)
 		return await send('{}, your daily bonus refreshes in _{}_.'.format(message.author.mention, waitTime))
 	else:
 		database.setDailyTimestamp(message.author, time.time())
 		database.incBalance(message.author, DailyReward)
 		return await send('{}, you received your **{:,}** daily {}!'.format(message.author.mention, DailyReward, Currency))
+
+# 
+async def clearPreviousCommands(member):
+	global response_history
+	for i in range(len(response_history)):
+		userMessage,myMessage = response_history[i]
+		if userMessage.author == member:
+			command = getCommand(userMessage)
+			if command in commandlist:
+				response_history.pop(i)
+				try:
+					await DELETE(userMessage)
+					await DELETE(myMessage)
+				except discord.Forbidden:
+					print("{}Warning: Missing permission to delete messages.{}".format(RED, WHI))
+
+
+# Execute slotmachine and reward player
+async def slotmachine(message, send):
+	args = getArgs(message)
+	balance = database.getBalance(message.author)
+
+	if args[0] in ['10', '20', '30']:
+		bet = int(args[0])
+		level = 1 + ['10', '20', '30'].index(args[0])
+		if balance >= bet:
+			database.incBalance(message.author, - bet)
+		else:
+			return await send("You don't have enough {}.".format(Currency))
+	else:
+		return await send("You can bet 10, 20, or 30.")
+
+	price, image = runSlotmachine(10, level)
+	winText = ''
+	if price > 0:
+		winText = '\n{}, you won **{:,}** {}! You now have **{:,}**.'.format(message.author.mention, price, Currency, balance + price)
+		database.incBalance(message.author, price)
+	return await send("You pay **{:,}** {}!\n".format(bet, Currency) + image + winText)
+
+# Test
+async def test(message, send):
+	response = await send('I will delete these in five seconds.')
+	await asyncio.sleep(5)
+	try:
+		await DELETE(message)
+		await DELETE(response)
+	except discord.Forbidden:
+		await EDIT(response, "I don't have the permission to delete messages.")
+	return 'delete'
 
 
 # List of commands
@@ -315,10 +368,13 @@ commandlist = {
 	'guess': [guess, '!guess', 'args'],
 	'choose': [choose, '!choose *item* [, *item* ...] [or *item*]', 'content'],
 	'tcah': [tcah, '!tcah [*phrase* ...]', 'content'],
+	
 	'test': [test, '!test', 'args'],
 	'balance': [checkBalance, '!balance', 'args'],
+	'top': [checkTop, '!top', 'args'],
 	'beg': [beg, '!beg', 'args'],
 	'daily': [claimDaily, '!daily', 'args'],
+	'slot': [slotmachine, '!slot *10*|*20*|*30*', 'args'],
 }
 
 
@@ -327,3 +383,19 @@ client.run('MjEwMDM0Mjc4NDI2MzQ1NDcy.CoI5Ng.yK0wqGGVlJryjkzX-hl6BYWl_q4')
 
 # To add bot to server, see https://discordapp.com/developers/docs/topics/oauth2
 # There is a link to the "add to server" API under "Adding bots to guilds"
+
+"""+========================
+|   | A | B | C | D | E |
+|___|___|___|___|___|___|
+| 1 |???|???|???|???|???| 03
+|___|___|___|___|___|___| ⚪2
+| 2 |???|???|???|???|???| 07
+|___|___|___|___|___|___| ⚪0
+| 3 |???|???|???|???|???| 04
+|___|___|___|___|___|___| ⚪1
+| 4 |???|???|???|???|???| 04
+|___|___|___|___|___|___| ⚪2
+| 5 |???|???|???|???|???| 07
+|___|___|___|___|___|___| ⚪1
+     07  05  03  06  04
+     ⚪0  ⚪0  ⚪2  ⚪3  ⚪1"""

@@ -1,0 +1,14 @@
+
+### Commands ###
+- Show stats
+- Buy lottery ticket
+* Voltorb Switch
+* Rewards and purchasables
+* Max bet - otherwise you'd always bet 100% on certain biased games
+
+### Functionalities ###
+- Show nice GUI for messages (such as status from discord rpg)
+- Store statistics in database
+
+### Database ###
+- General statistics

@@ -34,6 +34,7 @@ def loadDatabase():
 # Create new root database
 def createUser():
 	return {
+		'name': '',
 		'balance': 0,
 		'daily': 0,
 	}
@@ -50,7 +51,18 @@ def loadUser(member):
 	if member.id in database['users']:
 		repair(database['users'][member.id], createUser())
 		return database['users'][member.id]
-	return createUser()
+	user = createUser()
+	user['name'] = member.name
+	return user
+
+# Load user from database
+def loadAllUsers():
+	database = loadDatabase()
+	allUsers = []
+	for id in database['users']:
+		repair(database['users'][id], createUser())
+		allUsers.append(database['users'][id])
+	return allUsers
 
 
 # Get user's balance
@@ -77,3 +89,12 @@ def setDailyTimestamp(member, timestamp):
 	userdata = loadUser(member)
 	userdata['daily'] = timestamp
 	saveUser(member, userdata)
+
+
+# Load top list of balance
+def getTopList():
+	scoreMap = []
+	for user in loadAllUsers():
+		scoreMap.append((user['name'], user['balance']))
+	scoreMap.sort(key=lambda x:x[1], reverse=True)
+	return scoreMap
