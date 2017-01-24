@@ -12,3 +12,6 @@
 
 ### Database ###
 - General statistics
+
+
+ignore _ and * ?

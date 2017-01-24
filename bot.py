@@ -310,7 +310,7 @@ async def claimDaily(message, send):
 # 
 async def clearPreviousCommands(member):
 	global response_history
-	for i in range(len(response_history)):
+	for i in range(len(response_history)-1,-1,-1):
 		userMessage,myMessage = response_history[i]
 		if userMessage.author == member:
 			command = getCommand(userMessage)
@@ -333,6 +333,7 @@ async def slotmachine(message, send):
 		level = 1 + ['10', '20', '30'].index(args[0])
 		if balance >= bet:
 			database.incBalance(message.author, - bet)
+			balance -= bet
 		else:
 			return await send("You don't have enough {}.".format(Currency))
 	else:

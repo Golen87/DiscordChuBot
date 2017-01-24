@@ -42,9 +42,9 @@ def runSlotmachine(bet, level):
 	symbols = ['7', '$', '®', '©', 'Ø', '·']
 	reward = [300, 100, 15, 15, 15, 8]
 	spinners = [
-		[0,5,1,3,2,0,5,1,3,4,5,1,4,2,3],
-		[5,3,4,5,1,2,3,5,4,0,2,5,3,4,1],
-		[5,4,3,2,5,4,3,2,5,4,3,0,1,3,2]
+		[2,3,0,5,1,4,3,0,5,1,4,2,0,5,2,2,3,0],
+		[5,2,0,3,5,4,2,1,5,4,2,5,1,3,4,5,2,0],
+		[2,4,0,1,4,3,5,2,4,3,5,2,4,3,5,2,4,0]
 	]
 	slot = []
 	for i in range(3):
@@ -89,7 +89,7 @@ if __name__ == "__main__":
 			if price not in stats:
 				stats[price] = 0
 			stats[price] += 1
-		print(money)
+		print(money, money/level)
 		for price in sorted(stats.keys()):
 			print(price, str(int(10000*stats[price] / float(sum(stats.values())))/100.0 ) + "%")
 		print('-'*50)
