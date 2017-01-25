@@ -1,8 +1,10 @@
 
 Currency = 'pokécoins'
+Cookies = ':cookie:'
 
 DailyCooldown = 60 * 60 * 21
 DailyReward = 100
+DailyCookieChance = 0.1
 
 
 colors = True

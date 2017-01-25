@@ -36,6 +36,7 @@ def createUser():
 	return {
 		'name': '',
 		'balance': 0,
+		'cookies': 0,
 		'daily': 0,
 	}
 
@@ -78,6 +79,21 @@ def setBalance(member, balance):
 # Set user's balance relative
 def incBalance(member, balance):
 	setBalance(member, getBalance(member) + balance)
+
+
+# Get user's cookies
+def getCookies(member):
+	return loadUser(member)['cookies']
+
+# Set user's cookies
+def setCookies(member, cookies):
+	userdata = loadUser(member)
+	userdata['cookies'] = cookies
+	saveUser(member, userdata)
+
+# Set user's cookies relative
+def incCookies(member, cookies):
+	setCookies(member, getCookies(member) + cookies)
 
 
 # Get user's 'daily' timestamp

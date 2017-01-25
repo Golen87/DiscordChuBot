@@ -39,8 +39,9 @@ def getDurationString(duration):
 
 # Execute a round of slotmachine
 def runSlotmachine(bet, level):
-	symbols = ['7', '$', '®', '©', 'Ø', '·']
-	reward = [300, 100, 15, 15, 15, 8]
+	symbols = ['7', '$', '®', 'Ø', '·', '©']
+	reward_money = [300, 100, 15, 15, 8, 0]
+	reward_cookies = [0, 0, 0, 0, 0, 1]
 	spinners = [
 		[2,3,0,5,1,4,3,0,5,1,4,2,0,5,2,2,3,0],
 		[5,2,0,3,5,4,2,1,5,4,2,5,1,3,4,5,2,0],
@@ -62,19 +63,25 @@ def runSlotmachine(bet, level):
 		symbols[slot[0][2]], symbols[slot[1][2]], symbols[slot[2][2]]
 	)
 
-	price = 0
+	price_money = 0
+	price_cookies = 0
 	if level >= 1 and slot[0][1] == slot[1][1] == slot[2][1]:
-		price += bet * reward[slot[0][1]]
+		price_money += bet * reward_money[slot[0][1]]
+		price_cookies += reward_cookies[slot[0][1]]
 	if level >= 2 and slot[0][0] == slot[1][0] == slot[2][0]:
-		price += bet * reward[slot[0][0]]
+		price_money += bet * reward_money[slot[0][0]]
+		price_cookies += reward_cookies[slot[0][0]]
 	if level >= 2 and slot[0][2] == slot[1][2] == slot[2][2]:
-		price += bet * reward[slot[0][2]]
+		price_money += bet * reward_money[slot[0][2]]
+		price_cookies += reward_cookies[slot[0][2]]
 	if level >= 3 and slot[0][0] == slot[1][1] == slot[2][2]:
-		price += bet * reward[slot[0][0]]
+		price_money += bet * reward_money[slot[0][0]]
+		price_cookies += reward_cookies[slot[0][0]]
 	if level >= 3 and slot[0][2] == slot[1][1] == slot[2][0]:
-		price += bet * reward[slot[0][2]]
+		price_money += bet * reward_money[slot[0][2]]
+		price_cookies += reward_cookies[slot[0][2]]
 	
-	return price, image
+	return price_money, price_cookies, image
 
 
 if __name__ == "__main__":

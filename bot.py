@@ -269,7 +269,10 @@ async def tcah(message, send):
 # Check balance
 async def checkBalance(message, send):
 	balance = database.getBalance(message.author)
-	return await send('{}, you have a balance of **{:,}** {}.'.format(message.author.mention, balance, Currency))
+	cookies = database.getCookies(message.author)
+	extra = (cookies > 0) * ', and **{:,}** {}'.format(cookies, Cookies)
+	text = '{}, you have a balance of **{:,}** {}{}.'.format(message.author.mention, balance, Currency, extra)
+	return await send(text)
 
 # Check top list of balance
 async def checkTop(message, send):
@@ -305,9 +308,14 @@ async def claimDaily(message, send):
 	else:
 		database.setDailyTimestamp(message.author, time.time())
 		database.incBalance(message.author, DailyReward)
-		return await send('{}, you received your **{:,}** daily {}!'.format(message.author.mention, DailyReward, Currency))
 
-# 
+		extra = ''
+		if random.random() < DailyCookieChance:
+			database.incCookies(message.author, 1)
+			extra = ', and got a {}'.format(Cookies)
+		return await send('{}, you received your **{:,}** daily {}{}!'.format(message.author.mention, DailyReward, Currency, extra))
+
+# Search and remove last paired input from user
 async def clearPreviousCommands(member):
 	global response_history
 	for i in range(len(response_history)-1,-1,-1):
@@ -326,24 +334,25 @@ async def clearPreviousCommands(member):
 # Execute slotmachine and reward player
 async def slotmachine(message, send):
 	args = getArgs(message)
-	balance = database.getBalance(message.author)
 
 	if args[0] in ['10', '20', '30']:
 		bet = int(args[0])
 		level = 1 + ['10', '20', '30'].index(args[0])
-		if balance >= bet:
+		if database.getBalance(message.author) >= bet:
 			database.incBalance(message.author, - bet)
-			balance -= bet
 		else:
 			return await send("You don't have enough {}.".format(Currency))
 	else:
 		return await send("You can bet 10, 20, or 30.")
 
-	price, image = runSlotmachine(10, level)
+	price_money, price_cookies, image = runSlotmachine(10, level)
+	database.incBalance(message.author, price_money)
+	database.incCookies(message.author, price_cookies)
 	winText = ''
-	if price > 0:
-		winText = '\n{}, you won **{:,}** {}! You now have **{:,}**.'.format(message.author.mention, price, Currency, balance + price)
-		database.incBalance(message.author, price)
+	if price_money > 0:
+		winText = '\n{}, you won **{:,}** {}! You now have **{:,}**.'.format(message.author.mention, price_money, Currency, database.getBalance(message.author))
+	if price_cookies > 0:
+		winText = '\n{}, you won **{:,}** {}! You now have **{:,}**.'.format(message.author.mention, price_cookies, Cookies, database.getCookies(message.author))
 	return await send("You pay **{:,}** {}!\n".format(bet, Currency) + image + winText)
 
 # Test
