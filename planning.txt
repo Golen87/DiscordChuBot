@@ -5,6 +5,8 @@
 * Voltorb Switch
 * Rewards and purchasables
 * Max bet - otherwise you'd always bet 100% on certain biased games
+* Roulette
+* Black jack
 
 ### Functionalities ###
 - Show nice GUI for messages (such as status from discord rpg)

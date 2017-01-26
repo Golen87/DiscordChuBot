@@ -3,8 +3,6 @@ import speech
 import cards
 from utils import *
 import databaseManager as database
-#from constants import *
-#import commands
 
 client = discord.Client()
 
