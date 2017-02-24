@@ -48,7 +48,6 @@ async def on_message(message):
 			return
 		if not response:
 			print(RED + 'Warning: Function "{}" did not return sent message!'.format(command) + WHI)
-		await clearPreviousCommands(message.author)
 		response_history.append((message, response))
 		response_history = response_history[-100:]
 
@@ -274,6 +273,7 @@ async def checkBalance(message, send):
 
 # Check top list of balance
 async def checkTop(message, send):
+	await clearPreviousCommands(message.author, 'top')
 	args = getArgs(message)
 	#print(args)
 	
@@ -289,6 +289,7 @@ async def checkTop(message, send):
 
 # Beg for coins
 async def beg(message, send):
+	await clearPreviousCommands(message.author, 'beg')
 	coins = random.randint(0, 5)
 	if coins > 1:
 		database.incBalance(message.author, coins)
@@ -298,6 +299,8 @@ async def beg(message, send):
 
 # Acquire daily coin bonus
 async def claimDaily(message, send):
+	await clearPreviousCommands(message.author, 'daily')
+
 	lastClaim = database.getDailyTimestamp(message.author)
 	remaining = DailyCooldown - (time.time() - lastClaim)
 	if remaining > 0:
@@ -314,13 +317,21 @@ async def claimDaily(message, send):
 		return await send('{}, you received your **{:,}** daily {}{}!'.format(message.author.mention, DailyReward, Currency, extra))
 
 # Search and remove last paired input from user
-async def clearPreviousCommands(member):
+async def clearPreviousCommands(member, cmdToRemove):
 	global response_history
 	for i in range(len(response_history)-1,-1,-1):
-		userMessage,myMessage = response_history[i]
+		try:
+			userMessage,myMessage = response_history[i]
+		except:
+			return # End of array. Some other process removed it
 		if userMessage.author == member:
 			command = getCommand(userMessage)
-			if command in commandlist:
+			if command in commandlist and command == cmdToRemove:
+
+				# Special case. Don't remove winning messages
+				if command == 'slot' and 'you won' in myMessage.content:
+					continue
+
 				response_history.pop(i)
 				try:
 					await DELETE(userMessage)
@@ -331,6 +342,7 @@ async def clearPreviousCommands(member):
 
 # Execute slotmachine and reward player
 async def slotmachine(message, send):
+	await clearPreviousCommands(message.author, 'slot')
 	args = getArgs(message)
 
 	if args[0] in ['10', '20', '30']:
