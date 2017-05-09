@@ -3,6 +3,7 @@ import speech
 import cards
 from utils import *
 import databaseManager as database
+import pokedexManager as pokedex
 
 client = discord.Client()
 
@@ -277,7 +278,7 @@ async def checkTop(message, send):
 	args = getArgs(message)
 	#print(args)
 	
-	toplist = database.getTopList()[:5]
+	toplist = database.getTopList()[:10]
 	nameWidth = len(sorted(toplist, key=lambda x:len(x[0]))[-1][0])
 	message = '```#--name{}+-{}-\n'.format('-'*(nameWidth-3), Currency)
 
@@ -395,6 +396,7 @@ commandlist = {
 	'beg': [beg, '!beg', 'args'],
 	'daily': [claimDaily, '!daily', 'args'],
 	'slot': [slotmachine, '!slot *10*|*20*|*30*', 'args'],
+	'check': [check, '!check', 'content'],
 }
 
 
