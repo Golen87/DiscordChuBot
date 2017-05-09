@@ -12,10 +12,13 @@ def loadDatabase():
 	return {}
 
 # Return a list of all english Pokemon names
-def isAPokemonName(name):
+def getPokemonName(name):
 	db = loadDatabase()
-	names = [db[i]['ename'].lower() for i in range(len(db))]
-	return name.lower() in names
+	names = [db[i]['ename'] for i in range(len(db))]
+	for pokemon in names:
+		if name.lower() in pokemon.lower():
+			return pokemon
+	return None
 
 
 """

@@ -38,6 +38,7 @@ def createUser():
 		'balance': 0,
 		'cookies': 0,
 		'daily': 0,
+		'pokemon': '',
 	}
 
 # Save user to database
@@ -114,3 +115,14 @@ def getTopList():
 		scoreMap.append((user['name'], user['balance']))
 	scoreMap.sort(key=lambda x:x[1], reverse=True)
 	return scoreMap
+
+
+# Get user's pokemon
+def getPokemon(member):
+	return loadUser(member)['pokemon']
+
+# Set user's pokemon
+def setPokemon(member, pokemon):
+	userdata = loadUser(member)
+	userdata['pokemon'] = pokemon
+	saveUser(member, userdata)

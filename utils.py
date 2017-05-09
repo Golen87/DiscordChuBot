@@ -100,3 +100,11 @@ if __name__ == "__main__":
 		for price in sorted(stats.keys()):
 			print(price, str(int(10000*stats[price] / float(sum(stats.values())))/100.0 ) + "%")
 		print('-'*50)
+
+
+# Add "a" or "an" to a word
+def addAOrAn(text):
+	for vowel in 'aeiou':
+		if text.lower().startswith(vowel):
+			return 'an ' + text
+	return 'a ' + text

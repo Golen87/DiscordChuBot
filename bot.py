@@ -145,42 +145,36 @@ async def help(message, send):
 			message.content = ''
 			return await help(message, send)
 
-"""
-# I am
-async def iam(message, send):
+
+# Set pokemon (i am)
+async def setpoke(message, send):
 	content = getContent(message)
-	database = loadDatabase()
-	database[message.author.name] = content
-	saveDatabase(database)
-	m = '{} is now {}'.format(message.author.mention, content)
-	return await send(m)
-"""
-"""
+	pokemon = pokedex.getPokemonName(content)
+	if pokemon:
+		database.setPokemon(message.author, pokemon)
+		m = '{} is now {}.'.format(message.author.mention, addAOrAn(pokemon))
+		return await send(m)
+	else:
+		return await send("That's not a Pokemon!")
+
 # What is
 async def whatis(message, send):
 	content = getContent(message)
-	if not content:
-		return helpwhatis()
 
-	name = content
-	mention = content
-	if message.mentions:
-		name = message.mentions[0].nick
-		mention = message.mentions[0].mention
-	else:
-		for m in client.get_all_members():
-			if content.lower() in [m.nick.lower() if m.nick else '', m.name.lower()]:
-				name = m.name
-				mention = m.mention
-				break
+	user = None
+	print(message.mentions)
+	for m in client.get_all_members():
+		if content.lower() in [m.nick.lower() if m.nick else '', m.name.lower()] or m in message.mentions:
+			user = m
+			break
 			
-	database = loadDatabase()
-	if name in database:
-		m = '{} is {}'.format(mention, database[name])
+	pokemon = database.getPokemon(m)
+	if pokemon:
+		m = '{} is {}'.format(user.mention, addAOrAn(pokemon))
 	else:
-		m = 'There is no description for {}.'.format(mention)
+		m = 'There is no Pokemon for {}.'.format(content)
 	return await send(m)
-"""
+
 
 # Sleep
 async def sleep(message, send):
@@ -377,24 +371,12 @@ async def test(message, send):
 		await EDIT(response, "I don't have the permission to delete messages.")
 	return 'delete'
 
-# Test
-async def check(message, send):
-	content = getContent(message)
-	if pokedex.isAPokemonName(content):
-		return await send("That's correct!")
-	else:
-		um = random.choice(stuttering)
-		um = um if um[-1] in '.!' else um + '.'
-		um = um + ' '
-		return await send(um + "That's wrong.")
-
-
 
 # List of commands
 commandlist = {
 	'help': [help, '!help [*command*]', 'args'],
-	#'iam': [iam, '!iam *description*', 'content'],
-	#'whatis': [whatis, '!whatis *username*', 'args'],
+	'setpoke': [setpoke, '!setpoke *pokemon*', 'content'],
+	'whatis': [whatis, '!whatis *username*', 'args'],
 	'sleep': [sleep, '!sleep', 'args'],
 	'count': [count, '!count', 'args'],
 	'hello': [hello, '!hello', 'args'],
@@ -408,7 +390,6 @@ commandlist = {
 	'beg': [beg, '!beg', 'args'],
 	'daily': [claimDaily, '!daily', 'args'],
 	'slot': [slotmachine, '!slot *10*|*20*|*30*', 'args'],
-	'check': [check, '!check', 'content'],
 }
 
 
