@@ -377,6 +377,18 @@ async def test(message, send):
 		await EDIT(response, "I don't have the permission to delete messages.")
 	return 'delete'
 
+# Test
+async def check(message, send):
+	content = getContent(message)
+	if pokedex.isAPokemonName(content):
+		return await send("That's correct!")
+	else:
+		um = random.choice(stuttering)
+		um = um if um[-1] in '.!' else um + '.'
+		um = um + ' '
+		return await send(um + "That's wrong.")
+
+
 
 # List of commands
 commandlist = {
