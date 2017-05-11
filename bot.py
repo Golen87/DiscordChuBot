@@ -533,7 +533,7 @@ commandlist = {
 
 
 # Token
-client.run('MjEwMDM0Mjc4NDI2MzQ1NDcy.CoI5Ng.yK0wqGGVlJryjkzX-hl6BYWl_q4')
+client.run(...)
 
 # To add bot to server, see https://discordapp.com/developers/docs/topics/oauth2
 # There is a link to the "add to server" API under "Adding bots to guilds"
