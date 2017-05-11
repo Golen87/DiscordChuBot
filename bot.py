@@ -3,7 +3,7 @@ import speech
 import cards
 from utils import *
 import databaseManager as database
-import pokedexManager as pokedex
+import pokedex.pokedexManager as pokedex
 
 client = discord.Client()
 
@@ -130,6 +130,13 @@ async def checkArgs(message, send):
 			return None
 	return await send(commandlist[getCommand(message)][1])
 
+# Return a member mentioned in a message, including name/nick
+def findMember(message, name):
+	for m in client.get_all_members():
+		if name.lower() in [m.nick.lower() if m.nick else '', m.name.lower()] or m in message.mentions:
+			return m
+	return None
+
 
 # Help
 async def help(message, send):
@@ -144,36 +151,6 @@ async def help(message, send):
 		else:
 			message.content = ''
 			return await help(message, send)
-
-
-# Set pokemon (i am)
-async def setpoke(message, send):
-	content = getContent(message)
-	pokemon = pokedex.getPokemonName(content)
-	if pokemon:
-		database.setPokemon(message.author, pokemon)
-		m = '{} is now {}.'.format(message.author.mention, addAOrAn(pokemon))
-		return await send(m)
-	else:
-		return await send("That's not a Pokemon!")
-
-# What is
-async def whatis(message, send):
-	content = getContent(message)
-
-	user = None
-	print(message.mentions)
-	for m in client.get_all_members():
-		if content.lower() in [m.nick.lower() if m.nick else '', m.name.lower()] or m in message.mentions:
-			user = m
-			break
-			
-	pokemon = database.getPokemon(m)
-	if pokemon:
-		m = '{} is {}'.format(user.mention, addAOrAn(pokemon))
-	else:
-		m = 'There is no Pokemon for {}.'.format(content)
-	return await send(m)
 
 
 # Sleep
@@ -362,14 +339,171 @@ async def slotmachine(message, send):
 
 # Test
 async def test(message, send):
-	response = await send('I will delete these in five seconds.')
-	await asyncio.sleep(5)
+	content = getContent(message)
 	try:
-		await DELETE(message)
-		await DELETE(response)
-	except discord.Forbidden:
-		await EDIT(response, "I don't have the permission to delete messages.")
-	return 'delete'
+		return await send(eval(content))
+	except Exception as e:
+		return await send(e)
+	#response = await send('I will delete these in five seconds.')
+	#await asyncio.sleep(5)
+	#try:
+	#	await DELETE(message)
+	#	await DELETE(response)
+	#except discord.Forbidden:
+	#	await EDIT(response, "I don't have the permission to delete messages.")
+	#return 'delete'
+
+
+# Set pokemon (i am) by creating a new pokemon for the user
+async def setpoke(message, send):
+	content = getContent(message)
+
+	pokemon = pokedex.getPokemonName(content)
+	if pokemon:
+		pokedata = database.createPokemon()
+		pokedex.initPokemon(pokedata, pokemon)
+		database.savePokemon(message.author, pokedata)
+		m = '{} is now {} **{}**.'.format(getNick(message.author), aOrAn(pokemon), pokemon)
+		return await send(m)
+	else:
+		return await send("{} That's not a Pokemon!".format(message.author.mention))
+
+# Check what pokemon a user is
+async def whatis(message, send):
+	content = getContent(message)
+	if not content:
+		return await send(commandlist[getCommand(message)][1])
+
+	user = findMember(message, content)
+	if user:
+		pokemon = database.getPokemonName(user)
+		if pokemon:
+			m = '{} is {} **{}**!'.format(user.mention, aOrAn(pokemon), pokemon)
+			return await send(m)
+		else:
+			m = "{} doesn't have a Pokemon yet. Encourage them to use `!setpoke` to get started!".format(user.mention)
+			return await send(m)
+	else:
+		m = "{} I don't know who **{}** is!".format(message.author.mention, content)
+		return await send(m)
+
+# Attack user's pokemon with a selected move
+async def attack(message, send):
+	content = getContent(message)
+
+	# !attack USER with MOVE
+	result = re.search('(.*)\swith\s(.*)', content)
+	if not result:
+		return await send(commandlist[getCommand(message)][1])
+
+	user = findMember(message, result.group(1))
+	if not user:
+		return await send('{} Invalid target. You need to choose a user!'.format(message.author.mention))
+
+	pokedataAtk = database.loadPokemon(message.author)
+	if not pokedataAtk:
+		return await send("{} You don't have a Pokemon yet. Use `!setpoke` to get started!".format(message.author.mention))
+
+	move = pokedex.getMoveName(result.group(2))
+	if not move:
+		return await send("{} Invalid move. I don't recognize that!".format(message.author.mention))
+
+	if not pokedex.knowsMove(pokedataAtk, move):
+		return await send("{} You haven't learned that move. Use `!learnmove` to learn it!".format(message.author.mention))
+
+	pokedataDef = database.loadPokemon(user)
+	if not pokedataDef:
+		return await send("{} doesn't have a Pokemon yet. Encourage them to use `!setpoke` to get started!".format(user.mention))
+
+	damage = pokedex.attack(pokedataAtk, pokedataDef, move)
+	if damage == -1:
+		m = 'The attack missed!'
+		return await send(m)
+
+	maxHp = pokedex.getCurrentStats(pokedataDef, 'HP')
+	newHp = max(0, database.getPokemonHp(user) - damage)
+	database.setPokemonHp(user, newHp)
+
+	m = '{} took ({}) damage! They now have ({}/{}) hp!'.format(user.mention, damage, newHp, maxHp)
+	return await send(m)
+
+# Heal your pokemon to full max health
+async def heal(message, send):
+	pokedata = database.loadPokemon(message.author)
+	if not pokedata:
+		return await send("{} You don't have a Pokemon yet. Use `!setpoke` to get started!".format(message.author.mention))
+
+	maxHealth = pokedex.getCurrentStats(pokedata, 'HP')
+	database.setPokemonHp(message.author, maxHealth)
+
+	m = '{} heal to ({}/{}) hp!'.format(getNick(message.author), maxHealth, maxHealth)
+	return await send(m)
+
+# Teach your pokemon a new move, given that it's allowed
+async def learnmove(message, send):
+	pokedata = database.loadPokemon(message.author)
+	if not pokedata:
+		return await send("{} You don't have a Pokemon yet. Use `!setpoke` to get started!".format(message.author.mention))
+
+	content = getContent(message)
+	if not content:
+		return await send(commandlist[getCommand(message)][1])
+	try:
+		movename, slot = content.rsplit(' ', 1)
+		slot = int(slot)
+		if slot < 1 or slot > 4:
+			return await send("{} Invalid slot. It has to be between 1-4!".format(message.author.mention))
+	except:
+		movename = content
+		slot = None
+
+	move = pokedex.getMoveName(movename)
+	if not move:
+		return await send("{} Invalid move. I don't recognize that!".format(message.author.mention))
+
+	pokemon = database.getPokemonName(message.author)
+	if not pokedex.canLearnMove(pokemon, move):
+		return await send("{} **{}** is not able to learn **{}**!".format(message.author.mention, pokemon, move))
+
+	# You already know that move!
+
+	oldMove = pokedex.learnMove(pokedata, move, slot)
+	database.savePokemon(message.author, pokedata)
+	if oldMove == False:
+		m = "**{0}** wants to learn **{1}** but **{0}** already knows 4 moves! To make space for **{1}**, use `!learnmove *move* *1-4*`!".format(message.author.mention, move)
+		return await send(m)
+
+	if slot and oldMove != None:
+		m = '1, 2 and... Poof! {0} forgot **{1}** and... {0} learned **{2}**!'.format(getNick(message.author), oldMove, move)
+		return await send(m)
+	else:
+		m = '{0} learned **{1}**!'.format(getNick(message.author), move)
+		return await send(m)
+
+# Check your Pokemon's stats
+async def stats(message, send):
+	pokedata = database.loadPokemon(message.author)
+	if not pokedata:
+		m = "{} You don't have a Pokemon yet. Use `!setpoke` to get started!".format(message.author.mention)
+		return await send(m)
+
+	pokemon = database.getPokemonName(message.author)
+	stats = pokedex.getCurrentStats(pokedata)
+	table = ['{:>7}: {}'.format(stat, stats[stat]) for stat in stats]
+	m = "{} **{}**```Python\n{}```".format(addPossForm(getNick(message.author)), pokemon, '\n'.join(table))
+	return await send(m)
+
+# Check your Pokemon's moveset
+async def moveset(message, send):
+	pokedata = database.loadPokemon(message.author)
+	if not pokedata:
+		return await send("{} You don't have a Pokemon yet. Use `!setpoke` to get started!".format(message.author.mention))
+
+	pokemon = database.getPokemonName(message.author)
+	moveset = database.getPokemonMoveset(message.author)
+	table = ['{}) {}'.format(m+1, moveset[m] if moveset[m] else '-') for m in range(len(moveset))]
+	m = "{} **{}**```Python\n{}```".format(addPossForm(getNick(message.author)), pokemon, '\n'.join(table))
+	return await send(m)
 
 
 # List of commands
@@ -377,6 +511,11 @@ commandlist = {
 	'help': [help, '!help [*command*]', 'args'],
 	'setpoke': [setpoke, '!setpoke *pokemon*', 'content'],
 	'whatis': [whatis, '!whatis *username*', 'args'],
+	'stats': [stats, '!stats', 'content'],
+	'moveset': [moveset, '!moveset', 'content'],
+	'attack': [attack, '!attack *username* with *attack*', 'content'],
+	'heal': [heal, '!heal', 'args'],
+	'learnmove': [learnmove, '!learnmove *move* [*1-4*]', 'content'],
 	'sleep': [sleep, '!sleep', 'args'],
 	'count': [count, '!count', 'args'],
 	'hello': [hello, '!hello', 'args'],
@@ -384,7 +523,7 @@ commandlist = {
 	'choose': [choose, '!choose *item* [, *item* ...] [or *item*]', 'content'],
 	'tcah': [tcah, '!tcah [*phrase* ...]', 'content'],
 	
-	'test': [test, '!test', 'args'],
+	'test': [test, '!test *.*', 'content'],
 	'balance': [checkBalance, '!balance', 'args'],
 	'top': [checkTop, '!top', 'args'],
 	'beg': [beg, '!beg', 'args'],
@@ -398,19 +537,3 @@ client.run('MjEwMDM0Mjc4NDI2MzQ1NDcy.CoI5Ng.yK0wqGGVlJryjkzX-hl6BYWl_q4')
 
 # To add bot to server, see https://discordapp.com/developers/docs/topics/oauth2
 # There is a link to the "add to server" API under "Adding bots to guilds"
-
-"""+========================
-|   | A | B | C | D | E |
-|___|___|___|___|___|___|
-| 1 |???|???|???|???|???| 03
-|___|___|___|___|___|___| ⚪2
-| 2 |???|???|???|???|???| 07
-|___|___|___|___|___|___| ⚪0
-| 3 |???|???|???|???|???| 04
-|___|___|___|___|___|___| ⚪1
-| 4 |???|???|???|???|???| 04
-|___|___|___|___|___|___| ⚪2
-| 5 |???|???|???|???|???| 07
-|___|___|___|___|___|___| ⚪1
-     07  05  03  06  04
-     ⚪0  ⚪0  ⚪2  ⚪3  ⚪1"""

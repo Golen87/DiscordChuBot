@@ -103,8 +103,14 @@ if __name__ == "__main__":
 
 
 # Add "a" or "an" to a word
-def addAOrAn(text):
+def aOrAn(text):
 	for vowel in 'aeiou':
 		if text.lower().startswith(vowel):
-			return 'an ' + text
-	return 'a ' + text
+			return 'an'
+	return 'a'
+
+# Add 's or ' to end of word
+def addPossForm(text):
+	if text.endswith('s'):
+		return text + "'"
+	return text + "'s"
