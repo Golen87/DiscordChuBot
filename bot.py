@@ -340,10 +340,10 @@ async def slotmachine(message, send):
 # Test
 async def test(message, send):
 	content = getContent(message)
-	try:
-		return await send(eval(content))
-	except Exception as e:
-		return await send(e)
+	#try:
+	#	return await send(eval(content))
+	#except Exception as e:
+	#	return await send(e)
 	#response = await send('I will delete these in five seconds.')
 	#await asyncio.sleep(5)
 	#try:
