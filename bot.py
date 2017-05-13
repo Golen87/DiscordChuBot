@@ -508,6 +508,17 @@ async def resetev(message, send):
 	database.savePokemon(message.author, pokedata)
 	return await send("Your Pokemon's EVs have been reset!")
 
+async def hypertrain(message, send):
+	args = getArgs(message)
+	stat = pokedex.checkStat(args[0])
+
+	pokedata = database.loadPokemon(message.author)
+	pokedex.maxIV(pokedata, stat)
+	database.savePokemon(message.author, pokedata)
+	pokemon = database.getPokemonName(message.author)
+	return await send("{} **{}** hypertrained its {}!".format(addPossForm(getNick(message.author)), pokemon, stat))
+
+
 # List of commands
 commandlist = {
 	'help': [help, '!help [*command*]', 'args'],
@@ -521,7 +532,8 @@ commandlist = {
 	'heal': [heal, '!heal', 'args'],
 	'learnmove': [learnmove, '!learnmove *move* [*1–4*]', 'content'],
 	'trainev': [trainev, '!trainev *1–252* *stat*', 'args'],
-	'resetev': [resetev, '!resetev', 'args']
+	'resetev': [resetev, '!resetev', 'args'],
+	'hypertrain': [hypertrain, '!hypertrain *stat*', 'args'],
 
 	# General
 	#'sleep': [sleep, '!sleep', 'args'],

@@ -262,3 +262,10 @@ def resetEV(pokedata, stat=None):
 		pokedata['ev'][stat] = 0
 	else:
 		pokedata['ev'] = {stat: 0 for stat in stats}
+
+def maxIV(pokedata, stat=None):
+	if stat:
+		stat = checkStat(stat)
+		pokedata['iv'][stat] = 31
+	else:
+		pokedata['iv'] = {stat: 31 for stat in stats}
