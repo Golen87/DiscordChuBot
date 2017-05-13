@@ -70,7 +70,10 @@ async def on_message_edit(oldMessage, newMessage):
 				await send(random.choice(stuttering))
 				response = await checkArgs(newMessage, send)
 				if not response:
-					response = await commandlist[command][0](newMessage, send)
+					try:
+						response = await commandlist[command][0](newMessage, send)
+					except UserWarning as error:
+						response = await send("{} {}".format(newMessage.author.mention, error))
 				if response == 'delete':
 					return
 				response_history[i] = (newMessage, response)
