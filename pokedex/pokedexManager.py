@@ -41,9 +41,9 @@ def getPokemonData(name, field=None):
 			if field:
 				if field in pokemon:
 					return pokemon[field]
-				raise UserWarning("Invalid field. Some data is missing in the database!")
+				raise UserWarning("@mention Invalid field. Some data is missing in the database!")
 			return pokemon
-	raise UserWarning("Invalid name. I don't recognize that Pokemon!")
+	raise UserWarning("@mention Invalid name. I don't recognize that Pokemon!")
 
 def getPokemonName(name):
 	return getPokemonData(name, "name")
@@ -70,9 +70,9 @@ def getMoveData(name, field=None):
 			if field:
 				if field in move:
 					return move[field]
-				raise UserWarning("Invalid field. Some data is missing in the database!")
+				raise UserWarning("@mention Invalid field. Some data is missing in the database!")
 			return move
-	raise UserWarning("Invalid name. I don't recognize that move!")
+	raise UserWarning("@mention Invalid name. I don't recognize that move!")
 
 def getMoveName(name):
 	return getMoveData(name, "name")
@@ -219,7 +219,7 @@ def checkStat(value):
 	for stat in stats:
 		if value.lower() == stat.lower():
 			return stat
-	raise UserWarning("Invalid stat. Use `!stats` for information on what stats you can train!")
+	raise UserWarning("@mention Invalid stat. Use `!stats` for information on what stats you can train!")
 
 # Return current stat by combining: base, iv, ev, nature
 def getCurrentStats(pokedata, stat=None):
@@ -246,7 +246,7 @@ def trainEV(pokedata, value, stat):
 	if totalRemaining <= 0:
 		raise UserWarning("**{}** is already fully trained!".format(pokedata['pokemon']))
 	if value <= 0:
-		raise UserWarning("Invalid value. Please specify a value between (1–252)!")
+		raise UserWarning("@mention Invalid value. Please specify a value between (1–252)!")
 
 	remaining = 252 - pokedata['ev'][stat]
 	if remaining <= 0:

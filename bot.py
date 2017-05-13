@@ -46,7 +46,9 @@ async def on_message(message):
 			try:
 				response = await commandlist[command][0](message, send)
 			except UserWarning as error:
-				response = await send("{} {}".format(message.author.mention, error))
+				error = str(error)
+				error = error.replace("@mention", message.author.mention)
+				response = await send(error)
 		global response_history
 		if response == 'delete':
 			return
@@ -73,7 +75,9 @@ async def on_message_edit(oldMessage, newMessage):
 					try:
 						response = await commandlist[command][0](newMessage, send)
 					except UserWarning as error:
-						response = await send("{} {}".format(newMessage.author.mention, error))
+						error = str(error)
+						error = error.replace("@mention", newMessage.author.mention)
+						response = await send(error)
 				if response == 'delete':
 					return
 				response_history[i] = (newMessage, response)
@@ -141,7 +145,7 @@ def findMember(message, name):
 	for m in client.get_all_members():
 		if name.lower() in [m.nick.lower() if m.nick else '', m.name.lower()] or m in message.mentions:
 			return m
-	raise UserWarning("Invalid target. I don't know who _{}_ is!".format(name))
+	raise UserWarning("@mention Invalid target. I don't know who _{}_ is!".format(name))
 
 
 # Help
@@ -394,7 +398,7 @@ async def attack(message, send):
 	user = findMember(message, result.group(1))
 	move = pokedex.getMoveName(result.group(2))
 	pokedataAtk = database.loadPokemon(message.author)
-	pokedataDef = database.loadPokemon(user)
+	pokedataDef = database.loadPokemon(user, False)
 
 	if not pokedex.knowsMove(pokedataAtk, move):
 		raise UserWarning("**{}** doesn't know that move yet. Use `!learnmove` to learn it!".format(database.getPokemonName(message.author)))
@@ -443,7 +447,7 @@ async def learnmove(message, send):
 		movename, slot = content.rsplit(' ', 1)
 		slot = int(slot)
 		if slot < 1 or slot > 4:
-			raise UserWarning("Invalid slot. It has to be between 1–4!")
+			raise UserWarning("@mention Invalid slot. It has to be between 1–4!")
 	except:
 		movename = content
 		slot = None
