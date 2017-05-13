@@ -105,7 +105,7 @@ def canLearnMove(pokemon, move):
 def knowsMove(pokedata, move):
 	return move in pokedata['moveset']
 
-# Add new move to the 
+# Add new move to the pokemon's moveset
 def learnMove(pokedata, move, slot=None):
 	if knowsMove(pokedata, move):
 		raise UserWarning("**{0}** already knows **{1}**!".format(pokedata['pokemon'], move))
@@ -145,7 +145,7 @@ def typeAdvantage(pokedata, move):
 		b = effChart[m][t2]
 		effectiveness *= b
 	return effectiveness
-	
+
 def modifier(pokedata1, pokedata2, move):
 	eff = typeAdvantage(pokedata2, move)
 	name = pokedata1['pokemon']
@@ -169,27 +169,30 @@ def stageMod(pokedata, stat):
 	stage = pokedata['stage'][stat]
 	s = 1
 	if stat not in ('Evasiveness', 'Accuracy'):
-		if stage <= 0:
+		if stage >= 0:
 			s = (2.0 + stage)/2.0
 			return s
 		else:
-			s = 2.0/(2.0 + stage)
+			s = 2.0/(2.0 - stage)
 			return s
 	else:
-		if stage <= 0:
+		if stage >= 0:
 			s = (3.0 + stage)/3.0
 			return s
 		else:
-			s = 3.0/(3.0 + stage)
+			s = 3.0/(3.0 - stage)
 			return s
 
 def attack(pokeAtk, pokeDef, move):
 	knowsMove(pokeAtk, move)
 	power = getMovePower(move)
-	acc = getMoveAccuracy(move) # Crash if null accuracy
+	acc = getMoveAccuracy(move)
 	stats1 = getCurrentStats(pokeAtk)
 	stats2 = getCurrentStats(pokeDef)
-	acc = acc * (stageMod(pokeAtk, 'Accuracy')/stageMod(pokeDef, 'Evasiveness'))
+	if acc is None:
+		acc = 100
+	else:
+		acc = acc * (stageMod(pokeAtk, 'Accuracy')/stageMod(pokeDef, 'Evasiveness'))
 	i = random.randint(1,100)
 	a, d = 1, 1
 	if 1 <= i <= acc:
@@ -221,6 +224,12 @@ def checkStat(value):
 			return stat
 	raise UserWarning("@mention Invalid stat. Use `!stats` for information on what stats you can train!")
 
+def checkStageStat(value):
+	for stat in stageStats:
+		if value.lower() == stat.lower():
+			return stat
+	raise UserWarning("@mention Invalid stat. Use `!stages` for information on what stages you can train!")
+
 # Return current stat by combining: base, iv, ev, nature
 def getCurrentStats(pokedata, stat=None):
 	if stat:
@@ -235,7 +244,11 @@ def getCurrentStats(pokedata, stat=None):
 		return current
 	else:
 		return {s: getCurrentStats(pokedata, s) for s in stats}
-
+def getCurrentStages(pokedata, stat=None):
+	if stat:
+		return pokedata['stage'][stat]
+	else:
+		return {s: getCurrentStages(pokedata, s) for s in stageStats}
 
 def getTotalEV(pokedata):
 	return sum([pokedata['ev'][stat] for stat in stats])
@@ -269,3 +282,20 @@ def maxIV(pokedata, stat=None):
 		pokedata['iv'][stat] = 31
 	else:
 		pokedata['iv'] = {stat: 31 for stat in stats}
+
+def raiseStage(pokedata, stage, stat=None):
+	def clamp(value):
+		return max(-6, min(6, value))
+	if stat:
+		stat = checkStageStat(stat)
+		return clamp(pokedata['stage'][stat] + stage)
+	else:
+		pokedata['stage'] = {stat: clamp(pokedata['stage'][stat] + stage) for stat in stageStats}
+		return pokedata['stage']['Attack']
+
+def resetStage(pokedata, stat=None):
+	if stat:
+		stat = checkStageStat(stat)
+		pokedata['stage'][stat] = 0
+	else:
+		pokedata['stage'] = {stat: 0 for stat in stageStats}

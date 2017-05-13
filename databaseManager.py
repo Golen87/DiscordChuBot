@@ -40,6 +40,7 @@ def createUser():
 		'daily': 0,
 		'pokemon': None,
 		'hp': 0,
+		'caps': 0,
 	}
 
 # Save user to database
@@ -97,6 +98,16 @@ def setCookies(member, cookies):
 def incCookies(member, cookies):
 	setCookies(member, getCookies(member) + cookies)
 
+# Get user's caps
+def getCaps(member):
+	return loadUser(member)['caps']
+
+# Increase user's caps relative
+def incCaps(member, caps=1):
+	userdata = loadUser(member)
+	userdata['caps'] += caps
+	saveUser(member, userdata)
+
 
 # Get user's 'daily' timestamp
 def getDailyTimestamp(member):
@@ -124,6 +135,7 @@ def createPokemon():
 	return {
 		'pokemon': '',
 		'status': '',
+		'is_flinched': False,
 		'hp': 0,
 		'nature': '',
 		'iv': {}, # Set by pokedexManager
@@ -133,6 +145,8 @@ def createPokemon():
 		'setpoke-timestamp': 0,
 		'attack-timestamp': 0,
 		'learn-timestamp': 0,
+		'battles_won': 0,
+		'battles_lost': 0
 	}
 
 # Save pokemon to database
@@ -182,7 +196,34 @@ def getPokemonMoveset(member, isMe=True):
 
 # Set user's pokemon's health
 def setPokemonHp(member, hp, isMe=True):
-	pokemon = loadPokemon(member, isMe)
-	if pokemon:
-		pokemon['hp'] = hp
-		savePokemon(member, pokemon)
+	pokedata = loadPokemon(member, isMe)
+	pokedata['hp'] = hp
+	savePokemon(member, pokedata)
+	return pokedata['hp']
+
+# Return whether a pokemon flinched. Happens only one turn
+def togglePokemonFlinch(member, isMe=True):
+	pokedata = loadPokemon(member, isMe)
+	flinch = pokedata['is_flinched']
+	pokedata['is_flinched'] = False
+	savePokemon(member, pokedata)
+	return flinch
+
+# Add one win to the user
+def incPokemonBattlesWon(member, isMe=True):
+	pokedata = loadPokemon(member, isMe)
+	pokedata['battles_won'] += 1
+	savePokemon(member, pokedata)
+	return pokedata['battles_won']
+
+# Add one lost to the user
+def incPokemonBattlesLost(member, isMe=True):
+	pokedata = loadPokemon(member, isMe)
+	pokedata['battles_lost'] += 1
+	savePokemon(member, pokedata)
+	return pokedata['battles_lost']
+
+# Add one lost to the user
+def getPokemonBattleStats(member, isMe=True):
+	pokedata = loadPokemon(member, isMe)
+	return pokedata['battles_win'], pokedata['battles_lost']

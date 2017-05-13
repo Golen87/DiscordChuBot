@@ -46,9 +46,7 @@ async def on_message(message):
 			try:
 				response = await commandlist[command][0](message, send)
 			except UserWarning as error:
-				error = str(error)
-				error = error.replace("@mention", message.author.mention)
-				response = await send(error)
+				response = await send(str(error))
 		global response_history
 		if response == 'delete':
 			return
@@ -75,9 +73,7 @@ async def on_message_edit(oldMessage, newMessage):
 					try:
 						response = await commandlist[command][0](newMessage, send)
 					except UserWarning as error:
-						error = str(error)
-						error = error.replace("@mention", newMessage.author.mention)
-						response = await send(error)
+						response = await send(str(error))
 				if response == 'delete':
 					return
 				response_history[i] = (newMessage, response)
@@ -111,13 +107,23 @@ def logMessage(message, msgtype = ''):
 		extra + WHI + message.content)
 	)
 
+# Replace tags in error message to data
+def formatUserTags(message, error):
+	error = error.replace("@user", getNick(message.author))
+	error = error.replace("@mention", message.author.mention)
+	error = error.replace("@poss", addPossForm(getNick(message.author)))
+	error = error.replace("@pokemon", "**{}**".format(database.getPokemonName(message.author)))
+	return error
+
 
 # Discord send_message
 async def SEND(message, content):
+	content = formatUserTags(message, content)
 	return await client.send_message(message.channel, content)
 
 # Discord edit_message
 async def EDIT(message, content):
+	content = formatUserTags(message, content)
 	return await client.edit_message(message, content)
 
 # Discord edit_message
@@ -401,14 +407,35 @@ async def attack(message, send):
 	pokedataDef = database.loadPokemon(user, False)
 
 	if not pokedex.knowsMove(pokedataAtk, move):
-		raise UserWarning("**{}** doesn't know that move yet. Use `!learnmove` to learn it!".format(database.getPokemonName(message.author)))
+		raise UserWarning("Your @pokemon doesn't know that move yet. Use `!learnmove` to learn it!")
 
-	#if user.id == message.author.id:
-	#	return await send("Please don't hit yourself...")
+	if database.getPokemonHp(message.author) == 0:
+		raise UserWarning("Your @pokemon is unable to fight. Use `!heal` first!".format())
+
+	if database.togglePokemonFlinch(message.author):
+		raise UserWarning("@pokemon flinched and couldn't move.")
 
 	damage = pokedex.attack(pokedataAtk, pokedataDef, move)
 
 	maxHp = pokedex.getCurrentStats(pokedataDef, 'HP')
+	if database.getPokemonHp(user) == 0:
+		await send("Your opponent is already unable to fight!")
+		msg = "!attack " + content
+
+		m = await client.wait_for_message(timeout=15, author=message.author, content=msg)
+		if m:
+			await send('Stop it!')
+			m = await client.wait_for_message(timeout=15, author=message.author, content=msg)
+			if m:
+				await send('STOP!')
+				m = await client.wait_for_message(timeout=15, author=message.author, content=msg)
+				if m:
+					database.savePokemon(user, {})
+					return await send('You... killed your opponent...')
+			else:
+				return
+		else:
+			return
 	newHp = max(0, database.getPokemonHp(user) - damage)
 	database.setPokemonHp(user, newHp)
 
@@ -419,12 +446,26 @@ async def attack(message, send):
 	if 0 < effect <= 0.5:
 		m += "It's not very effective... "
 	if effect == 0:
-		m += "It has no effect on **{}**!".format(database.getPokemonName(user))
-	else:
+		m += "It has no effect on **{}**! ".format(database.getPokemonName(user))
+
+	if damage != 0:
 		m += '{} took ({}) damage! '.format(user.mention, damage)
-		if maxHp - newHp > 0:
-			m += 'They now have ({}/{}) hp!'.format(newHp, maxHp)
+		if maxHp != newHp:
+			m += 'They now have ({}/{}) hp! '.format(newHp, maxHp)
+
+		if newHp == 0:
+			won = database.incPokemonBattlesWon(message.author)
+			database.incPokemonBattlesLost(user, False)
+			m += "Your opponent fainted! "
+			if won > 0 and won % 10 == 0:
+				database.incCaps(message.author)
+				m += "This victory earned you a bottlecap! Use it to `!hypertrain`."
+
 	return await send(m)
+
+async def battles(message, send):
+	wins, losses = database.getPokemonBattleStats(message.author)
+	raise UserWarning("Your @pokemon has won {} and lost {} battles so far!".format(wins, losses))
 
 # Heal your pokemon to full max health
 async def heal(message, send):
@@ -462,30 +503,30 @@ async def learnmove(message, send):
 	database.savePokemon(message.author, pokedata)
 
 	if slot and oldMove != None:
-		m = '1, 2 and... Poof! {0} forgot **{1}** and... {0} learned **{2}**!'.format(getNick(message.author), oldMove, move)
-		return await send(m)
+		return await send('1, 2 and... Poof! @poss @pokemon forgot **{}** and... @pokemon learned **{}**!'.format(oldMove, move))
 	else:
-		m = '{0} learned **{1}**!'.format(getNick(message.author), move)
-		return await send(m)
+		return await send('@poss @pokemon learned **{}**!'.format(move))
 
 # Check your Pokemon's stats
 async def stats(message, send):
 	pokedata = database.loadPokemon(message.author)
-	pokemon = database.getPokemonName(message.author)
 	stats = pokedex.getCurrentStats(pokedata)
 	table = ['{:>7}: {}'.format(stat, stats[stat]) for stat in stats]
-	m = "{} **{}**```Python\n{}```".format(addPossForm(getNick(message.author)), pokemon, '\n'.join(table))
-	return await send(m)
+	return await send("@poss @pokemon```Python\n{}```".format('\n'.join(table)))
+
+# Check your Pokemon's stages
+async def stages(message, send):
+	pokedata = database.loadPokemon(message.author)
+	stages = pokedex.getCurrentStages(pokedata)
+	table = ['{:>11}: {}'.format(stat, stages[stat]) for stat in stages]
+	return await send("@poss @pokemon```Python\n{}```".format('\n'.join(table)))
 
 # Check your Pokemon's moveset
 async def moveset(message, send):
 	pokedata = database.loadPokemon(message.author)
-
-	pokemon = database.getPokemonName(message.author)
 	moveset = database.getPokemonMoveset(message.author)
 	table = ['{}) {}'.format(m+1, moveset[m] if moveset[m] else '-') for m in range(len(moveset))]
-	m = "{} **{}**```Python\n{}```".format(addPossForm(getNick(message.author)), pokemon, '\n'.join(table))
-	return await send(m)
+	return await send("@poss @pokemon```Python\n{}```".format('\n'.join(table)))
 
 # Train your Pokemon's EV
 async def trainev(message, send):
@@ -498,8 +539,7 @@ async def trainev(message, send):
 	pokedata = database.loadPokemon(message.author)
 	result = pokedex.trainEV(pokedata, value, stat)
 	database.savePokemon(message.author, pokedata)
-	pokemon = database.getPokemonName(message.author)
-	return await send("{} **{}** trained and its {}-EV is now ({})!".format(addPossForm(getNick(message.author)), pokemon, stat, result))
+	return await send("@poss @pokemon trained and its {}-EV is now ({})!".format(stat, result))
 
 #Reset your Pokemon's EV
 async def resetev(message, send):
@@ -509,14 +549,35 @@ async def resetev(message, send):
 	return await send("Your Pokemon's EVs have been reset!")
 
 async def hypertrain(message, send):
+	caps = database.getCaps(message.author)
+	if caps <= 0:
+		raise UserWarning("@mention You don't have enough bottlecaps to pay the hypertraining. Win more battles to get some!")
+
 	args = getArgs(message)
 	stat = pokedex.checkStat(args[0])
-
 	pokedata = database.loadPokemon(message.author)
 	pokedex.maxIV(pokedata, stat)
 	database.savePokemon(message.author, pokedata)
-	pokemon = database.getPokemonName(message.author)
-	return await send("{} **{}** hypertrained its {}!".format(addPossForm(getNick(message.author)), pokemon, stat))
+
+	caps = database.incCaps(message.author, -1)
+	return await send("@user payed a bottlecap. @pokemon hypertrained its {}!".format(stat))
+
+async def admin(message, send):
+	args = getArgs(message)
+	try:
+		value = int(args[0])
+	except:
+		raise UserWarning("@mention Invalid stage. It has to be between -6–6!")
+	stat = None if len(args) < 2 else args[1]
+
+	pokedata = database.loadPokemon(message.author)
+	stage = pokedex.raiseStage(pokedata, value, stat)
+	database.savePokemon(message.author, pokedata)
+
+	if stat:
+		return await send("Raised {}-stage to {}!".format(stat, stage))
+	else:
+		return await send("Raised all stages by {}!".format(value))
 
 
 # List of commands
@@ -534,6 +595,9 @@ commandlist = {
 	'trainev': [trainev, '!trainev *1–252* *stat*', 'args'],
 	'resetev': [resetev, '!resetev', 'args'],
 	'hypertrain': [hypertrain, '!hypertrain *stat*', 'args'],
+	'stages': [stages, '!stages', 'content'],
+	'admin': [admin, '!admin *stages* [*stat*]', 'args'],
+	'battles': [battles, '!battles', 'args'],
 
 	# General
 	#'sleep': [sleep, '!sleep', 'args'],
@@ -543,7 +607,7 @@ commandlist = {
 	#'choose': [choose, '!choose *item* [, *item* ...] [or *item*]', 'content'],
 	#'tcah': [tcah, '!tcah [*phrase* ...]', 'content'],
 	#'test': [test, '!test *.*', 'content'],
-	
+
 	# Casino
 	#'balance': [checkBalance, '!balance', 'args'],
 	#'top': [checkTop, '!top', 'args'],
