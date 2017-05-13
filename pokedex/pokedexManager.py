@@ -26,13 +26,10 @@ def initPokemon(pokedata, pokemon):
 	pokedata['pokemon'] = getPokemonName(pokemon)
 	pokedata['status'] = ''
 	pokedata['nature'] = random.choice(list(natures.keys()))
-	for stat in stats:
-		pokedata['iv'][stat] = random.randint(0,31)
-		pokedata['ev'][stat] = 0
-	for stat in stageStats:
-		pokedata['stage'][stat] = 0
+	pokedata['iv'] = {stat: random.randint(0,31) for stat in stats}
+	pokedata['ev'] = {stat: 0 for stat in stats}
+	pokedata['stage'] = {stat: 0 for stat in stageStats}
 	pokedata['moveset'] = [None for m in range(4)]
-		
 	pokedata['hp'] = getCurrentStats(pokedata, 'HP')
 
 
@@ -44,9 +41,9 @@ def getPokemonData(name, field=None):
 			if field:
 				if field in pokemon:
 					return pokemon[field]
-				return None
+				raise UserWarning("Invalid field. Some data is missing in the database!")
 			return pokemon
-	return None
+	raise UserWarning("Invalid name. I don't recognize that Pokemon!")
 
 def getPokemonName(name):
 	return getPokemonData(name, "name")
@@ -55,9 +52,8 @@ def getPokemonName(name):
 def getPokemonStats(name, stat=None):
 	base = getPokemonData(name, "base")
 	if stat:
-		if stat in base:
-			return base[stat]
-		return None
+		stat = checkStat(stat)
+		return base[stat]
 	return base
 
 def getPokemonType(name):
@@ -74,9 +70,9 @@ def getMoveData(name, field=None):
 			if field:
 				if field in move:
 					return move[field]
-				return None
+				raise UserWarning("Invalid field. Some data is missing in the database!")
 			return move
-	return None
+	raise UserWarning("Invalid name. I don't recognize that move!")
 
 def getMoveName(name):
 	return getMoveData(name, "name")
@@ -103,7 +99,7 @@ def canLearnMove(pokemon, move):
 	for moves in sets:
 		if moveid in moves:
 			return True
-	return False
+	raise UserWarning("**{}** is not able to learn **{}**!".format(getPokemonName(pokemon), move))
 
 # Return whether a pokemon knows a move
 def knowsMove(pokedata, move):
@@ -111,6 +107,9 @@ def knowsMove(pokedata, move):
 
 # Add new move to the 
 def learnMove(pokedata, move, slot=None):
+	if knowsMove(pokedata, move):
+		raise UserWarning("**{0}** already knows **{1}**!".format(pokedata['pokemon'], move))
+
 	if slot:
 		oldMove = pokedata['moveset'][slot-1]
 		pokedata['moveset'][slot-1] = move
@@ -120,7 +119,9 @@ def learnMove(pokedata, move, slot=None):
 			if not pokedata['moveset'][m]:
 				pokedata['moveset'][m] = move
 				return None
-	return False
+	m = "**{0}** wants to learn **{1}** but **{0}** already knows 4 moves! ".format(pokedata['pokemon'], move)
+	m += "To make space for **{0}**, use `!learnmove *move* *1–4*`!".format(move)
+	raise UserWarning(m)
 
 
 # Return type advantage
@@ -131,38 +132,38 @@ def typeChart(atkType, defType):
 
 
 def typeAdvantage(pokedata, move):
-    name = pokedata['pokemon']
-    t1 = getPokemonType(name)[0]
-    m = getMoveType(move)
-    t1 = types.index(t1)
-    m = types.index(m)
-    a = effChart[m][t1]
-    effectiveness = a
-    if len(getPokemonType(name)) == 2:
-        t2 = getPokemonType(name)[1]
-        t2 = types.index(t2)
-        b = effChart[m][t2]
-        effectiveness *= b
-    return effectiveness
+	name = pokedata['pokemon']
+	t1 = getPokemonType(name)[0]
+	m = getMoveType(move)
+	t1 = types.index(t1)
+	m = types.index(m)
+	a = effChart[m][t1]
+	effectiveness = a
+	if len(getPokemonType(name)) == 2:
+		t2 = getPokemonType(name)[1]
+		t2 = types.index(t2)
+		b = effChart[m][t2]
+		effectiveness *= b
+	return effectiveness
 	
 def modifier(pokedata1, pokedata2, move):
-    eff = typeAdvantage(pokedata2, move)
-    name = pokedata1['pokemon']
-    i = random.randint(1,400)
-    rand = random.randint(85,100)
-    rand = rand/100.0
-    owo = getMoveCategory(move) == "physical"
-    stab = 1
-    burn = 1
-    crit =1
-    if getPokemonType(name) == getMoveType(move):
-        stab = 1.5
-    if ((pokedata1['status'] == 'burn') and owo):
-        burn = 0.5
-    if i <= i <= 25:
-        crit = 1.5
-    mod = eff * rand * stab * burn * crit
-    return mod
+	eff = typeAdvantage(pokedata2, move)
+	name = pokedata1['pokemon']
+	i = random.randint(1,400)
+	rand = random.randint(85,100)
+	rand = rand/100
+	owo = getMoveCategory(move) == "physical"
+	stab = 1
+	burn = 1
+	crit =1
+	if getPokemonType(name) == getMoveType(move):
+		stab = 1.5
+	if ((pokedata1['status'] == 'burn') and owo):
+		burn = 0.5
+	if i <= i <= 25:
+		crit = 1.5
+	mod = eff * rand * stab * burn * crit
+	return mod
 
 def stageMod(pokedata, stat):
 	stage = pokedata['stage'][stat]
@@ -182,28 +183,29 @@ def stageMod(pokedata, stat):
 			s = 3.0/(3.0 + stage)
 			return s
 
-def attack(poke1, poke2, move):
-    power = getMovePower(move)
-    acc = getMoveAccuracy(move)
-    stats1 = getCurrentStats(poke1)
-    stats2 = getCurrentStats(poke2)
-    acc = acc * (stageMod(poke1, 'Accuracy')/stageMod(poke2, 'Evasiveness'))
-    i = random.randint(1,100)
-    a, d = 1, 1
-    if 1 <= i <= acc:
-        if getMoveCategory(move) == "physical":
-            a = stageMod(poke1, 'Attack') * stats1['Attack']
-            d = stageMod(poke2, 'Defense') * stats2['Defense']
-        elif getMoveCategory(move) == "special":
-            a = stageMod(poke1, 'Sp.Atk') * stats1['Sp.Atk']
-            d = stageMod(poke2, 'Sp.Def') * stats1['Sp.Def']
-        damage = (((22.0*power*a/d)/50.0)+2.0)*modifier(poke1, poke2, move)
-        damage = math.floor(damage)
-        if getMoveCategory(move) == "status":
-            damage = 0
-    else: 
-        damage = -1
-    return damage
+def attack(pokeAtk, pokeDef, move):
+	knowsMove(pokeAtk, move)
+	power = getMovePower(move)
+	acc = getMoveAccuracy(move) # Crash if null accuracy
+	stats1 = getCurrentStats(pokeAtk)
+	stats2 = getCurrentStats(pokeDef)
+	acc = acc * (stageMod(pokeAtk, 'Accuracy')/stageMod(pokeDef, 'Evasiveness'))
+	i = random.randint(1,100)
+	a, d = 1, 1
+	if 1 <= i <= acc:
+		if getMoveCategory(move) == "physical":
+			a = stageMod(pokeAtk, 'Attack') * stats1['Attack']
+			d = stageMod(pokeDef, 'Defense') * stats2['Defense']
+		elif getMoveCategory(move) == "special":
+			a = stageMod(pokeAtk, 'Sp.Atk') * stats1['Sp.Atk']
+			d = stageMod(pokeDef, 'Sp.Def') * stats1['Sp.Def']
+		damage = (((22.0*power*a/d)/50.0)+2.0)*modifier(pokeAtk, pokeDef, move)
+		damage = math.floor(damage)
+		if getMoveCategory(move) == "status":
+			damage = 0
+	else:
+		raise UserWarning('The attack missed!')
+	return damage
 
 # Return stat(s) modifier for a nature
 def natureMod(nature, stat=None):
@@ -212,9 +214,17 @@ def natureMod(nature, stat=None):
 	else:
 		return natures[nature]
 
+# Check if stat is correct
+def checkStat(value):
+	for stat in stats:
+		if value.lower() == stat.lower():
+			return stat
+	raise UserWarning("Invalid stat. Use `!stats` for information on what stats you can train!")
+
 # Return current stat by combining: base, iv, ev, nature
 def getCurrentStats(pokedata, stat=None):
 	if stat:
+		stat = checkStat(stat)
 		base = getPokemonStats(pokedata['pokemon'], stat)
 		nature = pokedata['nature']
 		iv = pokedata['iv'][stat]
@@ -226,20 +236,29 @@ def getCurrentStats(pokedata, stat=None):
 	else:
 		return {s: getCurrentStats(pokedata, s) for s in stats}
 
-def stageMod(pokedata, stat):
-	stage = pokedata['stage'][stat]
-	s = 1
-	if stat not in ('Evasiveness', 'Accuracy'):
-		if stage <= 0:
-			s = (2.0 + stage)/2.0
-			return s
-		else:
-			s = 2.0/(2.0 + stage)
-			return s
+
+def getTotalEV(pokedata):
+	return sum([pokedata['ev'][stat] for stat in stats])
+
+def trainEV(pokedata, value, stat):
+	totalRemaining = 510 - getTotalEV(pokedata)
+	stat = checkStat(stat)
+	if totalRemaining <= 0:
+		raise UserWarning("**{}** is already fully trained!".format(pokedata['pokemon']))
+	if value <= 0:
+		raise UserWarning("Invalid value. Please specify a value between (1–252)!")
+
+	remaining = 252 - pokedata['ev'][stat]
+	if remaining <= 0:
+		raise UserWarning("**{}** has already fully trained its {}-EV!".format(pokedata['pokemon'], stat))
+
+	inc = min(value, remaining, totalRemaining)
+	pokedata['ev'][stat] += inc
+	return inc
+
+def resetEV(pokedata, stat=None):
+	if stat:
+		stat = checkStat(stat)
+		pokedata['ev'][stat] = 0
 	else:
-		if stage <= 0:
-			s = (3.0 + stage)/3.0
-			return s
-		else:
-			s = 3.0/(3.0 + stage)
-			return s
+		pokedata['ev'] = {stat: 0 for stat in stats}

@@ -37,13 +37,16 @@ async def on_message(message):
 	#	if message.content.startswith('_examines'):
 	#		pass
 	# NAH
-		
+
 	command = getCommand(message)
 	if command in commandlist:
 		send = lambda content : SEND(message, content)
 		response = await checkArgs(message, send)
 		if not response:
-			response = await commandlist[command][0](message, send)
+			try:
+				response = await commandlist[command][0](message, send)
+			except UserWarning as error:
+				response = await send("{} {}".format(message.author.mention, error))
 		global response_history
 		if response == 'delete':
 			return
@@ -135,7 +138,7 @@ def findMember(message, name):
 	for m in client.get_all_members():
 		if name.lower() in [m.nick.lower() if m.nick else '', m.name.lower()] or m in message.mentions:
 			return m
-	return None
+	raise UserWarning("Invalid target. I don't know who _{}_ is!".format(name))
 
 
 # Help
@@ -178,10 +181,10 @@ async def hello(message, send):
 # Guess
 async def guess(message, send):
 	await send('Guess a number between 1 to 10')
-	
+
 	def guess_check(m):
 		return m.content.isdigit()
-	
+
 	guess = await client.wait_for_message(timeout=10.0, author=message.author, check=guess_check)
 	answer = random.randint(1, 10)
 	if guess is None:
@@ -248,7 +251,7 @@ async def checkTop(message, send):
 	await clearPreviousCommands(message.author, 'top')
 	args = getArgs(message)
 	#print(args)
-	
+
 	toplist = database.getTopList()[:10]
 	nameWidth = len(sorted(toplist, key=lambda x:len(x[0]))[-1][0])
 	message = '```#--name{}+-{}-\n'.format('-'*(nameWidth-3), Currency)
@@ -359,14 +362,11 @@ async def setpoke(message, send):
 	content = getContent(message)
 
 	pokemon = pokedex.getPokemonName(content)
-	if pokemon:
-		pokedata = database.createPokemon()
-		pokedex.initPokemon(pokedata, pokemon)
-		database.savePokemon(message.author, pokedata)
-		m = '{} is now {} **{}**.'.format(getNick(message.author), aOrAn(pokemon), pokemon)
-		return await send(m)
-	else:
-		return await send("{} That's not a Pokemon!".format(message.author.mention))
+	pokedata = database.createPokemon()
+	pokedex.initPokemon(pokedata, pokemon)
+	database.savePokemon(message.author, pokedata)
+	m = '{} is now {} **{}**.'.format(getNick(message.author), aOrAn(pokemon), pokemon)
+	return await send(m)
 
 # Check what pokemon a user is
 async def whatis(message, send):
@@ -375,17 +375,9 @@ async def whatis(message, send):
 		return await send(commandlist[getCommand(message)][1])
 
 	user = findMember(message, content)
-	if user:
-		pokemon = database.getPokemonName(user)
-		if pokemon:
-			m = '{} is {} **{}**!'.format(user.mention, aOrAn(pokemon), pokemon)
-			return await send(m)
-		else:
-			m = "{} doesn't have a Pokemon yet. Encourage them to use `!setpoke` to get started!".format(user.mention)
-			return await send(m)
-	else:
-		m = "{} I don't know who **{}** is!".format(message.author.mention, content)
-		return await send(m)
+	pokemon = database.getPokemonName(user, False)
+	m = '{} is {} **{}**!'.format(user.mention, aOrAn(pokemon), pokemon)
+	return await send(m)
 
 # Attack user's pokemon with a selected move
 async def attack(message, send):
@@ -397,41 +389,39 @@ async def attack(message, send):
 		return await send(commandlist[getCommand(message)][1])
 
 	user = findMember(message, result.group(1))
-	if not user:
-		return await send('{} Invalid target. You need to choose a user!'.format(message.author.mention))
-
-	pokedataAtk = database.loadPokemon(message.author)
-	if not pokedataAtk:
-		return await send("{} You don't have a Pokemon yet. Use `!setpoke` to get started!".format(message.author.mention))
-
 	move = pokedex.getMoveName(result.group(2))
-	if not move:
-		return await send("{} Invalid move. I don't recognize that!".format(message.author.mention))
+	pokedataAtk = database.loadPokemon(message.author)
+	pokedataDef = database.loadPokemon(user)
 
 	if not pokedex.knowsMove(pokedataAtk, move):
-		return await send("{} You haven't learned that move. Use `!learnmove` to learn it!".format(message.author.mention))
+		raise UserWarning("**{}** doesn't know that move yet. Use `!learnmove` to learn it!".format(database.getPokemonName(message.author)))
 
-	pokedataDef = database.loadPokemon(user)
-	if not pokedataDef:
-		return await send("{} doesn't have a Pokemon yet. Encourage them to use `!setpoke` to get started!".format(user.mention))
+	#if user.id == message.author.id:
+	#	return await send("Please don't hit yourself...")
 
 	damage = pokedex.attack(pokedataAtk, pokedataDef, move)
-	if damage == -1:
-		m = 'The attack missed!'
-		return await send(m)
 
 	maxHp = pokedex.getCurrentStats(pokedataDef, 'HP')
 	newHp = max(0, database.getPokemonHp(user) - damage)
 	database.setPokemonHp(user, newHp)
 
-	m = '{} took ({}) damage! They now have ({}/{}) hp!'.format(user.mention, damage, newHp, maxHp)
+	m = ''
+	effect = pokedex.typeAdvantage(pokedataDef, move)
+	if effect >= 2:
+		m += "It's super effective! "
+	if 0 < effect <= 0.5:
+		m += "It's not very effective... "
+	if effect == 0:
+		m += "It has no effect on **{}**!".format(database.getPokemonName(user))
+	else:
+		m += '{} took ({}) damage! '.format(user.mention, damage)
+		if maxHp - newHp > 0:
+			m += 'They now have ({}/{}) hp!'.format(newHp, maxHp)
 	return await send(m)
 
 # Heal your pokemon to full max health
 async def heal(message, send):
 	pokedata = database.loadPokemon(message.author)
-	if not pokedata:
-		return await send("{} You don't have a Pokemon yet. Use `!setpoke` to get started!".format(message.author.mention))
 
 	maxHealth = pokedex.getCurrentStats(pokedata, 'HP')
 	database.setPokemonHp(message.author, maxHealth)
@@ -442,8 +432,6 @@ async def heal(message, send):
 # Teach your pokemon a new move, given that it's allowed
 async def learnmove(message, send):
 	pokedata = database.loadPokemon(message.author)
-	if not pokedata:
-		return await send("{} You don't have a Pokemon yet. Use `!setpoke` to get started!".format(message.author.mention))
 
 	content = getContent(message)
 	if not content:
@@ -452,26 +440,19 @@ async def learnmove(message, send):
 		movename, slot = content.rsplit(' ', 1)
 		slot = int(slot)
 		if slot < 1 or slot > 4:
-			return await send("{} Invalid slot. It has to be between 1-4!".format(message.author.mention))
+			raise UserWarning("Invalid slot. It has to be between 1–4!")
 	except:
 		movename = content
 		slot = None
 
 	move = pokedex.getMoveName(movename)
-	if not move:
-		return await send("{} Invalid move. I don't recognize that!".format(message.author.mention))
 
 	pokemon = database.getPokemonName(message.author)
-	if not pokedex.canLearnMove(pokemon, move):
-		return await send("{} **{}** is not able to learn **{}**!".format(message.author.mention, pokemon, move))
 
-	# You already know that move!
+	#raise UserWarning("**{}** doesn't know that move yet. Use `!learnmove` to learn it!".format(pokedata['pokemon']))
 
 	oldMove = pokedex.learnMove(pokedata, move, slot)
 	database.savePokemon(message.author, pokedata)
-	if oldMove == False:
-		m = "**{0}** wants to learn **{1}** but **{0}** already knows 4 moves! To make space for **{1}**, use `!learnmove *move* *1-4*`!".format(message.author.mention, move)
-		return await send(m)
 
 	if slot and oldMove != None:
 		m = '1, 2 and... Poof! {0} forgot **{1}** and... {0} learned **{2}**!'.format(getNick(message.author), oldMove, move)
@@ -483,10 +464,6 @@ async def learnmove(message, send):
 # Check your Pokemon's stats
 async def stats(message, send):
 	pokedata = database.loadPokemon(message.author)
-	if not pokedata:
-		m = "{} You don't have a Pokemon yet. Use `!setpoke` to get started!".format(message.author.mention)
-		return await send(m)
-
 	pokemon = database.getPokemonName(message.author)
 	stats = pokedex.getCurrentStats(pokedata)
 	table = ['{:>7}: {}'.format(stat, stats[stat]) for stat in stats]
@@ -496,8 +473,6 @@ async def stats(message, send):
 # Check your Pokemon's moveset
 async def moveset(message, send):
 	pokedata = database.loadPokemon(message.author)
-	if not pokedata:
-		return await send("{} You don't have a Pokemon yet. Use `!setpoke` to get started!".format(message.author.mention))
 
 	pokemon = database.getPokemonName(message.author)
 	moveset = database.getPokemonMoveset(message.author)
@@ -505,30 +480,57 @@ async def moveset(message, send):
 	m = "{} **{}**```Python\n{}```".format(addPossForm(getNick(message.author)), pokemon, '\n'.join(table))
 	return await send(m)
 
+# Train your Pokemon's EV
+async def trainev(message, send):
+	value, stat = getArgs(message)
+	if not value.isdigit():
+		return await send(commandlist[getCommand(message)][1])
+	value = int(value)
+	stat = pokedex.checkStat(stat)
+
+	pokedata = database.loadPokemon(message.author)
+	result = pokedex.trainEV(pokedata, value, stat)
+	database.savePokemon(message.author, pokedata)
+	pokemon = database.getPokemonName(message.author)
+	return await send("{} **{}** trained and its {}-EV is now ({})!".format(addPossForm(getNick(message.author)), pokemon, stat, result))
+
+#Reset your Pokemon's EV
+async def resetev(message, send):
+	pokedata = database.loadPokemon(message.author)
+	pokedex.resetEV(pokedata)
+	database.savePokemon(message.author, pokedata)
+	return await send("Your Pokemon's EVs have been reset!")
 
 # List of commands
 commandlist = {
 	'help': [help, '!help [*command*]', 'args'],
+
+	# Pokemon
 	'setpoke': [setpoke, '!setpoke *pokemon*', 'content'],
 	'whatis': [whatis, '!whatis *username*', 'args'],
 	'stats': [stats, '!stats', 'content'],
 	'moveset': [moveset, '!moveset', 'content'],
 	'attack': [attack, '!attack *username* with *attack*', 'content'],
 	'heal': [heal, '!heal', 'args'],
-	'learnmove': [learnmove, '!learnmove *move* [*1-4*]', 'content'],
-	'sleep': [sleep, '!sleep', 'args'],
-	'count': [count, '!count', 'args'],
-	'hello': [hello, '!hello', 'args'],
-	'guess': [guess, '!guess', 'args'],
-	'choose': [choose, '!choose *item* [, *item* ...] [or *item*]', 'content'],
-	'tcah': [tcah, '!tcah [*phrase* ...]', 'content'],
+	'learnmove': [learnmove, '!learnmove *move* [*1–4*]', 'content'],
+	'trainev': [trainev, '!trainev *1–252* *stat*', 'args'],
+	'resetev': [resetev, '!resetev', 'args']
+
+	# General
+	#'sleep': [sleep, '!sleep', 'args'],
+	#'count': [count, '!count', 'args'],
+	#'hello': [hello, '!hello', 'args'],
+	#'guess': [guess, '!guess', 'args'],
+	#'choose': [choose, '!choose *item* [, *item* ...] [or *item*]', 'content'],
+	#'tcah': [tcah, '!tcah [*phrase* ...]', 'content'],
+	#'test': [test, '!test *.*', 'content'],
 	
-	'test': [test, '!test *.*', 'content'],
-	'balance': [checkBalance, '!balance', 'args'],
-	'top': [checkTop, '!top', 'args'],
-	'beg': [beg, '!beg', 'args'],
-	'daily': [claimDaily, '!daily', 'args'],
-	'slot': [slotmachine, '!slot *10*|*20*|*30*', 'args'],
+	# Casino
+	#'balance': [checkBalance, '!balance', 'args'],
+	#'top': [checkTop, '!top', 'args'],
+	#'beg': [beg, '!beg', 'args'],
+	#'daily': [claimDaily, '!daily', 'args'],
+	#'slot': [slotmachine, '!slot *10*|*20*|*30*', 'args'],
 }
 
 

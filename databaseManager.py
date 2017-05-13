@@ -142,41 +142,47 @@ def savePokemon(member, pokedata):
 	saveUser(member, userdata)
 
 # Load pokemon from database
-def loadPokemon(member):
+def loadPokemon(member, isMe=True):
 	userdata = loadUser(member)
 	if userdata['pokemon']:
 		repair(userdata['pokemon'], createUser())
-	return userdata['pokemon']
+		return userdata['pokemon']
+	if isMe:
+		raise UserWarning("You don't have a Pokemon yet. Use `!setpoke` to get started!")
+	else:
+		m = "{} doesn't have a Pokemon yet. ".format(member.mention)
+		m += "Encourage them to use `!setpoke` to get started!"
+		raise UserWarning(m)
 
 
 # Get user's pokemon's name
-def getPokemonValue(member, key):
-	pokedata = loadPokemon(member)
+def getPokemonValue(member, key, isMe=True):
+	pokedata = loadPokemon(member, isMe)
 	if pokedata:
 		if key in pokedata:
 			return pokedata[key]
 	return None
 
 # Get user's pokemon's name
-def getPokemonName(member):
-	return getPokemonValue(member, 'pokemon')
+def getPokemonName(member, isMe=True):
+	return getPokemonValue(member, 'pokemon', isMe)
 
 # Get user's pokemon's health
-def getPokemonHp(member):
-	return getPokemonValue(member, 'hp')
+def getPokemonHp(member, isMe=True):
+	return getPokemonValue(member, 'hp', isMe)
 
 # Get user's pokemon's status
-def getPokemonStatus(member):
-	return getPokemonValue(member, 'status')
+def getPokemonStatus(member, isMe=True):
+	return getPokemonValue(member, 'status', isMe)
 
 # Get user's pokemon's status
-def getPokemonMoveset(member):
-	return getPokemonValue(member, 'moveset')
+def getPokemonMoveset(member, isMe=True):
+	return getPokemonValue(member, 'moveset', isMe)
 
 
 # Set user's pokemon's health
-def setPokemonHp(member, hp):
-	pokemon = loadPokemon(member)
+def setPokemonHp(member, hp, isMe=True):
+	pokemon = loadPokemon(member, isMe)
 	if pokemon:
 		pokemon['hp'] = hp
 		savePokemon(member, pokemon)
