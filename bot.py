@@ -108,12 +108,16 @@ def logMessage(message, msgtype = ''):
 	)
 
 # Replace tags in error message to data
-def formatUserTags(message, error):
-	error = error.replace("@user", getNick(message.author))
-	error = error.replace("@mention", message.author.mention)
-	error = error.replace("@poss", addPossForm(getNick(message.author)))
-	error = error.replace("@pokemon", "**{}**".format(database.getPokemonName(message.author)))
-	return error
+def formatUserTags(message, text):
+	if "@user" in text:
+		text = text.replace("@user", getNick(message.author))
+	if "@mention" in text:
+		text = text.replace("@mention", message.author.mention)
+	if "@poss" in text:
+		text = text.replace("@poss", addPossForm(getNick(message.author)))
+	if "@pokemon" in text:
+		text = text.replace("@pokemon", "**{}**".format(database.getPokemonName(message.author)))
+	return text
 
 
 # Discord send_message
@@ -404,7 +408,10 @@ async def attack(message, send):
 	user = findMember(message, result.group(1))
 	move = pokedex.getMoveName(result.group(2))
 	pokedataAtk = database.loadPokemon(message.author)
-	pokedataDef = database.loadPokemon(user, False)
+	if message.author != user:
+		pokedataDef = database.loadPokemon(user, False)
+	else:
+		pokedataDef = pokedataAtk # Copies list-id
 
 	if not pokedex.knowsMove(pokedataAtk, move):
 		raise UserWarning("Your @pokemon doesn't know that move yet. Use `!learnmove` to learn it!")
@@ -412,10 +419,15 @@ async def attack(message, send):
 	if database.getPokemonHp(message.author) == 0:
 		raise UserWarning("Your @pokemon is unable to fight. Use `!heal` first!".format())
 
+	lastStamp = database.getTimestamp(message.author, 'attack')
+	remaining = AttackCooldown - (time.time() - lastStamp)
+	if remaining > 0:
+		waitTime = getDurationString(remaining)
+		raise UserWarning('@mention Your attack refreshes in _{}_.'.format(waitTime))
+	database.setTimestamp(message.author, 'attack', time.time())
+
 	if database.togglePokemonFlinch(message.author):
 		raise UserWarning("@pokemon flinched and couldn't move.")
-
-	damage = pokedex.attack(pokedataAtk, pokedataDef, move)
 
 	maxHp = pokedex.getCurrentStats(pokedataDef, 'HP')
 	if database.getPokemonHp(user) == 0:
@@ -436,6 +448,13 @@ async def attack(message, send):
 				return
 		else:
 			return
+
+	damage = pokedex.attack(pokedataAtk, pokedataDef, move)
+	database.savePokemon(user, pokedataDef)
+	database.savePokemon(message.author, pokedataAtk)
+	if damage == None:
+		return await send("@poss @pokemon is now **{}**!".format(pokedataDef["status"]))
+
 	newHp = max(0, database.getPokemonHp(user) - damage)
 	database.setPokemonHp(user, newHp)
 
@@ -471,10 +490,11 @@ async def battles(message, send):
 async def heal(message, send):
 	pokedata = database.loadPokemon(message.author)
 
-	maxHealth = pokedex.getCurrentStats(pokedata, 'HP')
-	database.setPokemonHp(message.author, maxHealth)
+	pokedex.restorePokemon(pokedata)
+	database.savePokemon(message.author, pokedata)
+	newHp = database.getPokemonHp(message.author)
 
-	m = '{} heal to ({}/{}) hp!'.format(getNick(message.author), maxHealth, maxHealth)
+	m = '@poss @pokemon was healed to ({0}/{0}) hp!'.format(newHp)
 	return await send(m)
 
 # Teach your pokemon a new move, given that it's allowed
@@ -571,11 +591,11 @@ async def admin(message, send):
 	stat = None if len(args) < 2 else args[1]
 
 	pokedata = database.loadPokemon(message.author)
-	stage = pokedex.raiseStage(pokedata, value, stat)
+	pokedex.raiseStage(pokedata, value, stat)
 	database.savePokemon(message.author, pokedata)
 
 	if stat:
-		return await send("Raised {}-stage to {}!".format(stat, stage))
+		return await send("Raised {}-stage by {}!".format(stat, value))
 	else:
 		return await send("Raised all stages by {}!".format(value))
 

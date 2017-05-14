@@ -38,6 +38,11 @@ def createUser():
 		'balance': 0,
 		'cookies': 0,
 		'daily': 0,
+		'timestamps': {
+			'learn': 0,
+			'setpoke': 0,
+			'attack': 0,
+		},
 		'pokemon': None,
 		'hp': 0,
 		'caps': 0,
@@ -119,6 +124,21 @@ def setDailyTimestamp(member, timestamp):
 	userdata['daily'] = timestamp
 	saveUser(member, userdata)
 
+# Get user's timestamp of a given name
+def getTimestamp(member, stamp):
+	userdata = loadUser(member)
+	if stamp not in userdata['timestamps']:
+		raise Exception("'{}' is not a timestamp.".format(stamp))
+	return userdata['timestamps'][stamp]
+
+# Set user's timestamp of a given name
+def setTimestamp(member, stamp, time):
+	userdata = loadUser(member)
+	if stamp not in userdata['timestamps']:
+		raise Exception("'{}' is not a timestamp.".format(stamp))
+	userdata['timestamps'][stamp] = time
+	saveUser(member, userdata)
+
 
 # Load top list of balance
 def getTopList():
@@ -134,7 +154,7 @@ def getTopList():
 def createPokemon():
 	return {
 		'pokemon': '',
-		'status': '',
+		'status': [''],
 		'is_flinched': False,
 		'hp': 0,
 		'nature': '',
@@ -142,11 +162,8 @@ def createPokemon():
 		'ev': {},
 		'stage': {},
 		'moveset': [],
-		'setpoke-timestamp': 0,
-		'attack-timestamp': 0,
-		'learn-timestamp': 0,
 		'battles_won': 0,
-		'battles_lost': 0
+		'battles_lost': 0,
 	}
 
 # Save pokemon to database
@@ -226,4 +243,4 @@ def incPokemonBattlesLost(member, isMe=True):
 # Add one lost to the user
 def getPokemonBattleStats(member, isMe=True):
 	pokedata = loadPokemon(member, isMe)
-	return pokedata['battles_win'], pokedata['battles_lost']
+	return pokedata['battles_won'], pokedata['battles_lost']
