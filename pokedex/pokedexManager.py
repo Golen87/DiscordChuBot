@@ -241,6 +241,9 @@ def setAilement(pokedata, move):
 		if ailment not in pokedata['status']:
 			pokedata['status'].append(ailment)
 
+def turnCount(pokedata):
+	pokedata['turn_count'] = pokedata['turn_count'] + 1
+
 def attack(pokeAtk, pokeDef, move):
 	knowsMove(pokeAtk, move)
 	meta = getMoveMeta(move)
@@ -249,6 +252,14 @@ def attack(pokeAtk, pokeDef, move):
 	acc = getMoveAccuracy(move)
 	stats1 = getCurrentStats(pokeAtk)
 	stats2 = getCurrentStats(pokeDef)
+	if pokeAtk["status"][0] == 'sleep'
+		i = random.randint(1,100)
+		if (1 <= i <= 33) ^ (pokeAtk["turn_count"] == 3):
+			#something something log
+		else:
+			turnCount(pookeAtk)
+			#something something log
+			return None
 	if move not in unique:
 		if acc is None:
 			acc = 100

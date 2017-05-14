@@ -156,6 +156,7 @@ def createPokemon():
 		'pokemon': '',
 		'status': [''],
 		'is_flinched': False,
+		'turn_count': 0,
 		'hp': 0,
 		'nature': '',
 		'iv': {}, # Set by pokedexManager
