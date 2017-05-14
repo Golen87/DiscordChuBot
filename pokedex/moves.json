@@ -2857,7 +2857,7 @@
             "category": "ailment", 
             "max_turns": 15, 
             "drain": 0, 
-            "ailment": "poison", 
+            "ailment": "bad-poison", 
             "stat_chance": 0, 
             "flinch_chance": 0, 
             "healing": 0, 
