@@ -288,7 +288,8 @@ def raiseStage(pokedata, stage, stat=None):
 		return max(-6, min(6, value))
 	if stat:
 		stat = checkStageStat(stat)
-		return clamp(pokedata['stage'][stat] + stage)
+		pokedata['stage'][stat] = clamp(pokedata['stage'][stat] + stage)
+		return pokedata['stage'][stat]
 	else:
 		pokedata['stage'] = {stat: clamp(pokedata['stage'][stat] + stage) for stat in stageStats}
 		return pokedata['stage']['Attack']
