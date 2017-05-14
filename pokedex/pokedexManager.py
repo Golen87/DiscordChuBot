@@ -253,11 +253,14 @@ def attack(pokeAtk, pokeDef, move):
 	stats1 = getCurrentStats(pokeAtk)
 	stats2 = getCurrentStats(pokeDef)
 	if pokeAtk["status"][0] == 'sleep'
+	if pokeAtk["status"][0] == 'sleep':
 		i = random.randint(1,100)
 		if (1 <= i <= 33) ^ (pokeAtk["turn_count"] == 3):
+			pass
 			#something something log
 		else:
 			turnCount(pookeAtk)
+			turnCount(pokeAtk)
 			#something something log
 			return None
 	if move not in unique:
