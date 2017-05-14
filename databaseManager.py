@@ -154,6 +154,7 @@ def getTopList():
 def createPokemon():
 	return {
 		'pokemon': '',
+		'title': '',
 		'status': [''],
 		'is_flinched': False,
 		'turn_count': 0,
@@ -197,7 +198,7 @@ def getPokemonValue(member, key, isMe=True):
 
 # Get user's pokemon's name
 def getPokemonName(member, isMe=True):
-	return getPokemonValue(member, 'pokemon', isMe)
+	return getPokemonValue(member, 'title', isMe)
 
 # Get user's pokemon's health
 def getPokemonHp(member, isMe=True):

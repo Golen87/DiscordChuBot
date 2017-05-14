@@ -378,11 +378,11 @@ async def test(message, send):
 async def setpoke(message, send):
 	content = getContent(message)
 
-	pokemon = pokedex.getPokemonName(content)
+	name = pokedex.findPokemonName(content, True)
 	pokedata = database.createPokemon()
-	pokedex.initPokemon(pokedata, pokemon)
+	pokedex.initPokemon(pokedata, name)
 	database.savePokemon(message.author, pokedata)
-	m = '{} is now {} **{}**.'.format(getNick(message.author), aOrAn(pokemon), pokemon)
+	m = '@user is now {} @pokemon.'.format(aOrAn(name))
 	return await send(m)
 
 # Check what pokemon a user is

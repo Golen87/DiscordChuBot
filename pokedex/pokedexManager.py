@@ -12,9 +12,9 @@ def loadJson(path):
 		with open(path) as f:
 			database = json.load(f)
 			return database
-	return {}
+	raise Exception("Couldn't open database '{}'!".format(path))
 
-pokedexDB = loadJson("pokedex/pokedex.json")
+pokedexDB = loadJson("pokedex/pokemon.json")
 movesDB = loadJson("pokedex/moves.json")
 itemsDB = loadJson("pokedex/items.json")
 
@@ -23,41 +23,60 @@ itemsDB = loadJson("pokedex/items.json")
 
 # Initialize pokemon datablob by setting start vales and randomizing
 def initPokemon(pokedata, pokemon):
-	pokedata['pokemon'] = getPokemonName(pokemon)
+	rawdata = getPokemonData(pokemon)
+	pokedata['pokemon'] = rawdata['name']
+	pokedata['title'] = rawdata['title']
+	pokedata['hp'] = rawdata['stats']['HP']
 	pokedata['status'] = ['']
 	pokedata['nature'] = random.choice(list(natures.keys()))
 	pokedata['iv'] = {stat: random.randint(0,31) for stat in stats}
 	pokedata['ev'] = {stat: 0 for stat in stats}
 	pokedata['stage'] = {stat: 0 for stat in stageStats}
 	pokedata['moveset'] = [None for m in range(4)]
-	pokedata['hp'] = getCurrentStats(pokedata, 'HP')
 
+
+# Return a unique pokemon name by searching
+def findPokemonName(name, rnd=False):
+	std = lambda x:x.replace('-',' ').lower()
+	name = std(name)
+
+	result = []
+	for pokemon in pokedexDB:
+		if name == std(pokemon["species"]):
+			result.append(pokemon)
+		if name == std(pokemon["name"]) or name == std(pokemon["title"]):
+			return pokemon["name"]
+	if not result:
+		raise UserWarning("@mention Invalid name. I don't recognize that Pokemon!")
+
+	if rnd:
+		return random.choice(result)['name']
+	return result[0]["name"]
 
 # Return json data of pokemon by given name
 def getPokemonData(name, field=None):
-	name = name.lower()
+	print('In getPokemondata', name)
 	for pokemon in pokedexDB:
-		if name == pokemon["name"].lower():
+		if name == pokemon['name']:
 			if field:
 				if field in pokemon:
 					return pokemon[field]
-				raise UserWarning("@mention Invalid field. Some data is missing in the database!")
+				raise UserWarning("@mention Invalid field. '{}' is missing in the database!".format(field))
 			return pokemon
 	raise UserWarning("@mention Invalid name. I don't recognize that Pokemon!")
 
 def getPokemonName(name):
-	return getPokemonData(name, "name")
-
+	return getPokemonData(name, 'title')
 
 def getPokemonStats(name, stat=None):
-	base = getPokemonData(name, "base")
+	base = getPokemonData(name, "stats")
 	if stat:
 		stat = checkStat(stat)
 		return base[stat]
 	return base
 
 def getPokemonType(name):
-	return getPokemonData(name, "type")
+	return getPokemonData(name, "types")
 
 
 ## Move data ##
