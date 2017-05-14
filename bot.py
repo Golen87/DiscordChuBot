@@ -400,6 +400,7 @@ async def whatis(message, send):
 async def attack(message, send):
 	content = getContent(message)
 
+	log = ''
 	# !attack USER with MOVE
 	result = re.search('(.*)\swith\s(.*)', content)
 	if not result:
@@ -448,39 +449,19 @@ async def attack(message, send):
 				return
 		else:
 			return
-
-	damage = pokedex.attack(pokedataAtk, pokedataDef, move)
-	database.savePokemon(user, pokedataDef)
-	database.savePokemon(message.author, pokedataAtk)
-	if damage == None:
-		return await send("@poss @pokemon is now **{}**!".format(pokedataDef["status"]))
-
-	newHp = max(0, database.getPokemonHp(user) - damage)
-	database.setPokemonHp(user, newHp)
-	print(newHp)
-	m = ''
-	effect = pokedex.typeAdvantage(pokedataDef, move)
-	if effect >= 2:
-		m += "It's super effective! "
-	if 0 < effect <= 0.5:
-		m += "It's not very effective... "
-	if effect == 0:
-		m += "It has no effect on **{}**! ".format(database.getPokemonName(user))
-
-	if damage != 0:
-		m += '{} took ({}) damage! '.format(user.mention, damage)
-		if maxHp != newHp:
-			m += 'They now have ({}/{}) hp! '.format(newHp, maxHp)
-
-		if newHp == 0:
+			
+	log = pokedex.attack(pokedataAtk, pokedataDef, move, log)
+	
+	if pokedataDef['hp'] == 0:
 			won = database.incPokemonBattlesWon(message.author)
 			database.incPokemonBattlesLost(user, False)
-			m += "Your opponent fainted! "
+			log += "Your opponent fainted! "
 			if won > 0 and won % 10 == 0:
 				database.incCaps(message.author)
-				m += "This victory earned you a bottlecap! Use it to `!hypertrain`."
-
-	return await send(m)
+				log += "This victory earned you a bottlecap! Use it to `!hypertrain`."
+	database.savePokemon(user, pokedataDef)
+	database.savePokemon(message.author, pokedataAtk)
+	return await send(log)
 
 async def battles(message, send):
 	wins, losses = database.getPokemonBattleStats(message.author)
