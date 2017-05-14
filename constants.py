@@ -6,6 +6,10 @@ DailyCooldown = 60 * 60 * 21
 DailyReward = 100
 DailyCookieChance = 0.1
 
+AttackCooldown = 10
+LearnCooldown = 1
+SetpokeCooldown = 1
+
 
 colors = True
 
