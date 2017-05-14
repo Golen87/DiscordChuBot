@@ -438,7 +438,7 @@ async def attack(message, send):
 			return
 	newHp = max(0, database.getPokemonHp(user) - damage)
 	database.setPokemonHp(user, newHp)
-
+	print(newHp)
 	m = ''
 	effect = pokedex.typeAdvantage(pokedataDef, move)
 	if effect >= 2:
