@@ -445,6 +445,7 @@ def getCurrentStats(pokedata, stat=None):
 	if stat:
 		stat = checkStat(stat)
 		base = getPokemonStats(pokedata['pokemon'], stat)
+		name = pokedata['pokemon']
 		nature = pokedata['nature']
 		iv = pokedata['iv'][stat]
 		ev = pokedata['ev'][stat]
@@ -454,6 +455,8 @@ def getCurrentStats(pokedata, stat=None):
 		if stat == 'Speed':
 			if pokedata["status"][0] == 'paralysis':
 				current = math.floor(current/2.0)
+		if name == 'shedinja' and stat == 'HP':
+			current = 1
 		return current
 	else:
 		return {s: getCurrentStats(pokedata, s) for s in stats}

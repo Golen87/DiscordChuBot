@@ -400,7 +400,7 @@ async def whatis(message, send):
 async def attack(message, send):
 	a, b = False, False
 	content = getContent(message)
-	log = ''
+	log = ' '
 	# !attack USER with MOVE
 	result = re.search('(.*)\swith\s(.*)', content)
 	if not result:
@@ -459,7 +459,7 @@ async def attack(message, send):
 			if won > 0 and won % 10 == 0:
 				database.incCaps(message.author)
 				log += "This victory earned you a bottlecap! Use it to `!hypertrain`. "
-				a = True
+			a = True
 	if pokedataAtk['hp'] == 0:
 			won = database.incPokemonBattlesWon(user)
 			database.incPokemonBattlesLost(message.author, False)
@@ -467,7 +467,7 @@ async def attack(message, send):
 			if won > 0 and won % 10 == 0:
 				database.incCaps(user)
 				log += "This victory earned your enemy a bottlecap! They can it to `!hypertrain`. "
-				b = True
+			b = True
 	if a and b:
 		log += "A draw!"
 	database.savePokemon(user, pokedataDef)
