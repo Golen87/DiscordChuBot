@@ -240,7 +240,7 @@ def flinchAttack(pokedata, move):
 	if 1 <= i <= flinch:
 		pokedata['is_flinched'] = True
 
-def stageAttack(pokedata, move):
+def stageAttack(pokedata, move, log, attacker=True):
 	meta = getMoveMeta(move)
 	chance = meta['stat_chance']
 	i = random.randint(1, 100)
@@ -248,7 +248,10 @@ def stageAttack(pokedata, move):
 		for stat in getMoveData(move)["stat_changes"]:
 			stage = getMoveData(move)["stat_changes"][stat]
 
-			raiseStage(pokedata, stage, stat)
+			log = raiseStage(pokedata, stage, stat, log, attacker)
+			return log
+	else:
+		return log
 
 def setAilement(pokedata, move, log):
 	meta = getMoveMeta(move)
@@ -267,7 +270,7 @@ def setAilement(pokedata, move, log):
 			if ailment == 'sleep':
 				log += "The target fell asleep! "
 			if ailment == 'paralysis':
-				log += "The target got paralysed. It's maybe nable to move! "
+				log += "The target got paralysed. It's maybe unable to move! "
 			return log
 		else:
 			log += "The move failed! "
@@ -379,9 +382,9 @@ def attack(pokeAtk, pokeDef, move, log):
 				flinchAttack(pokeDef, move)
 				log = ailementAttack(pokeDef, move, log)
 				if meta['category'] == 'damage+lower':
-					stageAttack(pokeDef, move)
+					log = stageAttack(pokeDef, move, log, False)
 				if meta['category'] == 'damage+raise':
-					stageAttack(pokeAtk, move)
+					log = stageAttack(pokeAtk, move, log)
 				log = dotDmg(pokeAtk, log)
 				return log
 			else:
@@ -427,7 +430,7 @@ def getCurrentStats(pokedata, stat=None):
 		iv = pokedata['iv'][stat]
 		ev = pokedata['ev'][stat]
 		basic = 60.0 if stat == 'HP' else 5.0
-		current = (base + iv/2.0 + ev/8.0 + basic) * natureMod(nature, stat)
+		current = (math.floor(base + iv/2.0 + math.floor(ev/4.0)/2.0) + basic) * natureMod(nature, stat)
 		current = math.floor(current)
 		if stat == 'Speed':
 			if pokedata["status"][0] == 'paralysis':
@@ -474,15 +477,22 @@ def maxIV(pokedata, stat=None):
 	else:
 		pokedata['iv'] = {stat: 31 for stat in stats}
 
-def raiseStage(pokedata, stage, stat=None):
-	def clamp(value):
-		return max(-6, min(6, value))
-	if stat:
-		stat = checkStageStat(stat)
-		pokedata['stage'][stat] = clamp(pokedata['stage'][stat] + stage)
-	else:
-		pokedata['stage'] = {stat: clamp(pokedata['stage'][stat] + stage) for stat in stageStats}
-
+def raiseStage(pokedata, value, stat, log=[], attacker=True):
+	def clamp(num):
+		newNum = max(-6, min(6, num + value))
+		return newNum, newNum - num
+	stat = checkStageStat(stat)
+	pokedata['stage'][stat], diff = clamp(pokedata['stage'][stat])
+	adv = ["", "", " sharply", " drastically"]
+	name = '@attacker' if attacker else '@defender'
+	if diff == 0:
+		log += name + " cannot {} its {} any further.".format(["lower", "raise"][value>0], stat)
+	if diff > 0:
+		log += name + "'s {} rose{}!".format(stat, adv[abs(diff)])
+	if diff < 0:
+		log += name + "'s {}{} fell!".format(stat, adv[abs(diff)])
+	return log
+		
 def resetStage(pokedata, stat=None):
 	if stat:
 		stat = checkStageStat(stat)
