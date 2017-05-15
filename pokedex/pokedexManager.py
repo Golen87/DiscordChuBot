@@ -26,13 +26,13 @@ def initPokemon(pokedata, pokemon):
 	rawdata = getPokemonData(pokemon)
 	pokedata['pokemon'] = rawdata['name']
 	pokedata['title'] = rawdata['title']
-	pokedata['hp'] = rawdata['stats']['HP']
 	pokedata['status'] = ['']
 	pokedata['nature'] = random.choice(list(natures.keys()))
 	pokedata['iv'] = {stat: random.randint(0,31) for stat in stats}
 	pokedata['ev'] = {stat: 0 for stat in stats}
 	pokedata['stage'] = {stat: 0 for stat in stageStats}
 	pokedata['moveset'] = [None for m in range(4)]
+	pokedata['hp'] = getCurrentStats(pokedata, 'HP')
 
 
 # Return a unique pokemon name by searching
