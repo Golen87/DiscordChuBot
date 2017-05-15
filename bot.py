@@ -630,7 +630,9 @@ commandlist = {
 
 
 # Token
-client.run('...')
+with open('token.txt') as f:
+	token = f.readlines()[0].strip()
+client.run(token)
 
 # To add bot to server, see https://discordapp.com/developers/docs/topics/oauth2
 # There is a link to the "add to server" API under "Adding bots to guilds"
