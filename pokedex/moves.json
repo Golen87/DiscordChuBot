@@ -7683,12 +7683,11 @@
         "effect_short": "Has a $effect_chance% chance to raise all of the user's stats by one stage.", 
         "effect_chance": 10, 
         "stat_changes": {
-            "Sp.Atk": 1, 
-            "Sp.Def": 1, 
-            "HP": 1, 
+            "Speed": 1, 
             "Attack": 1, 
             "Defense": 1, 
-            "Speed": 1
+            "Sp.Def": 1, 
+            "Sp.Atk": 1
         }, 
         "effect": "Inflicts regular damage. Has a $effect_chance% chance to raise all of the user's stats one stage.", 
         "id": 246, 
@@ -9951,12 +9950,11 @@
         "effect_short": "Has a $effect_chance% chance to raise all of the user's stats by one stage.", 
         "effect_chance": 10, 
         "stat_changes": {
-            "Sp.Atk": 1, 
-            "Sp.Def": 1, 
-            "HP": 1, 
+            "Speed": 1, 
             "Attack": 1, 
             "Defense": 1, 
-            "Speed": 1
+            "Sp.Def": 1, 
+            "Sp.Atk": 1
         }, 
         "effect": "Inflicts regular damage. Has a $effect_chance% chance to raise all of the user's stats one stage.", 
         "id": 318, 
@@ -14609,12 +14607,11 @@
         "effect_short": "Has a $effect_chance% chance to raise all of the user's stats by one stage.", 
         "effect_chance": 10, 
         "stat_changes": {
-            "Sp.Atk": 1, 
-            "Sp.Def": 1, 
-            "HP": 1, 
+            "Speed": 1, 
             "Attack": 1, 
             "Defense": 1, 
-            "Speed": 1
+            "Sp.Def": 1, 
+            "Sp.Atk": 1
         }, 
         "effect": "Inflicts regular damage. Has a $effect_chance% chance to raise all of the user's stats one stage.", 
         "id": 466, 
