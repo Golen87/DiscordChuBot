@@ -396,16 +396,15 @@ async def whatis(message, send):
 
 # Attack user's pokemon with a selected move
 async def attack(message, send):
-	a, b = False, False
 	content = getContent(message)
-	log = ' '
+
 	# !attack USER with MOVE
 	result = re.search('(.*)\swith\s(.*)', content)
 	if not result:
 		return await send(commandlist[getCommand(message)][1])
 
 	user = findMember(message, result.group(1))
-	move = pokedex.getMoveName(result.group(2))
+	move = pokedex.getMoveByName(result.group(2))
 	pokedataAtk = database.loadPokemon(message.author)
 	if message.author != user:
 		pokedataDef = database.loadPokemon(user, False)
@@ -447,29 +446,34 @@ async def attack(message, send):
 				return
 		else:
 			return
-			
-	log = pokedex.attack(pokedataAtk, pokedataDef, log, move)
-	
+
+	log = []
+	pokedex.attack(pokedataAtk, pokedataDef, log, move)
+
+	a,b = False,False
 	if pokedataDef['hp'] == 0:
 			won = database.incPokemonBattlesWon(message.author)
 			database.incPokemonBattlesLost(user, False)
-			log += "Your opponent fainted! "
+			log += ["Your opponent fainted!"]
 			if won > 0 and won % 10 == 0:
 				database.incCaps(message.author)
-				log += "This victory earned you a bottlecap! Use it to `!hypertrain`. "
+				log += ["This victory earned you a bottlecap! Use it to `!hypertrain`."]
 			a = True
 	if pokedataAtk['hp'] == 0:
 			won = database.incPokemonBattlesWon(user)
 			database.incPokemonBattlesLost(message.author, False)
-			log += "You fainted! "
+			log += ["You fainted!"]
 			if won > 0 and won % 10 == 0:
 				database.incCaps(user)
-				log += "This victory earned your enemy a bottlecap! They can it to `!hypertrain`. "
+				log += ["This victory earned your enemy a bottlecap! They can it to `!hypertrain`."]
 			b = True
 	if a and b:
-		log += "A draw!"
+		log += ["A draw!"]
 	database.savePokemon(user, pokedataDef)
 	database.savePokemon(message.author, pokedataAtk)
+
+	log = '\n'.join(log)
+	log = log.replace('@opponent', '**{}**'.format(database.getPokemonName(user)))
 	return await send(log)
 
 async def battles(message, send):
@@ -503,7 +507,7 @@ async def learnmove(message, send):
 		movename = content
 		slot = None
 
-	move = pokedex.getMoveName(movename)
+	move = pokedex.getMoveByName(movename)
 
 	pokemon = database.getPokemonName(message.author)
 
