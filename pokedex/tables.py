@@ -82,3 +82,41 @@ natures = {
 
 #
 unique = []
+
+ailments = ['burn', 'freeze', 'poison', 'bad-poison', 'sleep', 'paralysis']
+"confusion"
+
+# Ailment
+ailmentMessages = {
+	"paralysis": [
+		["@opponent is paralyzed! It may be unable to move!"],
+		["@opponent is paralyzed! It can't move!"],
+	],
+	"sleep": [
+		["@opponent fell asleep!"],
+		["@opponent is fast asleep!"],
+		["@opponent woke up!"],
+	],
+	"freeze": [
+		["@opponent was frozen solid!"],
+		["@opponent is frozen solid!"],
+		["@opponent thawed out!"],
+	],
+	"burn": [
+		["@opponent was burned!"],
+		["@opponent is hurt by its burn!"],
+	],
+	"poison": [
+		["@opponent was poisoned!"],
+		["@opponent is hurt by poison!"],
+	],
+	"bad-poison": [
+		["@opponent was badly poisoned!"],
+		["@opponent is hurt by poison!"],
+	],
+	"confusion": [
+		["@opponent became confused!"],
+		["@opponent is confused!", "It hurt itself in its confusion!"],
+		["@opponent is confused!", "@opponent snapped out of its confusion!"],
+	],
+}

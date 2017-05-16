@@ -4,6 +4,7 @@ import os.path
 import math
 
 from pokedex.tables import *
+from pokedex.Move import Move
 
 
 # Load json database directly
@@ -42,6 +43,8 @@ def findPokemonName(name, rnd=False):
 
 	result = []
 	for pokemon in pokedexDB:
+		if name == 'random':
+			result.append(pokemon)
 		if name == std(pokemon["species"]):
 			result.append(pokemon)
 		if name == std(pokemon["name"]) or name == std(pokemon["title"]):
@@ -55,7 +58,6 @@ def findPokemonName(name, rnd=False):
 
 # Return json data of pokemon by given name
 def getPokemonData(name, field=None):
-	print('In getPokemondata', name)
 	for pokemon in pokedexDB:
 		if name == pokemon['name']:
 			if field:
@@ -81,65 +83,46 @@ def getPokemonType(name):
 
 ## Move data ##
 
-# Return json data of move by given name
-def getMoveData(name, field=None):
-	name = name.lower()
-	for move in movesDB:
-		if name == move["title"].lower():
-			if field:
-				if field in move:
-					return move[field]
-				raise UserWarning("@mention Invalid field. '{}' is missing in the database!".format(field))
-			return move
+# Return Move object from fuzzy name
+def getMoveByName(name, pokemon=None):
+	simplify = lambda x:x.replace('-',' ').lower()
+	name = simplify(name)
+
+	if name == 'random' and pokemon:
+		pokename = findPokemonName(pokemon)
+		movename = random.choice(getPokemonData(pokename)['moves'])
+		return getMoveByName(movename)
+
+	for movedata in movesDB:
+		if name in [simplify(movedata["name"]), simplify(movedata["title"])]:
+			return Move(movedata)
 	raise UserWarning("@mention Invalid name. I don't recognize that move!")
-
-def getMoveName(name):
-	return getMoveData(name, "title")
-
-def getMoveType(name):
-	return getMoveData(name, "type")
-
-def getMoveMeta(name):
-	return getMoveData(name, "meta")
-
-def getMovePower(name):
-	power = getMoveData(name, "power")
-	if not power:
-		return 0
-	return power
-
-def getMoveCategory(name):
-	return getMoveData(name, "damage_class")
-
-def getMoveAccuracy(name):
-	return getMoveData(name, "accuracy")
 
 # Return whether a pokemon may learn a move
 def canLearnMove(pokemon, move):
-	moveid = getMoveData(move)['id']
-	sets = getPokemonData(pokemon)['skills'].values()
-	for moves in sets:
-		if moveid in moves:
-			return True
-	raise UserWarning("**{}** is not able to learn **{}**!".format(getPokemonName(pokemon), move))
+	moves = getPokemonData(pokemon)['moves']
+	if move.getName() in moves:
+		return True
+	raise UserWarning("@pokemon is not able to learn **{}**!".format(move))
 
 # Return whether a pokemon knows a move
 def knowsMove(pokedata, move):
-	return move in pokedata['moveset']
+	return move.getTitle() in pokedata['moveset']
 
 # Add new move to the pokemon's moveset
 def learnMove(pokedata, move, slot=None):
 	if knowsMove(pokedata, move):
 		raise UserWarning("**{0}** already knows **{1}**!".format(pokedata['title'], move))
 
+	canLearnMove(pokedata['pokemon'], move)
 	if slot:
 		oldMove = pokedata['moveset'][slot-1]
-		pokedata['moveset'][slot-1] = move
+		pokedata['moveset'][slot-1] = move.getTitle()
 		return oldMove
 	else:
 		for m in range(4):
 			if not pokedata['moveset'][m]:
-				pokedata['moveset'][m] = move
+				pokedata['moveset'][m] = move.getTitle()
 				return None
 	m = "**{0}** wants to learn **{1}** but **{0}** already knows 4 moves! ".format(pokedata['title'], move)
 	m += "To make space for **{0}**, use `!learnmove *move* *1–4*`!".format(move)
@@ -156,7 +139,7 @@ def typeChart(atkType, defType):
 def typeAdvantage(pokedata, move):
 	name = pokedata['pokemon']
 	t1 = getPokemonType(name)[0]
-	m = getMoveType(move)
+	m = move.getType()
 	t1 = types.index(t1)
 	m = types.index(m)
 	a = effChart[m][t1]
@@ -171,8 +154,7 @@ def typeAdvantage(pokedata, move):
 	return effectiveness
 
 def critMod(move):
-	meta = getMoveMeta(move)
-	critstage = meta['crit_rate']	#add item stuff to that as well sometimes later
+	critstage = move.getCritRate() #add item stuff to that as well sometimes later
 	if critstage == 0:
 		return 400
 	if critstage == 1:
@@ -185,20 +167,19 @@ def critMod(move):
 def modifier(pokedata1, pokedata2, move):
 	eff = typeAdvantage(pokedata2, move)
 	name = pokedata1['pokemon']
-	meta = getMoveMeta(move)
 	critchance = critMod(move)
 	i = random.randint(1,critchance)
 	rand = random.randint(85,100)
 	rand = rand/100
-	owo = getMoveCategory(move) == "physical"
+	owo = move.getDamageClass() == "physical"
 	stab = 1
 	burn = 1
 	crit = 1
-	if getPokemonType(name) == getMoveType(move):
+	if getPokemonType(name) == move.getType():
 		stab = 1.5
 	if ((pokedata1['status'] == 'burn') and owo):
 		burn = 0.5
-	if 1 <= i <= 25 and getMoveName(move) != 'is_confused':
+	if 1 <= i <= 25 and move.getName() != 'is_confused':
 		crit = 1.5
 	mod = eff * rand * stab * burn * crit
 	return mod
@@ -221,119 +202,101 @@ def stageMod(pokedata, stat):
 			s = 3.0/(3.0 - stage)
 			return s
 
-def ailementAttack(pokedata, move, log):
-	meta = getMoveMeta(move)
-	ailment = meta['ailment']
-	chance = meta['ailment_chance']
+def ailmentAttack(pokedata, move, log):
+	ailment = move.getAilment()
+	chance = move.getAilmentChance()
 	i = random.randint(1, 100)
 	if 1 <= i <= chance:
 		if ailment in ('burn', 'freeze', 'poison', 'bad-poison', 'sleep', 'paralysis'):
 			if pokedata['status'][0] == '':
 				pokedata['status'][0] = ailment
 				if ailment == 'burn':
-					log += "The target caught on fire! "
+					log += ["The target caught on fire!"]
 				if ailment == 'freeze':
-					log += "The target froze solid! "
+					log += ["The target froze solid!"]
 				if ailment == 'poison':
-					log += "The target got poisoned! "
+					log += ["The target got poisoned!"]
 				if ailment == 'bad-poison':
-					log += "The target got badly poisoned! "
+					log += ["The target got badly poisoned!"]
 				if ailment == 'sleep':
-					log += "The target fell asleep! "
+					log += ["The target fell asleep!"]
 				if ailment == 'paralysis':
-					log += "The target got paralysed. It's maybe nable to move! "
-				return log
+					log += ["@opponent is paralysed! It can't move!"]
 		else:
 			if ailment not in pokedata['status']:
 				pokedata['status'].append(ailment)
 				if ailment == 'confusion':
-					log += "The target got confused! "
-				return log
-			else:
-				return log
-	else:
-		return log
+					log += ["The target got confused!"]
 
 def flinchAttack(pokedata, move):
-	meta = getMoveMeta(move)
-	flinch = meta['flinch_chance']
+	flinch = move.getFlinchChance()
 	i = random.randint(1, 100)
 	if 1 <= i <= flinch:
 		pokedata['is_flinched'] = True
 
 def stageAttack(pokedata, move, log, attacker=True):
-	meta = getMoveMeta(move)
-	chance = meta['stat_chance']
+	chance = move.getStatChance()
 	i = random.randint(1, 100)
 	if 1 <= i <= chance:
-		for stat in getMoveData(move)["stat_changes"]:
-			stage = getMoveData(move)["stat_changes"][stat]
+		for stat in move.getData()["stat_changes"]:
+			stage = move.getData()["stat_changes"][stat]
 
-			log = raiseStage(pokedata, stage, stat, log, attacker)
-			return log
-	else:
-		return log
+			raiseStage(pokedata, stage, stat, log, attacker)
 
-def setAilement(pokedata, move, log):
-	meta = getMoveMeta(move)
-	ailment = meta['ailment']
+def setAilment(pokedata, move, log):
+	ailment = move.getAilment()
 	type = getPokemonType(pokedata['pokemon'])
-	print('inailement', type)
 	if ailment in ('burn', 'freeze', 'poison', 'bad-poison', 'sleep', 'paralysis'):
 		if pokedata['status'][0] == '':
 			if ailment == 'burn':
 				pokedata['status'][0] = ailment
-				log += "The target caught on fire! "
+				log += ["The target caught on fire!"]
 			if ailment == 'freeze':
 				pokedata['status'][0] = ailment
-				log += "The target froze solid! "
+				log += ["The target froze solid!"]
 			if ailment == 'poison' and type not in ['poison', 'steel']:
 				pokedata['status'][0] = ailment
-				log += "The target got poisoned! "
+				log += ["The target got poisoned!"]
 			if ailment == 'poison' and type not in ['poison', 'steel']:
 				pokedata['status'][0] = ailment
-				log += "The target got badly poisoned! "
+				log += ["The target got badly poisoned!"]
 			if ailment == 'sleep':
 				pokedata['status'][0] = ailment
-				log += "The target fell asleep! "
+				log += ["The target fell asleep!"]
 			if (ailment == 'paralysis') and ('electric' not in type):
 				pokedata['status'][0] = ailment
-				log += "The target got paralysed. It's maybe unable to move! "
+				log += ["The target got paralysed. It's maybe unable to move!"]
 			else:
-				log += "The move failed! "
-			return log
+				log += ["The move failed!"]
+			return
 		else:
-			log += "The move failed! "
-			return log
+			log += ["The move failed!"]
 	else:
 		if ailment not in pokedata['status']:
 			pokedata['status'].append(ailment)
 			if ailment == 'confusion':
-				log += "The target got confused! "
-			return log
-		else:
-			return log
+				log += ["The target got confused!"]
 
 def turnCount(pokedata):
 	pokedata['turn_count'][0] = pokedata['turn_count'][0] + 1
-		
+
 def dotDmg(pokedata, log):
 	if pokedata['status'][0] == 'poison':
 		stats = getCurrentStats(pokedata, 'HP')
 		dmg = math.floor(stats/8.0)
 		newHp = max(0, pokedata['hp'] - dmg)
 		pokedata['hp'] = newHp
-		log += "Your Pokemon got hurt by the poison. "
-		log += 'It now has ({}/{}) hp! '.format(newHp, stats)
-		return log
+		log += ["Your Pokemon got hurt by the poison."]
+		log += ['It now has ({}/{}) hp!'.format(newHp, stats)]
+		return
 	if pokedata['status'][0] == 'burn':
 		stats = getCurrentStats(pokedata, 'HP')
 		dmg = math.floor(stats/16.0)
 		newHp = max(0, pokedata['hp'] - dmg)
 		pokedata['hp'] = newHp
-		log += "Your Pokemon got hurt by the burn. "
-		log += 'It now has ({}/{}) hp! '.format(newHp, stats)
-		return log
+		log += ["Your Pokemon got hurt by the burn."]
+		log += ['It now has ({}/{}) hp!'.format(newHp, stats)]
+		return
 	if pokedata['status'][0] == 'bad-poison':
 		n = 1.0 + pokedata['turn_count']
 		stats = getCurrentStats(pokedata, 'HP')
@@ -341,21 +304,15 @@ def dotDmg(pokedata, log):
 		newHp = max(0, pokedata['hp'] - dmg)
 		pokedata['hp'] = newHp
 		turnCount(pokedata)
-		log += "Your Pokemon got hurt by the poison. "
-		log += 'It now has ({}/{}) hp! '.format(newHp, stats)
-		return log
-	else:
-		return log
-		
+		log += ["Your Pokemon got hurt by the poison."]
+		log += ['It now has ({}/{}) hp!'.format(newHp, stats)]
+		return
+
 def attack(pokeAtk, pokeDef, log, move, confusion=False):
-	print(confusion)
-	print(pokeAtk, pokeDef, move)
 	if not confusion:
 		knowsMove(pokeAtk, move)
-	meta = getMoveMeta(move)
-	dclass = getMoveCategory(move)
-	power = getMovePower(move)
-	acc = getMoveAccuracy(move)
+	power = move.getPower()
+	acc = move.getAccuracy()
 	stats1 = getCurrentStats(pokeAtk)
 	stats2 = getCurrentStats(pokeDef)
 	if not confusion:
@@ -376,8 +333,8 @@ def attack(pokeAtk, pokeDef, log, move, confusion=False):
 	if pokeAtk["status"][0] == 'paralysis':
 		i = random.randint(1,100)
 		if (1 <= i <= 25):
-			log += "The Pokemon is paralyzed and couldn't move! "
-			return log
+			log += ["The Pokemon is paralyzed and couldn't move!"]
+			return
 		else:
 			pass
 	if pokeAtk["status"][0] == 'sleep':
@@ -385,25 +342,27 @@ def attack(pokeAtk, pokeDef, log, move, confusion=False):
 		if (1 <= i <= 33) or (pokeAtk["turn_count"][0] == 3):
 			pokeAtk["status"][0] = ''
 			pokeAtk["turn_count"][0] = 0
-			log += "The Pokemon woke up! "
+			log += ["The Pokemon woke up!"]
 		else:
 			turnCount(pokeAtk)
-			log += "The Pokemon is fast asleep. "
-			return log
+			log += ["The Pokemon is fast asleep."]
+			return
 	if pokeAtk["status"][0] == 'freeze':
 		i = random.randint(1,100)
 		if 1 <= i <= 20:
-			log += "The Pokemon thawed out! "
+			log += ["The Pokemon thawed out!"]
 		else:
-			log += "The Pokemon is frozen solid and couldn't move! "
-			return log
+			log += ["The Pokemon is frozen solid and couldn't move!"]
+			return
 	if move not in unique:
+		log += ["@pokemon used {}!".format(move)]
 		if acc is None:
 			acc = 100
 		else:
 			acc = acc * (stageMod(pokeAtk, 'Accuracy')/stageMod(pokeDef, 'Evasiveness'))
 		i = random.randint(1,100)
 		a, d = 1, 1
+		dclass = move.getDamageClass()
 		if dclass != "status":
 			if 1 <= i <= acc:
 				if dclass == "physical":
@@ -416,40 +375,40 @@ def attack(pokeAtk, pokeDef, log, move, confusion=False):
 				damage = math.floor(damage)
 				effect = typeAdvantage(pokeDef, move)
 				if effect >= 2:
-					log += "It's super effective! "
+					log += ["It's super effective!"]
 				if 0 < effect <= 0.5:
-					log += "It's not very effective... "
+					log += ["It's not very effective..."]
 				if effect == 0:
-					log += "It has no effect on **{}**! ".format(pokeDef['title'])
+					log += ["It has no effect on @opponent!"]
 				newHp = max(0, pokeDef['hp'] - damage)
 				pokeDef['hp'] = newHp
 				if move == "is_confused" and confusion:
-					log += "It hurt itself in confusion. "
+					log += ["It hurt itself in confusion."]
 				if damage != 0:
-					log += '{} took **{}** damage! '.format(pokeDef['title'], damage)
+					log += ['@opponent took **{}** damage!'.format(damage)]
 				if stats2['HP'] != newHp:
-					log += 'It now has ({}/{}) hp! '.format(newHp, stats2['HP'])
+					log += ['It now has ({}/{}) hp!'.format(newHp, stats2['HP'])]
 				flinchAttack(pokeDef, move)
-				log = ailementAttack(pokeDef, move, log)
-				if meta['category'] == 'damage+lower':
-					log = stageAttack(pokeDef, move, log, False)
-				if meta['category'] == 'damage+raise':
-					log = stageAttack(pokeAtk, move, log)
-				log = dotDmg(pokeAtk, log)
-				return log
+				ailmentAttack(pokeDef, move, log)
+				if move.getCategory() == 'damage+lower':
+					stageAttack(pokeDef, move, log, False)
+				if move.getCategory() == 'damage+raise':
+					stageAttack(pokeAtk, move, log, True)
+				dotDmg(pokeAtk, log)
+				return
 			else:
-				log += "The move missed! "
-				log = dotDmg(pokeAtk, log)
-				return log
-		if dclass == "status" and meta["category"] != "unique":
+				log += ["The move missed!"]
+				dotDmg(pokeAtk, log)
+				return
+		if dclass == "status" and "unique" not in move.getCategory():
 			if 1 <= i <= acc:
-				log = setAilement(pokeDef, move, log)
-				log = dotDmg(pokeAtk, log)
-				return log
+				setAilment(pokeDef, move, log)
+				dotDmg(pokeAtk, log)
+				return
 			else:
-				log += 'The attack missed! '
-				log = dotDmg(pokeAtk, log)
-				return log
+				log += ['The attack missed!']
+				dotDmg(pokeAtk, log)
+				return
 
 # Return stat(s) modifier for a nature
 def natureMod(nature, stat=None):
@@ -537,15 +496,14 @@ def raiseStage(pokedata, value, stat, log=[], attacker=True):
 	stat = checkStageStat(stat)
 	pokedata['stage'][stat], diff = clamp(pokedata['stage'][stat])
 	adv = ["", "", " sharply", " drastically"]
-	name = '@attacker' if attacker else '@defender'
+	name = '@attacker' if attacker else '@opponent'
 	if diff == 0:
-		log += name + " cannot {} its {} any further.".format(["lower", "raise"][value>0], stat)
+		log += [name + " cannot {} its {} any further.".format(["lower", "raise"][value>0], stat)]
 	if diff > 0:
-		log += name + "'s {} rose{}!".format(stat, adv[abs(diff)])
+		log += [name + "'s {} rose{}!".format(stat, adv[abs(diff)])]
 	if diff < 0:
-		log += name + "'s {}{} fell!".format(stat, adv[abs(diff)])
-	return log
-		
+		log += [name + "'s {}{} fell!".format(stat, adv[abs(diff)])]
+
 def resetStage(pokedata, stat=None):
 	if stat:
 		stat = checkStageStat(stat)
