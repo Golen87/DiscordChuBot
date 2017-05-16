@@ -43,6 +43,8 @@ def findPokemonName(name, rnd=False):
 
 	result = []
 	for pokemon in pokedexDB:
+		if name == 'random':
+			result.append(pokemon)
 		if name == std(pokemon["species"]):
 			result.append(pokemon)
 		if name == std(pokemon["name"]) or name == std(pokemon["title"]):
@@ -82,12 +84,14 @@ def getPokemonType(name):
 ## Move data ##
 
 # Return Move object from fuzzy name
-def getMoveByName(name):
+def getMoveByName(name, pokemon=None):
 	simplify = lambda x:x.replace('-',' ').lower()
 	name = simplify(name)
 
-	#if name == 'random':
-	#move = random.choice(movesDB)
+	if name == 'random' and pokemon:
+		pokename = findPokemonName(pokemon)
+		movename = random.choice(getPokemonData(pokename)['moves'])
+		return getMoveByName(movename)
 
 	for movedata in movesDB:
 		if name in [simplify(movedata["name"]), simplify(movedata["title"])]:
@@ -99,7 +103,7 @@ def canLearnMove(pokemon, move):
 	moves = getPokemonData(pokemon)['moves']
 	if move.getName() in moves:
 		return True
-	raise UserWarning("@pokemon is not able to learn **{}**!".format(getPokemonName(pokemon), move))
+	raise UserWarning("@pokemon is not able to learn **{}**!".format(move))
 
 # Return whether a pokemon knows a move
 def knowsMove(pokedata, move):
@@ -110,6 +114,7 @@ def learnMove(pokedata, move, slot=None):
 	if knowsMove(pokedata, move):
 		raise UserWarning("**{0}** already knows **{1}**!".format(pokedata['title'], move))
 
+	canLearnMove(pokedata['pokemon'], move)
 	if slot:
 		oldMove = pokedata['moveset'][slot-1]
 		pokedata['moveset'][slot-1] = move.getTitle()

@@ -507,9 +507,8 @@ async def learnmove(message, send):
 		movename = content
 		slot = None
 
-	move = pokedex.getMoveByName(movename)
-
 	pokemon = database.getPokemonName(message.author)
+	move = pokedex.getMoveByName(movename, pokemon)
 
 	#raise UserWarning("**{}** doesn't know that move yet. Use `!learnmove` to learn it!".format(pokedata['pokemon']))
 
