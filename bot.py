@@ -450,7 +450,7 @@ async def attack(message, send):
 		else:
 			return
 			
-	log = pokedex.attack(pokedataAtk, pokedataDef, move, log)
+	log = pokedex.attack(pokedataAtk, pokedataDef, log, move)
 	
 	if pokedataDef['hp'] == 0:
 			won = database.incPokemonBattlesWon(message.author)

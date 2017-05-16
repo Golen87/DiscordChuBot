@@ -157,13 +157,14 @@ def createPokemon():
 		'title': '',
 		'status': [''],
 		'is_flinched': False,
-		'turn_count': 0,
+		'turn_count': [0, 0],
 		'hp': 0,
 		'nature': '',
 		'iv': {}, # Set by pokedexManager
 		'ev': {},
 		'stage': {},
 		'moveset': [],
+		'item': '',
 		'battles_won': 0,
 		'battles_lost': 0,
 	}

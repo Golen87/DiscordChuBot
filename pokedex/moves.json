@@ -1,4 +1,35 @@
 [
+ {
+        "pp": 35, 
+        "name": "is_confused", 
+        "power": 40, 
+        "title": "is_confused", 
+        "effect_short": "Inflicts regular damage with no additional effect.", 
+        "effect_chance": null, 
+        "stat_changes": {}, 
+        "effect": "Inflicts regular damage.", 
+        "id": 0, 
+        "priority": 0, 
+        "damage_class": "physical", 
+        "meta": {
+            "category": "damage", 
+            "max_turns": null, 
+            "drain": 0, 
+            "ailment": "none", 
+            "stat_chance": 0, 
+            "flinch_chance": 0, 
+            "healing": 0, 
+            "ailment_chance": 0, 
+            "crit_rate": 0, 
+            "min_hits": null, 
+            "min_turns": null, 
+            "max_hits": null
+        }, 
+        "target": "selected-pokemon", 
+        "type": "normal", 
+        "flavor_text": "The target hurts itself.", 
+        "accuracy": null
+    }, 
     {
         "pp": 35, 
         "name": "pound", 

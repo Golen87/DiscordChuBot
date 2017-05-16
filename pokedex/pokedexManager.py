@@ -130,7 +130,7 @@ def knowsMove(pokedata, move):
 # Add new move to the pokemon's moveset
 def learnMove(pokedata, move, slot=None):
 	if knowsMove(pokedata, move):
-		raise UserWarning("**{0}** already knows **{1}**!".format(pokedata['pokemon'], move))
+		raise UserWarning("**{0}** already knows **{1}**!".format(pokedata['title'], move))
 
 	if slot:
 		oldMove = pokedata['moveset'][slot-1]
@@ -141,7 +141,7 @@ def learnMove(pokedata, move, slot=None):
 			if not pokedata['moveset'][m]:
 				pokedata['moveset'][m] = move
 				return None
-	m = "**{0}** wants to learn **{1}** but **{0}** already knows 4 moves! ".format(pokedata['pokemon'], move)
+	m = "**{0}** wants to learn **{1}** but **{0}** already knows 4 moves! ".format(pokedata['title'], move)
 	m += "To make space for **{0}**, use `!learnmove *move* *1–4*`!".format(move)
 	raise UserWarning(m)
 
@@ -166,6 +166,8 @@ def typeAdvantage(pokedata, move):
 		t2 = types.index(t2)
 		b = effChart[m][t2]
 		effectiveness *= b
+	if move == "is_confused":
+		effectiveness = 1
 	return effectiveness
 
 def critMod(move):
@@ -196,7 +198,7 @@ def modifier(pokedata1, pokedata2, move):
 		stab = 1.5
 	if ((pokedata1['status'] == 'burn') and owo):
 		burn = 0.5
-	if 1 <= i <= 25:
+	if 1 <= i <= 25 and getMoveName(move) != 'is_confused':
 		crit = 1.5
 	mod = eff * rand * stab * burn * crit
 	return mod
@@ -275,21 +277,30 @@ def stageAttack(pokedata, move, log, attacker=True):
 def setAilement(pokedata, move, log):
 	meta = getMoveMeta(move)
 	ailment = meta['ailment']
+	type = getPokemonType(pokedata['pokemon'])
+	print('inailement', type)
 	if ailment in ('burn', 'freeze', 'poison', 'bad-poison', 'sleep', 'paralysis'):
 		if pokedata['status'][0] == '':
-			pokedata['status'][0] = ailment
 			if ailment == 'burn':
+				pokedata['status'][0] = ailment
 				log += "The target caught on fire! "
 			if ailment == 'freeze':
+				pokedata['status'][0] = ailment
 				log += "The target froze solid! "
-			if ailment == 'poison':
+			if ailment == 'poison' and type not in ['poison', 'steel']:
+				pokedata['status'][0] = ailment
 				log += "The target got poisoned! "
-			if ailment == 'bad-poison':
+			if ailment == 'poison' and type not in ['poison', 'steel']:
+				pokedata['status'][0] = ailment
 				log += "The target got badly poisoned! "
 			if ailment == 'sleep':
+				pokedata['status'][0] = ailment
 				log += "The target fell asleep! "
-			if ailment == 'paralysis':
+			if (ailment == 'paralysis') and ('electric' not in type):
+				pokedata['status'][0] = ailment
 				log += "The target got paralysed. It's maybe unable to move! "
+			else:
+				log += "The move failed! "
 			return log
 		else:
 			log += "The move failed! "
@@ -304,7 +315,7 @@ def setAilement(pokedata, move, log):
 			return log
 
 def turnCount(pokedata):
-	pokedata['turn_count'] = pokedata['turn_count'] + 1
+	pokedata['turn_count'][0] = pokedata['turn_count'][0] + 1
 		
 def dotDmg(pokedata, log):
 	if pokedata['status'][0] == 'poison':
@@ -336,14 +347,32 @@ def dotDmg(pokedata, log):
 	else:
 		return log
 		
-def attack(pokeAtk, pokeDef, move, log):
-	knowsMove(pokeAtk, move)
+def attack(pokeAtk, pokeDef, log, move, confusion=False):
+	print(confusion)
+	print(pokeAtk, pokeDef, move)
+	if not confusion:
+		knowsMove(pokeAtk, move)
 	meta = getMoveMeta(move)
 	dclass = getMoveCategory(move)
 	power = getMovePower(move)
 	acc = getMoveAccuracy(move)
 	stats1 = getCurrentStats(pokeAtk)
 	stats2 = getCurrentStats(pokeDef)
+	if not confusion:
+		if 'confusion' in pokeAtk["status"]:
+			i = random.randint(1,100)
+			if (1 <= i <= 25) or (pokeAtk["turn_count"][1] == 4):
+				pokeAtk['turn_count'][1] = 0
+				pokeAtk['status'].remove('confusion')
+				log += "The Pokemon snapped out of its confusion. "
+			elif (1 <= i <= 67):
+				i = random.randint(1,100)
+				pokeAtk['turn_count'][1] += 1
+				log += "The Pokemon is confused. "
+			else:
+				pokeAtk['turn_count'][1] += 1
+				log += "The Pokemon is confused. "
+				return attack(pokeAtk, pokeAtk, log, move='is_confused', confusion=True)
 	if pokeAtk["status"][0] == 'paralysis':
 		i = random.randint(1,100)
 		if (1 <= i <= 25):
@@ -353,9 +382,9 @@ def attack(pokeAtk, pokeDef, move, log):
 			pass
 	if pokeAtk["status"][0] == 'sleep':
 		i = random.randint(1,100)
-		if (1 <= i <= 33) ^ (pokeAtk["turn_count"] == 3):
+		if (1 <= i <= 33) ^ (pokeAtk["turn_count"][0] == 3):
 			pokeAtk["status"][0] = ''
-			pokeAtk["turn_count"] = 0
+			pokeAtk["turn_count"][0] = 0
 			log += "The Pokemon woke up! "
 		else:
 			turnCount(pokeAtk)
@@ -391,11 +420,13 @@ def attack(pokeAtk, pokeDef, move, log):
 				if 0 < effect <= 0.5:
 					log += "It's not very effective... "
 				if effect == 0:
-					log += "It has no effect on **{}**! ".format(pokeDef['pokemon'])
+					log += "It has no effect on **{}**! ".format(pokeDef['title'])
 				newHp = max(0, pokeDef['hp'] - damage)
 				pokeDef['hp'] = newHp
+				if move == "is_confused" and confusion:
+					log += "It hurt itself in confusion. "
 				if damage != 0:
-					log += '{} took **{}** damage! '.format(pokeDef['pokemon'], damage)
+					log += '{} took **{}** damage! '.format(pokeDef['title'], damage)
 				if stats2['HP'] != newHp:
 					log += 'It now has ({}/{}) hp! '.format(newHp, stats2['HP'])
 				flinchAttack(pokeDef, move)
@@ -528,4 +559,4 @@ def restorePokemon(pokedata):
 	pokedata['hp'] = getCurrentStats(pokedata, 'HP')
 	resetStage(pokedata)
 	pokedata["status"] = ['']
-	pokedata['turn_count'] = 0
+	pokedata['turn_count'] = [0, 0]
