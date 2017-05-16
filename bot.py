@@ -40,7 +40,7 @@ async def on_message(message):
 
 	command = getCommand(message)
 	if command in commandlist:
-		send = lambda content : SEND(message, content)
+		send = lambda content : SEND(message, formatUserTags(message, content))
 		response = await checkArgs(message, send)
 		if not response:
 			try:
@@ -66,7 +66,7 @@ async def on_message_edit(oldMessage, newMessage):
 		if oldMessage.id == userMessage.id:
 			command = getCommand(newMessage)
 			if command in commandlist:
-				send = lambda content : EDIT(myMessage, content)
+				send = lambda content : EDIT(myMessage, formatUserTags(newMessage, content))
 				await send(random.choice(stuttering))
 				response = await checkArgs(newMessage, send)
 				if not response:
@@ -122,12 +122,10 @@ def formatUserTags(message, text):
 
 # Discord send_message
 async def SEND(message, content):
-	content = formatUserTags(message, content)
 	return await client.send_message(message.channel, content)
 
 # Discord edit_message
 async def EDIT(message, content):
-	content = formatUserTags(message, content)
 	return await client.edit_message(message, content)
 
 # Discord edit_message
