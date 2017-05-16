@@ -382,7 +382,7 @@ def attack(pokeAtk, pokeDef, log, move, confusion=False):
 			pass
 	if pokeAtk["status"][0] == 'sleep':
 		i = random.randint(1,100)
-		if (1 <= i <= 33) ^ (pokeAtk["turn_count"][0] == 3):
+		if (1 <= i <= 33) or (pokeAtk["turn_count"][0] == 3):
 			pokeAtk["status"][0] = ''
 			pokeAtk["turn_count"][0] = 0
 			log += "The Pokemon woke up! "
