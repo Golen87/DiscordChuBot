@@ -44,7 +44,6 @@ def createUser():
 			'attack': 0,
 		},
 		'pokemon': None,
-		'hp': 0,
 		'caps': 0,
 	}
 

@@ -418,7 +418,8 @@ async def attack(message, send):
 		raise UserWarning("Your @pokemon is unable to fight. Use `!heal` first!".format())
 
 	lastStamp = database.getTimestamp(message.author, 'attack')
-	remaining = AttackCooldown - (time.time() - lastStamp)
+	remaining = pokedex.setAttackTimer(pokedataAtk) - (time.time() - lastStamp)
+	print(time, pokedex.setAttackTimer(pokedataAtk))
 	if remaining > 0:
 		waitTime = getDurationString(remaining)
 		raise UserWarning('@mention Your attack refreshes in _{}_.'.format(waitTime))

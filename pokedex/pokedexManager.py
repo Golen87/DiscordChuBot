@@ -518,3 +518,9 @@ def restorePokemon(pokedata):
 	resetStage(pokedata)
 	pokedata["status"] = ['']
 	pokedata['turn_count'] = [0, 0]
+
+def setAttackTimer(pokedata):
+	mod = stageMod(pokedata, 'Speed')
+	speed = getCurrentStats(pokedata, 'Speed')
+	time = 30.0 - speed*mod/51.0
+	return time
