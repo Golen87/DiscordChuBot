@@ -5,6 +5,7 @@ import math
 
 from pokedex.tables import *
 from pokedex.Move import Move
+from pokedex.Pokemon import Pokemon
 
 
 # Load json database directly
@@ -24,9 +25,8 @@ itemsDB = loadJson("pokedex/items.json")
 
 # Initialize pokemon datablob by setting start vales and randomizing
 def initPokemon(pokedata, pokemon):
-	rawdata = getPokemonData(pokemon)
-	pokedata['pokemon'] = rawdata['name']
-	pokedata['title'] = rawdata['title']
+	pokedata['pokemon'] = pokemon.getName()
+	pokedata['title'] = pokemon.getTitle()
 	pokedata['status'] = ['']
 	pokedata['nature'] = random.choice(list(natures.keys()))
 	pokedata['iv'] = {stat: random.randint(0,31) for stat in stats}
@@ -36,61 +36,41 @@ def initPokemon(pokedata, pokemon):
 	pokedata['hp'] = getCurrentStats(pokedata, 'HP')
 
 
-# Return a unique pokemon name by searching
-def findPokemonName(name, rnd=False):
-	std = lambda x:x.replace('-',' ').lower()
-	name = std(name)
+## Return Pokemon object from fuzzy name
+# @param name: Pokemon name written by user
+# @param rnd: Whether to pick randomly in case of multiple results
+def getPokemonByName(name, rnd=False):
+	simplify = lambda x:x.replace('-',' ').lower()
+	name = simplify(name)
 
 	result = []
 	for pokemon in pokedexDB:
 		if name == 'random':
 			result.append(pokemon)
-		if name == std(pokemon["species"]):
+		if name == simplify(pokemon["species"]):
 			result.append(pokemon)
-		if name == std(pokemon["name"]) or name == std(pokemon["title"]):
-			return pokemon["name"]
+		if name == simplify(pokemon["name"]) or name == simplify(pokemon["title"]):
+			return Pokemon(pokemon)
 	if not result:
 		raise UserWarning("@mention Invalid name. I don't recognize that Pokemon!")
 
 	if rnd:
-		return random.choice(result)['name']
-	return result[0]["name"]
-
-# Return json data of pokemon by given name
-def getPokemonData(name, field=None):
-	for pokemon in pokedexDB:
-		if name == pokemon['name']:
-			if field:
-				if field in pokemon:
-					return pokemon[field]
-				raise UserWarning("@mention Invalid field. '{}' is missing in the database!".format(field))
-			return pokemon
-	raise UserWarning("@mention Invalid name. I don't recognize that Pokemon!")
-
-def getPokemonName(name):
-	return getPokemonData(name, 'title')
-
-def getPokemonStats(name, stat=None):
-	base = getPokemonData(name, "stats")
-	if stat:
-		stat = checkStat(stat)
-		return base[stat]
-	return base
-
-def getPokemonType(name):
-	return getPokemonData(name, "types")
+		return Pokemon(random.choice(result))
+	return Pokemon(result[0])
 
 
 ## Move data ##
 
-# Return Move object from fuzzy name
+## Return Move object from fuzzy name
+# @param name: Move name written by user
+# @param pokemon: What pokemon to pick random move from
 def getMoveByName(name, pokemon=None):
 	simplify = lambda x:x.replace('-',' ').lower()
 	name = simplify(name)
 
 	if name == 'random' and pokemon:
-		pokename = findPokemonName(pokemon)
-		movename = random.choice(getPokemonData(pokename)['moves'])
+		pokeobj = getPokemonByName(pokemon)
+		movename = random.choice(pokeobj.getMoves())
 		return getMoveByName(movename)
 
 	for movedata in movesDB:
@@ -99,9 +79,9 @@ def getMoveByName(name, pokemon=None):
 	raise UserWarning("@mention Invalid name. I don't recognize that move!")
 
 # Return whether a pokemon may learn a move
-def canLearnMove(pokemon, move):
-	moves = getPokemonData(pokemon)['moves']
-	if move.getName() in moves:
+def canLearnMove(name, move):
+	pokemon = getPokemonByName(name)
+	if move.getName() in pokemon.getMoves():
 		return True
 	raise UserWarning("@pokemon is not able to learn **{}**!".format(move))
 
@@ -137,15 +117,15 @@ def typeChart(atkType, defType):
 
 
 def typeAdvantage(pokedata, move):
-	name = pokedata['pokemon']
-	t1 = getPokemonType(name)[0]
+	pokemon = getPokemonByName(pokedata['pokemon'])
+	t1 = pokemon.getTypes()[0]
 	m = move.getType()
 	t1 = types.index(t1)
 	m = types.index(m)
 	a = effChart[m][t1]
 	effectiveness = a
-	if len(getPokemonType(name)) == 2:
-		t2 = getPokemonType(name)[1]
+	if len(pokemon.getTypes()) == 2:
+		t2 = pokemon.getTypes()[1]
 		t2 = types.index(t2)
 		b = effChart[m][t2]
 		effectiveness *= b
@@ -166,16 +146,16 @@ def critMod(move):
 
 def modifier(pokedata1, pokedata2, move):
 	eff = typeAdvantage(pokedata2, move)
-	name = pokedata1['pokemon']
+	pokemon = getPokemonByName(pokedata1['pokemon'])
 	critchance = critMod(move)
 	i = random.randint(1,critchance)
 	rand = random.randint(85,100)
-	rand = rand/100
+	rand = rand / 100
 	owo = move.getDamageClass() == "physical"
 	stab = 1
 	burn = 1
 	crit = 1
-	if getPokemonType(name) == move.getType():
+	if move.getType() in pokemon.getTypes():
 		stab = 1.5
 	if ((pokedata1['status'] == 'burn') and owo):
 		burn = 0.5
@@ -245,7 +225,8 @@ def stageAttack(pokedata, move, log, attacker=True):
 
 def setAilment(pokedata, move, log):
 	ailment = move.getAilment()
-	type = getPokemonType(pokedata['pokemon'])
+	pokemon = getPokemonByName(pokedata['pokemon'])
+	type = pokemon.getType()
 	if ailment in ('burn', 'freeze', 'poison', 'bad-poison', 'sleep', 'paralysis'):
 		if pokedata['status'][0] == '':
 			if ailment == 'burn':
@@ -434,7 +415,7 @@ def checkStageStat(value):
 def getCurrentStats(pokedata, stat=None):
 	if stat:
 		stat = checkStat(stat)
-		base = getPokemonStats(pokedata['pokemon'], stat)
+		base = getPokemonByName(pokedata['pokemon']).getStats()[stat]
 		name = pokedata['pokemon']
 		nature = pokedata['nature']
 		iv = pokedata['iv'][stat]

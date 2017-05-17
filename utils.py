@@ -105,7 +105,7 @@ if __name__ == "__main__":
 # Add "a" or "an" to a word
 def aOrAn(text):
 	for vowel in 'aeiou':
-		if text.lower().startswith(vowel):
+		if str(text).lower().startswith(vowel):
 			return 'an'
 	return 'a'
 

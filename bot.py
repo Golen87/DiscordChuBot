@@ -376,11 +376,11 @@ async def test(message, send):
 async def setpoke(message, send):
 	content = getContent(message)
 
-	name = pokedex.findPokemonName(content, True)
+	pokemon = pokedex.getPokemonByName(content, True)
 	pokedata = database.createPokemon()
-	pokedex.initPokemon(pokedata, name)
+	pokedex.initPokemon(pokedata, pokemon)
 	database.savePokemon(message.author, pokedata)
-	m = '@user is now {} @pokemon.'.format(aOrAn(name))
+	m = '@user is now {} @pokemon.'.format(aOrAn(pokemon))
 	return await send(m)
 
 # Check what pokemon a user is
@@ -582,7 +582,10 @@ async def admin(message, send):
 		value = int(args[0])
 	except:
 		raise UserWarning("@mention Invalid stage. It has to be between -6–6!")
-	stat = None if len(args) < 2 else args[1]
+	try:
+		stat = args[1]
+	except:
+		return await send(commandlist[getCommand(message)][1])
 
 	pokedata = database.loadPokemon(message.author)
 	pokedex.raiseStage(pokedata, value, stat)
@@ -610,7 +613,7 @@ commandlist = {
 	'resetev': [resetev, '!resetev', 'args'],
 	'hypertrain': [hypertrain, '!hypertrain *stat*', 'args'],
 	'stages': [stages, '!stages', 'content'],
-	'admin': [admin, '!admin *stages* [*stat*]', 'args'],
+	'admin': [admin, '!admin *stages* *stat*', 'args'],
 	'battles': [battles, '!battles', 'args'],
 
 	# General
