@@ -226,25 +226,25 @@ def stageAttack(pokedata, move, log, attacker=True):
 def setAilment(pokedata, move, log):
 	ailment = move.getAilment()
 	pokemon = getPokemonByName(pokedata['pokemon'])
-	type = pokemon.getType()
 	if ailment in ('burn', 'freeze', 'poison', 'bad-poison', 'sleep', 'paralysis'):
 		if pokedata['status'][0] == '':
-			if ailment == 'burn':
+			types = pokemon.getTypes()
+			if ailment == 'burn' and 'fire' not in types:
 				pokedata['status'][0] = ailment
 				log += ["The target caught on fire!"]
-			if ailment == 'freeze':
+			elif ailment == 'freeze' and 'ice' not in types:
 				pokedata['status'][0] = ailment
 				log += ["The target froze solid!"]
-			if ailment == 'poison' and type not in ['poison', 'steel']:
+			elif ailment == 'poison' and 'poison' not in types and 'steel' not in types:
 				pokedata['status'][0] = ailment
 				log += ["The target got poisoned!"]
-			if ailment == 'poison' and type not in ['poison', 'steel']:
+			elif ailment == 'bad-poison' and 'poison' not in types and 'steel' not in types:
 				pokedata['status'][0] = ailment
 				log += ["The target got badly poisoned!"]
-			if ailment == 'sleep':
+			elif ailment == 'sleep':
 				pokedata['status'][0] = ailment
 				log += ["The target fell asleep!"]
-			if (ailment == 'paralysis') and ('electric' not in type):
+			elif ailment == 'paralysis' and 'electric' not in types:
 				pokedata['status'][0] = ailment
 				log += ["The target got paralysed. It's maybe unable to move!"]
 			else:
@@ -257,6 +257,8 @@ def setAilment(pokedata, move, log):
 			pokedata['status'].append(ailment)
 			if ailment == 'confusion':
 				log += ["The target got confused!"]
+		else:
+			log += ["The move failed!"]
 
 def turnCount(pokedata):
 	pokedata['turn_count'][0] = pokedata['turn_count'][0] + 1
@@ -279,7 +281,7 @@ def dotDmg(pokedata, log):
 		log += ['It now has ({}/{}) hp!'.format(newHp, stats)]
 		return
 	if pokedata['status'][0] == 'bad-poison':
-		n = 1.0 + pokedata['turn_count']
+		n = 1.0 + pokedata['turn_count'][0]
 		stats = getCurrentStats(pokedata, 'HP')
 		dmg = math.floor(n*stats/16.0)
 		newHp = max(0, pokedata['hp'] - dmg)

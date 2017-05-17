@@ -419,8 +419,8 @@ async def attack(message, send):
 
 	lastStamp = database.getTimestamp(message.author, 'attack')
 	remaining = pokedex.setAttackTimer(pokedataAtk) - (time.time() - lastStamp)
-	print(time, pokedex.setAttackTimer(pokedataAtk))
-	if remaining > 0:
+	skip = message.content.split()[0] == '!attacknow'
+	if remaining > 0 and not skip:
 		waitTime = getDurationString(remaining)
 		raise UserWarning('@mention Your attack refreshes in _{}_.'.format(waitTime))
 	database.setTimestamp(message.author, 'attack', time.time())
@@ -532,7 +532,7 @@ async def stats(message, send):
 async def stages(message, send):
 	pokedata = database.loadPokemon(message.author)
 	stages = pokedex.getCurrentStages(pokedata)
-	table = ['{:>11}: {}'.format(stat, stages[stat]) for stat in stages]
+	table = ['{:>8}: {}'.format(stat, stages[stat]) for stat in stages]
 	return await send("@poss @pokemon```Python\n{}```".format('\n'.join(table)))
 
 # Check your Pokemon's moveset
@@ -607,6 +607,7 @@ commandlist = {
 	'stats': [stats, '!stats', 'content'],
 	'moveset': [moveset, '!moveset', 'content'],
 	'attack': [attack, '!attack *username* with *attack*', 'content'],
+	'attacknow': [attack, '!attacknow *username* with *attack*', 'content'],
 	'heal': [heal, '!heal', 'args'],
 	'learnmove': [learnmove, '!learnmove *move* [*1–4*]', 'content'],
 	'trainev': [trainev, '!trainev *1–252* *stat*', 'args'],
