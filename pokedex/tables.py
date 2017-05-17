@@ -48,7 +48,7 @@ effChart = [
 stats = ["Attack", "Defense", "HP", "Sp.Atk", "Sp.Def", "Speed"]
 
 # All stage stats
-stageStats = ["Attack", "Defense", "Sp.Atk", "Sp.Def", "Speed", "Accuracy", "Evasiveness"]
+stageStats = ["Attack", "Defense", "Sp.Atk", "Sp.Def", "Speed", "Accuracy", "Evasion"]
 
 # Pokemon natures
 natures = {

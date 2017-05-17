@@ -167,7 +167,7 @@ def modifier(pokedata1, pokedata2, move):
 def stageMod(pokedata, stat):
 	stage = pokedata['stage'][stat]
 	s = 1
-	if stat not in ('Evasiveness', 'Accuracy'):
+	if stat not in ('Evasion', 'Accuracy'):
 		if stage >= 0:
 			s = (2.0 + stage)/2.0
 			return s
@@ -340,7 +340,7 @@ def attack(pokeAtk, pokeDef, log, move, confusion=False):
 		if acc is None:
 			acc = 100
 		else:
-			acc = acc * (stageMod(pokeAtk, 'Accuracy')/stageMod(pokeDef, 'Evasiveness'))
+			acc = acc * (stageMod(pokeAtk, 'Accuracy')/stageMod(pokeDef, 'Evasion'))
 		i = random.randint(1,100)
 		a, d = 1, 1
 		dclass = move.getDamageClass()
