@@ -120,3 +120,5 @@ ailmentMessages = {
 		["@opponent is confused!", "@opponent snapped out of its confusion!"],
 	],
 }
+
+weather = ['sandstorm', 'sunny day', 'raind dance', 'hail']

@@ -163,6 +163,7 @@ def createPokemon():
 		'ev': {},
 		'stage': {},
 		'moveset': [],
+		'weather': '',
 		'item': '',
 		'battles_won': 0,
 		'battles_lost': 0,
@@ -219,6 +220,12 @@ def setPokemonHp(member, hp, isMe=True):
 	pokedata['hp'] = hp
 	savePokemon(member, pokedata)
 	return pokedata['hp']
+
+def setWeather(member, weather, isMe=True):
+	pokedata = loadPokemon(member, isMe)
+	pokedata['hp'] = weather
+	savePokemon(member, pokedata)
+	return
 
 # Return whether a pokemon flinched. Happens only one turn
 def togglePokemonFlinch(member, isMe=True):

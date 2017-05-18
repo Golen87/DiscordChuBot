@@ -155,6 +155,11 @@ def findMember(message, name):
 			return m
 	raise UserWarning("@mention Invalid target. I don't know who _{}_ is!".format(name))
 
+@client.event
+async def bwark(message, send):
+	a = getContent(message)
+	if a == "":
+		return await send("Bwark!")
 
 # Help
 async def help(message, send):
@@ -433,13 +438,13 @@ async def attack(message, send):
 		await send("Your opponent is already unable to fight!")
 		msg = "!attack " + content
 
-		m = await client.wait_for_message(timeout=15, author=message.author, content=msg)
+		m = await client.wait_for_message(timeout=30, author=message.author, content=msg)
 		if m:
 			await send('Stop it!')
-			m = await client.wait_for_message(timeout=15, author=message.author, content=msg)
+			m = await client.wait_for_message(timeout=30, author=message.author, content=msg)
 			if m:
 				await send('STOP!')
-				m = await client.wait_for_message(timeout=15, author=message.author, content=msg)
+				m = await client.wait_for_message(timeout=30, author=message.author, content=msg)
 				if m:
 					database.savePokemon(user, {})
 					return await send('You... killed your opponent...')
@@ -450,7 +455,7 @@ async def attack(message, send):
 
 	log = []
 	pokedex.attack(pokedataAtk, pokedataDef, log, move)
-
+	
 	a,b = False,False
 	if pokedataDef['hp'] == 0:
 			won = database.incPokemonBattlesWon(message.author)
@@ -475,6 +480,7 @@ async def attack(message, send):
 
 	log = '\n'.join(log)
 	log = log.replace('@opponent', '**{}**'.format(database.getPokemonName(user)))
+	log = log.replace('@attacker', '**{}**'.format(database.getPokemonName(message.author)))
 	return await send(log)
 
 async def battles(message, send):
@@ -632,6 +638,7 @@ commandlist = {
 	#'beg': [beg, '!beg', 'args'],
 	#'daily': [claimDaily, '!daily', 'args'],
 	#'slot': [slotmachine, '!slot *10*|*20*|*30*', 'args'],
+	'bwark': [bwark, "bwark", "content"],
 }
 
 

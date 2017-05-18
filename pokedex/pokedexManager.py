@@ -34,7 +34,7 @@ def initPokemon(pokedata, pokemon):
 	pokedata['stage'] = {stat: 0 for stat in stageStats}
 	pokedata['moveset'] = [None for m in range(4)]
 	pokedata['hp'] = getCurrentStats(pokedata, 'HP')
-
+	pokedata['weather'] = ''
 
 ## Return Pokemon object from fuzzy name
 # @param name: Pokemon name written by user
@@ -88,7 +88,7 @@ def canLearnMove(name, move):
 # Return whether a pokemon knows a move
 def knowsMove(pokedata, move):
 	return move.getTitle() in pokedata['moveset']
-
+	
 # Add new move to the pokemon's moveset
 def learnMove(pokedata, move, slot=None):
 	if knowsMove(pokedata, move):
@@ -218,8 +218,8 @@ def stageAttack(pokedata, move, log, attacker=True):
 	chance = move.getStatChance()
 	i = random.randint(1, 100)
 	if 1 <= i <= chance:
-		for stat in move.getData()["stat_changes"]:
-			stage = move.getData()["stat_changes"][stat]
+		for stat in move.getStatChanges():
+			stage = move.getStatChanges()[stat]
 
 			raiseStage(pokedata, stage, stat, log, attacker)
 
@@ -264,6 +264,8 @@ def turnCount(pokedata):
 	pokedata['turn_count'][0] = pokedata['turn_count'][0] + 1
 
 def dotDmg(pokedata, log):
+	pokemon = getPokemonByName(pokedata['pokemon'])
+	types = pokemon.getTypes()
 	if pokedata['status'][0] == 'poison':
 		stats = getCurrentStats(pokedata, 'HP')
 		dmg = math.floor(stats/8.0)
@@ -271,7 +273,7 @@ def dotDmg(pokedata, log):
 		pokedata['hp'] = newHp
 		log += ["Your Pokemon got hurt by the poison."]
 		log += ['It now has ({}/{}) hp!'.format(newHp, stats)]
-		return
+		
 	if pokedata['status'][0] == 'burn':
 		stats = getCurrentStats(pokedata, 'HP')
 		dmg = math.floor(stats/16.0)
@@ -279,7 +281,7 @@ def dotDmg(pokedata, log):
 		pokedata['hp'] = newHp
 		log += ["Your Pokemon got hurt by the burn."]
 		log += ['It now has ({}/{}) hp!'.format(newHp, stats)]
-		return
+		
 	if pokedata['status'][0] == 'bad-poison':
 		n = 1.0 + pokedata['turn_count'][0]
 		stats = getCurrentStats(pokedata, 'HP')
@@ -289,11 +291,25 @@ def dotDmg(pokedata, log):
 		turnCount(pokedata)
 		log += ["Your Pokemon got hurt by the poison."]
 		log += ['It now has ({}/{}) hp!'.format(newHp, stats)]
-		return
-
+	if pokedata['weather'] == 'hail' and 'ice' not in types:
+		stats = getCurrentStats(pokedata, 'HP')
+		dmg = math.floor(stats/16.0)
+		newHp = max(0, pokedata['hp'] - dmg)
+		pokedata['hp'] = newHp
+		log +=["Your Pokemon got buffered by the hail."]
+		log +=['It now has ({}/{}) hp!'.format(newHp, stats)]
+	if pokedata['weather'] == 'sandstorm' and 'steel' not in types and 'rock' not in types and 'ground' not in types:
+		stats = getCurrentStats(pokedata, 'HP')
+		dmg = math.floor(stats/16.0)
+		newHp = max(0, pokedata['hp'] - dmg)
+		pokedata['hp'] = newHp
+		log +=["Your Pokemon got hurt by the sandstorm."]
+		log +=['It now has ({}/{}) hp!'.format(newHp, stats)]
+	return		
 def attack(pokeAtk, pokeDef, log, move, confusion=False):
 	if not confusion:
 		knowsMove(pokeAtk, move)
+	
 	power = move.getPower()
 	acc = move.getAccuracy()
 	stats1 = getCurrentStats(pokeAtk)
@@ -346,53 +362,97 @@ def attack(pokeAtk, pokeDef, log, move, confusion=False):
 		i = random.randint(1,100)
 		a, d = 1, 1
 		dclass = move.getDamageClass()
-		if dclass != "status":
-			if 1 <= i <= acc:
-				if dclass == "physical":
-					a = stageMod(pokeAtk, 'Attack') * stats1['Attack']
-					d = stageMod(pokeDef, 'Defense') * stats2['Defense']
-				elif dclass == "special":
-					a = stageMod(pokeAtk, 'Sp.Atk') * stats1['Sp.Atk']
-					d = stageMod(pokeDef, 'Sp.Def') * stats1['Sp.Def']
-				damage = (((22.0*power*a/d)/50.0)+2.0)*modifier(pokeAtk, pokeDef, move)
-				damage = math.floor(damage)
-				effect = typeAdvantage(pokeDef, move)
-				if effect >= 2:
-					log += ["It's super effective!"]
-				if 0 < effect <= 0.5:
-					log += ["It's not very effective..."]
-				if effect == 0:
-					log += ["It has no effect on @opponent!"]
-				newHp = max(0, pokeDef['hp'] - damage)
-				pokeDef['hp'] = newHp
-				if move == "is_confused" and confusion:
-					log += ["It hurt itself in confusion."]
-				if damage != 0:
-					log += ['@opponent took **{}** damage!'.format(damage)]
-				if stats2['HP'] != newHp:
-					log += ['It now has ({}/{}) hp!'.format(newHp, stats2['HP'])]
-				flinchAttack(pokeDef, move)
-				ailmentAttack(pokeDef, move, log)
-				if move.getCategory() == 'damage+lower':
-					stageAttack(pokeDef, move, log, False)
-				if move.getCategory() == 'damage+raise':
-					stageAttack(pokeAtk, move, log, True)
+		
+		target = move.getTarget()
+		if target != "user":
+			if dclass != "status":
+				if 1 <= i <= acc:
+					if dclass == "physical":
+						a = stageMod(pokeAtk, 'Attack') * stats1['Attack']
+						d = stageMod(pokeDef, 'Defense') * stats2['Defense']
+					elif dclass == "special":
+						a = stageMod(pokeAtk, 'Sp.Atk') * stats1['Sp.Atk']
+						d = stageMod(pokeDef, 'Sp.Def') * stats1['Sp.Def']
+					damage = (((22.0*power*a/d)/50.0)+2.0)*modifier(pokeAtk, pokeDef, move)
+					damage = math.floor(damage)
+					effect = typeAdvantage(pokeDef, move)
+					if effect >= 2:
+						log += ["It's super effective!"]
+					if 0 < effect <= 0.5:
+						log += ["It's not very effective..."]
+					if effect == 0:
+						log += ["It has no effect on @opponent!"]
+					newHp = max(0, pokeDef['hp'] - damage)
+					pokeDef['hp'] = newHp
+					if move == "is_confused" and confusion:
+						log += ["It hurt itself in confusion."]
+					if damage != 0:
+						log += ['@opponent took **{}** damage!'.format(damage)]
+					if stats2['HP'] != newHp:
+						log += ['It now has ({}/{}) hp!'.format(newHp, stats2['HP'])]
+					flinchAttack(pokeDef, move)
+					ailmentAttack(pokeDef, move, log)
+					if move.getCategory() == 'damage+lower':
+						stageAttack(pokeDef, move, log, False)
+					if move.getCategory() == 'damage+raise':
+						stageAttack(pokeAtk, move, log, True)
+					if move.getDrain() > 0:
+						healing = math.floor(damage * move.getDrain()/100.0)
+						newhp = min(pokeAtk['hp'], pokeAtk['hp'] + healing)
+						pokeAtk['hp'] = newhp
+						log += ["@attacker drained {} of @opponent's hp.".format(healing)]
+						log += ["It now has It now has ({}/{}) hp!".format(newhp, stats1['HP'])]
+					if move.getDrain() < 0:
+						healing = math.floor(damage * move.getDrain()/100.0)
+						newhp = max(0, pokeAtk['hp'] + healing)
+						pokeAtk['hp'] = newhp
+						log += ["@attacker got damaged by the recoil ({}).".format(healing)]
+						log += ["It now has ({}/{}) hp!".format(newhp, stats1['HP'])]
+					dotDmg(pokeAtk, log)
+					return
+				else:
+					log += ["The move missed!"]
+					dotDmg(pokeAtk, log)
+					return
+			if dclass == "status" and "unique" not in move.getCategory():
+				if (1 <= i <= acc) and (move.getCategory() == "ailment"):
+					setAilment(pokeDef, move, log)
+					dotDmg(pokeAtk, log)
+					return
+				
+				if (1 <= i <= acc) and (move.getCategory() == "net-good-stats"):
+					for stat in move.getStatChanges():
+						stage = move.getStatChanges()[stat]
+						raiseStage(pokeDef, stage, stat, log, False)
+					dotDmg(pokeAtk, log)
+					return
+				else:
+					log += ['The attack missed!']
+					dotDmg(pokeAtk, log)
+					return
+		else:
+			if move.getCategory() == "net-good-stats":
+				for stat in move.getStatChanges():
+					stage = move.getStatChanges()[stat]
+					raiseStage(pokeAtk, stage, stat, log)
 				dotDmg(pokeAtk, log)
 				return
-			else:
-				log += ["The move missed!"]
-				dotDmg(pokeAtk, log)
-				return
-		if dclass == "status" and "unique" not in move.getCategory():
-			if 1 <= i <= acc:
-				setAilment(pokeDef, move, log)
-				dotDmg(pokeAtk, log)
-				return
-			else:
-				log += ['The attack missed!']
-				dotDmg(pokeAtk, log)
-				return
-
+			if move.getCategory() == 'heal':
+					mod = 1
+					if move.getName() in ['morning-sun', 'synthesis', 'moonlight']:
+						if pokeAtk['weather'] == 'sunny':
+							mod = 4/3
+						if pokeAtk['weather'] != '':
+							mod = 1/2
+					healing = math.floor(mod * stats1['HP'] * move.getHealing()/100.0)
+					newhp = min(pokeAtk['hp'], pokeAtk['hp'] + healing)
+					pokeAtk['hp'] = newhp
+					log += ["@attacker healed itself by {} hp.".format(healing)]
+					log += ["It now has ({}/{}) hp!".format(newhp, stats1['HP'])]
+					dotDmg(pokeAtk, log)
+					return
+			dotDmg(pokeAtk, log)
+			return
 # Return stat(s) modifier for a nature
 def natureMod(nature, stat=None):
 	if stat:
@@ -501,6 +561,7 @@ def restorePokemon(pokedata):
 	resetStage(pokedata)
 	pokedata["status"] = ['']
 	pokedata['turn_count'] = [0, 0]
+	pokedata['weather'] = ''
 
 def setAttackTimer(pokedata):
 	mod = stageMod(pokedata, 'Speed')
