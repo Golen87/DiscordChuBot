@@ -426,6 +426,9 @@ def attack(pokeAtk, pokeDef, log, move, confusion=False):
 						raiseStage(pokeDef, stage, stat, log, False)
 					dotDmg(pokeAtk, log)
 					return
+				if (1 <= i <= acc):
+					dotDmg(pokeAtk, log)
+					return
 				else:
 					log += ['The attack missed!']
 					dotDmg(pokeAtk, log)
@@ -561,7 +564,6 @@ def restorePokemon(pokedata):
 	resetStage(pokedata)
 	pokedata["status"] = ['']
 	pokedata['turn_count'] = [0, 0]
-	pokedata['weather'] = ''
 
 def setAttackTimer(pokedata):
 	mod = stageMod(pokedata, 'Speed')

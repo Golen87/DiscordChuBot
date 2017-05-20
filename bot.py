@@ -455,7 +455,26 @@ async def attack(message, send):
 
 	log = []
 	pokedex.attack(pokedataAtk, pokedataDef, log, move)
-	
+###
+#	this whole section works but is dumb af since dot is not getting applied IN TURN. but no clue how to fix that.	
+#	if move.getTitle() == 'Sunny Day':	
+#		for users in database.loadAllUsers():
+#			database.setWeather(users, 'sunny')
+#		log += ["The sunlight turned harsh!"]
+#	if move.getTitle() == 'Hail':
+#		print("test", move)
+#		for users in database.loadAllUsers():
+#			database.setWeather(users, 'hail')
+#		log += ["It started to hail!"]
+#	if move.getTitle() == 'Rain Dance':
+#		for users in database.loadAllUsers():
+#			database.setWeather(users, 'rain')
+#		log += ["TIt started to rain!"]
+#	if move.getTitle() == 'Sandstorm':
+#		for users in database.loadAllUsers():
+#			database.setWeather(users, 'sandstorm')
+#		log += ["A sandstorm came up! DUDUDUDUDUDU."]
+###		
 	a,b = False,False
 	if pokedataDef['hp'] == 0:
 			won = database.incPokemonBattlesWon(message.author)

@@ -223,7 +223,7 @@ def setPokemonHp(member, hp, isMe=True):
 
 def setWeather(member, weather, isMe=True):
 	pokedata = loadPokemon(member, isMe)
-	pokedata['hp'] = weather
+	pokedata['weather'] = weather
 	savePokemon(member, pokedata)
 	return
 
