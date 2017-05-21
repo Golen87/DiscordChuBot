@@ -11,7 +11,7 @@ class Pokemon:
 
 	# Debug printing
 	def __repr__(self):
-		return self.getTitle()
+		return '**{}**'.format(self.getTitle())
 
 
 	#--- Identification ---#
@@ -52,8 +52,15 @@ class Pokemon:
 	def getStats(self):
 		return self._data["stats"]
 
+	def getStat(self, stat):
+		return self._data["stats"][stat]
+
 	def getMoves(self):
 		return self._data["moves"]
+
+	# Return whether a pokemon may learn a move or not
+	def canLearnMove(self, move, raiseError=True):
+		return move.getName() in self.getMoves()
 
 	def getAbilities(self):
 		return self._data["abilities"]

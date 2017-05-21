@@ -11,14 +11,14 @@ class Move:
 
 	# Debug printing
 	def __repr__(self):
-		return self.getTitle()
+		return '**{}**'.format(self.getTitle())
 
 
 	#--- Identification ---#
 
 	def getId(self):
 		return self._data['id']
-	
+
 	def getName(self):
 		return self._data['name']
 

@@ -109,6 +109,10 @@ def logMessage(message, msgtype = ''):
 
 # Replace tags in error message to data
 def formatUserTags(message, text):
+	if "@currency" in text:
+		text = text.replace("@currency", Currency)
+	if "@cookies" in text:
+		text = text.replace("@cookies", Cookies)
 	if "@user" in text:
 		text = text.replace("@user", getNick(message.author))
 	if "@mention" in text:
@@ -116,7 +120,11 @@ def formatUserTags(message, text):
 	if "@poss" in text:
 		text = text.replace("@poss", addPossForm(getNick(message.author)))
 	if "@pokemon" in text:
-		text = text.replace("@pokemon", "**{}**".format(database.getPokemonName(message.author)))
+		user = database.loadUser(message.author)
+		if user.getPokedata():
+			text = text.replace("@pokemon", str(user.getPokedata()))
+		else:
+			print("{}{} doesn't have a pokemon, yet @pokemon was called.{}".format(RED, getNick(message.author), WHI))
 	return text
 
 
@@ -255,10 +263,11 @@ async def tcah(message, send):
 
 # Check balance
 async def checkBalance(message, send):
-	balance = database.getBalance(message.author)
-	cookies = database.getCookies(message.author)
-	extra = (cookies > 0) * ', and **{:,}** {}'.format(cookies, Cookies)
-	text = '{}, you have a balance of **{:,}** {}{}.'.format(message.author.mention, balance, Currency, extra)
+	user = database.loadUser(message.author)
+	balance = user.getBalance()
+	cookies = user.getCookies()
+	extra = (cookies > 0) * ', and **{:,}** @cookies'.format(cookies)
+	text = '{}, you have a balance of **{:,}** @currency{}.'.format(message.author.mention, balance, extra)
 	return await send(text)
 
 # Check top list of balance
@@ -269,7 +278,7 @@ async def checkTop(message, send):
 
 	toplist = database.getTopList()[:10]
 	nameWidth = len(sorted(toplist, key=lambda x:len(x[0]))[-1][0])
-	message = '```#--name{}+-{}-\n'.format('-'*(nameWidth-3), Currency)
+	message = '```#--name{}+-@currency-\n'.format('-'*(nameWidth-3))
 
 	for i in range(len(toplist)):
 		name, balance = toplist[i]
@@ -282,8 +291,10 @@ async def beg(message, send):
 	await clearPreviousCommands(message.author, 'beg')
 	coins = random.randint(0, 5)
 	if coins > 1:
-		database.incBalance(message.author, coins)
-		return await send('_tosses you **{:,}** {}!_'.format(coins, Currency))
+		user = database.loadUser(message.author)
+		user.incBalance(coins)
+		database.saveUser(user)
+		return await send('_tosses you **{:,}** @currency!_'.format(coins))
 	else:
 		return await send('_spits on you for begging!_')
 
@@ -291,20 +302,22 @@ async def beg(message, send):
 async def claimDaily(message, send):
 	await clearPreviousCommands(message.author, 'daily')
 
-	lastClaim = database.getDailyTimestamp(message.author)
-	remaining = DailyCooldown - (time.time() - lastClaim)
+	user = database.loadUser(message.author)
+	remaining = user.getTimeRemaining('daily', DailyCooldown)
 	if remaining > 0:
 		waitTime = getDurationString(remaining)
 		return await send('{}, your daily bonus refreshes in _{}_.'.format(message.author.mention, waitTime))
 	else:
-		database.setDailyTimestamp(message.author, time.time())
-		database.incBalance(message.author, DailyReward)
+		user.setTimestamp('daily')
+		user.incBalance(DailyReward)
 
 		extra = ''
 		if random.random() < DailyCookieChance:
-			database.incCookies(message.author, 1)
-			extra = ', and got a {}'.format(Cookies)
-		return await send('{}, you received your **{:,}** daily {}{}!'.format(message.author.mention, DailyReward, Currency, extra))
+			user.incCookies(1)
+			extra = ', and got a @cookies'
+
+		database.saveUser(user)
+		return await send('{}, you received your **{:,}** daily @currency{}!'.format(message.author.mention, DailyReward, extra))
 
 # Search and remove last paired input from user
 async def clearPreviousCommands(member, cmdToRemove):
@@ -334,26 +347,29 @@ async def clearPreviousCommands(member, cmdToRemove):
 async def slotmachine(message, send):
 	await clearPreviousCommands(message.author, 'slot')
 	args = getArgs(message)
+	user = database.loadUser(message.author)
 
 	if args[0] in ['10', '20', '30']:
 		bet = int(args[0])
 		level = 1 + ['10', '20', '30'].index(args[0])
-		if database.getBalance(message.author) >= bet:
-			database.incBalance(message.author, - bet)
+		if user.getBalance() >= bet:
+			user.incBalance(-bet)
 		else:
-			return await send("You don't have enough {}.".format(Currency))
+			return await send("You don't have enough @currency.")
 	else:
 		return await send("You can bet 10, 20, or 30.")
 
 	price_money, price_cookies, image = runSlotmachine(10, level)
-	database.incBalance(message.author, price_money)
-	database.incCookies(message.author, price_cookies)
+	user.incBalance(price_money)
+	user.incCookies(price_cookies)
+	database.saveUser(user)
+
 	winText = ''
 	if price_money > 0:
-		winText = '\n{}, you won **{:,}** {}! You now have **{:,}**.'.format(message.author.mention, price_money, Currency, database.getBalance(message.author))
+		winText = '\n{}, you won **{:,}** @currency! You now have **{:,}**.'.format(message.author.mention, price_money, user.getBalance())
 	if price_cookies > 0:
-		winText = '\n{}, you won **{:,}** {}! You now have **{:,}**.'.format(message.author.mention, price_cookies, Cookies, database.getCookies(message.author))
-	return await send("You pay **{:,}** {}!\n".format(bet, Currency) + image + winText)
+		winText = '\n{}, you won **{:,}** @cookies! You now have **{:,}**.'.format(message.author.mention, price_cookies, user.getCookies())
+	return await send("You pay **{:,}** @currency!\n".format(bet) + image + winText)
 
 # Test
 async def test(message, send):
@@ -377,9 +393,9 @@ async def setpoke(message, send):
 	content = getContent(message)
 
 	pokemon = pokedex.getPokemonByName(content, True)
-	pokedata = database.createPokemon()
-	pokedex.initPokemon(pokedata, pokemon)
-	database.savePokemon(message.author, pokedata)
+	pokedata = database.createPokemon(message.author)
+	pokedata.initialize(pokemon)
+	database.savePokedata(pokedata)
 	m = '@user is now {} @pokemon.'.format(aOrAn(pokemon))
 	return await send(m)
 
@@ -390,112 +406,106 @@ async def whatis(message, send):
 		return await send(commandlist[getCommand(message)][1])
 
 	user = findMember(message, content)
-	pokemon = database.getPokemonName(user, False)
-	m = '{} is {} **{}**!'.format(user.mention, aOrAn(pokemon), pokemon)
+	pokemon = str(database.loadPokedata(user, False))
+	m = '{} is {} {}!'.format(user.mention, aOrAn(pokemon), pokemon)
 	return await send(m)
 
 # Attack user's pokemon with a selected move
 async def attack(message, send):
 	content = getContent(message)
 
-	# !attack USER with MOVE
-	result = re.search('(.*)\swith\s(.*)', content)
-	if not result:
+	if getCommand(message) == 'attack':
+		# !attack USER with MOVE
+		result = re.search('(.*)\swith\s(.*)', content)
+		if not result:
+			return await send(commandlist[getCommand(message)][1])
+		other = findMember(message, result.group(1))
+		move = pokedex.getMoveByName(result.group(2))
+	elif getCommand(message) == 'use':
+		# !use MOVE on USER
+		result = re.search('(.*)\son\s(.*)', content)
+		if not result:
+			return await send(commandlist[getCommand(message)][1])
+		move = pokedex.getMoveByName(result.group(1))
+		other = findMember(message, result.group(2))
+	else:
 		return await send(commandlist[getCommand(message)][1])
 
-	user = findMember(message, result.group(1))
-	move = pokedex.getMoveByName(result.group(2))
-	pokedataAtk = database.loadPokemon(message.author)
-	if message.author != user:
-		pokedataDef = database.loadPokemon(user, False)
+	pokeAtk = database.loadPokedata(message.author)
+	if message.author.id == other.id:
+		pokeDef = pokeAtk
 	else:
-		pokedataDef = pokedataAtk # Copies list-id
+		pokeDef = database.loadPokedata(other, False)
+	attacker = pokeAtk.getOwner()
+	defender = pokeDef.getOwner()
 
-	if not pokedex.knowsMove(pokedataAtk, move):
+	if not pokeAtk.knowsMove(move):
 		raise UserWarning("Your @pokemon doesn't know that move yet. Use `!learnmove` to learn it!")
 
-	if database.getPokemonHp(message.author) == 0:
+	if pokeAtk.getHp() == 0:
 		raise UserWarning("Your @pokemon is unable to fight. Use `!heal` first!".format())
+	if pokeDef.getHp() == 0:
+		raise UserWarning("The opponent's {} is unable to fight.".format(pokeDef))
 
-	lastStamp = database.getTimestamp(message.author, 'attack')
-	remaining = pokedex.setAttackTimer(pokedataAtk) - (time.time() - lastStamp)
-	skip = message.content.split()[0] == '!attacknow'
-	if remaining > 0 and not skip:
+	remaining = attacker.getTimeRemaining('attack', pokeAtk.getAttackCooldown())
+	if remaining > 0:
 		waitTime = getDurationString(remaining)
 		raise UserWarning('@mention Your attack refreshes in _{}_.'.format(waitTime))
-	database.setTimestamp(message.author, 'attack', time.time())
+	attacker.setTimestamp('attack')
 
-	if database.togglePokemonFlinch(message.author):
-		raise UserWarning("@pokemon flinched and couldn't move.")
+	# Attack start
+	try:
+		log = []
+		pokedex.attack(pokeAtk, pokeDef, log, move)
 
-	maxHp = pokedex.getCurrentStats(pokedataDef, 'HP')
-	if database.getPokemonHp(user) == 0:
-		await send("Your opponent is already unable to fight!")
-		msg = "!attack " + content
-
-		m = await client.wait_for_message(timeout=15, author=message.author, content=msg)
-		if m:
-			await send('Stop it!')
-			m = await client.wait_for_message(timeout=15, author=message.author, content=msg)
-			if m:
-				await send('STOP!')
-				m = await client.wait_for_message(timeout=15, author=message.author, content=msg)
-				if m:
-					database.savePokemon(user, {})
-					return await send('You... killed your opponent...')
-			else:
-				return
+		if pokeAtk == pokeDef and pokeAtk.getHp() == 0:
+			log += ["Your @attacker fainted!"]
 		else:
-			return
+			if pokeDef.getHp() == 0:
+				won = pokeAtk.incStatistic('battlesWon', 1)
+				pokeDef.incStatistic('battlesLost', 1)
+				log += ["Opponent's @defender fainted!"]
+				if won > 0 and won % 10 == 0:
+					attacker.incCaps(1)
+					log += ["{} You earned a bottlecap! Use it to `!hypertrain`.".format(message.author.mention)]
+			if pokeAtk.getHp() == 0:
+				won = pokeDef.incStatistic('battlesWon', 1)
+				pokeAtk.incStatistic('battlesLost', 1)
+				log += ["Your @attacker fainted!"]
+				if won > 0 and won % 10 == 0:
+					defender.incCaps(1)
+					log += ["{} You earned a bottlecap! Use it to `!hypertrain`.".format(other.mention)]
+		raise pokedex.EndAttack()
+	except pokedex.EndAttack as message:
+		database.saveUser(attacker)
+		database.saveUser(defender)
 
-	log = []
-	pokedex.attack(pokedataAtk, pokedataDef, log, move)
+		if str(message):
+			log += [str(message)]
+		log = '\n'.join(log)
+		log = log.replace('@attacker', str(pokeAtk))
+		log = log.replace('@defender', str(pokeDef))
+		return await send(log)
 
-	a,b = False,False
-	if pokedataDef['hp'] == 0:
-			won = database.incPokemonBattlesWon(message.author)
-			database.incPokemonBattlesLost(user, False)
-			log += ["Your opponent fainted!"]
-			if won > 0 and won % 10 == 0:
-				database.incCaps(message.author)
-				log += ["This victory earned you a bottlecap! Use it to `!hypertrain`."]
-			a = True
-	if pokedataAtk['hp'] == 0:
-			won = database.incPokemonBattlesWon(user)
-			database.incPokemonBattlesLost(message.author, False)
-			log += ["You fainted!"]
-			if won > 0 and won % 10 == 0:
-				database.incCaps(user)
-				log += ["This victory earned your enemy a bottlecap! They can it to `!hypertrain`."]
-			b = True
-	if a and b:
-		log += ["A draw!"]
-	database.savePokemon(user, pokedataDef)
-	database.savePokemon(message.author, pokedataAtk)
-
-	log = '\n'.join(log)
-	log = log.replace('@opponent', '**{}**'.format(database.getPokemonName(user)))
-	return await send(log)
 
 async def battles(message, send):
-	wins, losses = database.getPokemonBattleStats(message.author)
-	raise UserWarning("Your @pokemon has won {} and lost {} battles so far!".format(wins, losses))
+	pokedata = database.loadPokedata(message.author)
+	won = pokedata.getStatistic('battlesWon')
+	lost = pokedata.getStatistic('battlesLost')
+	raise UserWarning("Your @pokemon has won {} and lost {} battles so far!".format(won, lost))
 
 # Heal your pokemon to full max health
 async def heal(message, send):
-	pokedata = database.loadPokemon(message.author)
+	pokedata = database.loadPokedata(message.author)
+	pokedata.fullRestore()
+	database.savePokedata(pokedata)
 
-	pokedex.restorePokemon(pokedata)
-	database.savePokemon(message.author, pokedata)
-	newHp = database.getPokemonHp(message.author)
-
-	m = '@poss @pokemon was healed to ({0}/{0}) hp!'.format(newHp)
+	hp = pokedata.getHp()
+	m = '@poss @pokemon was fully restored to ({0}/{0}) hp!'.format(hp)
 	return await send(m)
 
 # Teach your pokemon a new move, given that it's allowed
 async def learnmove(message, send):
-	pokedata = database.loadPokemon(message.author)
-
 	content = getContent(message)
 	if not content:
 		return await send(commandlist[getCommand(message)][1])
@@ -508,39 +518,36 @@ async def learnmove(message, send):
 		movename = content
 		slot = None
 
-	pokemon = database.getPokemonName(message.author)
-	move = pokedex.getMoveByName(movename, pokemon)
+	pokedata = database.loadPokedata(message.author)
+	move = pokedex.getMoveByName(movename, pokedata.getPokemon())
 
-	#raise UserWarning("**{}** doesn't know that move yet. Use `!learnmove` to learn it!".format(pokedata['pokemon']))
-
-	oldMove = pokedex.learnMove(pokedata, move, slot)
-	database.savePokemon(message.author, pokedata)
+	oldMove = pokedata.learnMove(move, slot)
+	database.savePokedata(pokedata)
 
 	if slot and oldMove != None:
-		return await send('1, 2 and... Poof! @poss @pokemon forgot **{}** and... @pokemon learned **{}**!'.format(oldMove, move))
+		return await send('1, 2 and... Poof! @poss @pokemon forgot **{}** and... @pokemon learned {}!'.format(oldMove, move))
 	else:
-		return await send('@poss @pokemon learned **{}**!'.format(move))
+		return await send('@poss @pokemon learned {}!'.format(move))
 
 # Check your Pokemon's stats
 async def stats(message, send):
-	pokedata = database.loadPokemon(message.author)
-	stats = pokedex.getCurrentStats(pokedata)
+	pokedata = database.loadPokedata(message.author)
+	stats = pokedata.getStats()
 	table = ['{:>7}: {}'.format(stat, stats[stat]) for stat in stats]
 	return await send("@poss @pokemon```Python\n{}```".format('\n'.join(table)))
 
 # Check your Pokemon's stages
 async def stages(message, send):
-	pokedata = database.loadPokemon(message.author)
-	stages = pokedex.getCurrentStages(pokedata)
+	pokedata = database.loadPokedata(message.author)
+	stages = pokedata.getStages()
 	table = ['{:>8}: {}'.format(stat, stages[stat]) for stat in stages]
 	return await send("@poss @pokemon```Python\n{}```".format('\n'.join(table)))
 
 # Check your Pokemon's moveset
 async def moveset(message, send):
-	pokedata = database.loadPokemon(message.author)
-	moveset = database.getPokemonMoveset(message.author)
-	table = ['{}) {}'.format(m+1, moveset[m] if moveset[m] else '-') for m in range(len(moveset))]
-	return await send("@poss @pokemon```Python\n{}```".format('\n'.join(table)))
+	pokedata = database.loadPokedata(message.author)
+	table = pokedata.getMovesetTable()
+	return await send("@poss @pokemon {}".format(table))
 
 # Train your Pokemon's EV
 async def trainev(message, send):
@@ -550,30 +557,29 @@ async def trainev(message, send):
 	value = int(value)
 	stat = pokedex.checkStat(stat)
 
-	pokedata = database.loadPokemon(message.author)
-	result = pokedex.trainEV(pokedata, value, stat)
-	database.savePokemon(message.author, pokedata)
-	return await send("@poss @pokemon trained and its {}-EV is now ({})!".format(stat, result))
+	pokedata = database.loadPokedata(message.author)
+	result = pokedata.trainEV(value, stat)
+	database.savePokedata(pokedata)
+	return await send("@poss @pokemon trained and increased its {}-EV by ({})!".format(stat, result))
 
 #Reset your Pokemon's EV
 async def resetev(message, send):
-	pokedata = database.loadPokemon(message.author)
-	pokedex.resetEV(pokedata)
-	database.savePokemon(message.author, pokedata)
+	pokedata = database.loadPokedata(message.author)
+	pokedata.resetEV()
+	database.savePokedata(pokedata)
 	return await send("Your Pokemon's EVs have been reset!")
 
 async def hypertrain(message, send):
-	caps = database.getCaps(message.author)
-	if caps <= 0:
+	user = database.loadUser(message.author)
+	if user.getCaps() <= 0:
 		raise UserWarning("@mention You don't have enough bottlecaps to pay the hypertraining. Win more battles to get some!")
 
 	args = getArgs(message)
 	stat = pokedex.checkStat(args[0])
-	pokedata = database.loadPokemon(message.author)
-	pokedex.maxIV(pokedata, stat)
-	database.savePokemon(message.author, pokedata)
+	user.getPokedata().maxIV(stat)
+	user.incCaps(-1)
+	database.saveUser(user)
 
-	caps = database.incCaps(message.author, -1)
 	return await send("@user payed a bottlecap. @pokemon hypertrained its {}!".format(stat))
 
 async def admin(message, send):
@@ -587,14 +593,14 @@ async def admin(message, send):
 	except:
 		return await send(commandlist[getCommand(message)][1])
 
-	pokedata = database.loadPokemon(message.author)
-	pokedex.raiseStage(pokedata, value, stat)
-	database.savePokemon(message.author, pokedata)
+	pokedata = database.loadPokedata(message.author)
+	log = []
+	pokedex.raiseStage(pokedata, value, stat, log)
+	database.savePokedata(pokedata)
 
-	if stat:
-		return await send("Raised {}-stage by {}!".format(stat, value))
-	else:
-		return await send("Raised all stages by {}!".format(value))
+	log = '\n'.join(log)
+	log = log.replace('@attacker', str(pokedata))
+	return await send(log)
 
 
 # List of commands
@@ -607,7 +613,7 @@ commandlist = {
 	'stats': [stats, '!stats', 'content'],
 	'moveset': [moveset, '!moveset', 'content'],
 	'attack': [attack, '!attack *username* with *attack*', 'content'],
-	'attacknow': [attack, '!attacknow *username* with *attack*', 'content'],
+	'use': [attack, '!use *attack* on *username*', 'content'],
 	'heal': [heal, '!heal', 'args'],
 	'learnmove': [learnmove, '!learnmove *move* [*1–4*]', 'content'],
 	'trainev': [trainev, '!trainev *1–252* *stat*', 'args'],

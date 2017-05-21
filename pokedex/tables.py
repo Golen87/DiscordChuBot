@@ -44,11 +44,59 @@ effChart = [
 	[1, 2, 1,.5, 1, 1, 1, 1,.5,.5, 1, 1, 1, 1, 1, 2, 2, 1], # Fairy
 ]
 
-# All stats
+
+#--- Stats ---#
+
 stats = ["Attack", "Defense", "HP", "Sp.Atk", "Sp.Def", "Speed"]
 
-# All stage stats
+statsAlias = {
+	"Attack": ["atk"],
+	"Defense": ["def", "defence"],
+	"HP": ["health", "hitpoints"],
+	"Sp.Atk": ["special atk", "special attack"],
+	"Sp.Def": ["special def", "special defence", "special defense"],
+	"Speed": ["spd"],
+}
+
+# Check if stat is correct
+def checkStat(value):
+	simplify = lambda x:x.replace('-',' ').replace('.',' ').lower()
+	for stat in stats:
+		if simplify(value) == simplify(stat):
+			return stat
+	for stat in statsAlias:
+		for spelling in statsAlias[stat]:
+			if simplify(value) == simplify(spelling):
+				return stat
+	raise UserWarning("@mention Invalid stat. Use `!stats` for information on what stats you can train!")
+
+
+#--- Stages ---#
+
 stageStats = ["Attack", "Defense", "Sp.Atk", "Sp.Def", "Speed", "Accuracy", "Evasion"]
+
+stageStatsAlias = {
+	"Attack": ["atk"],
+	"Defense": ["def", "defence"],
+	"Sp.Atk": ["special atk", "special attack"],
+	"Sp.Def": ["special def", "special defence", "special defense"],
+	"Speed": ["spd"],
+	"Accuracy": ["acc"],
+	"Evasion": ["eva", "evasiveness"],
+}
+
+# Check if stagestat is correct
+def checkStageStat(value):
+	simplify = lambda x:x.replace('-',' ').replace('.',' ').lower()
+	for stat in stageStats:
+		if simplify(value) == simplify(stat):
+			return stat
+	for stat in stageStatsAlias:
+		for spelling in stageStatsAlias[stat]:
+			if simplify(value) == simplify(spelling):
+				return stat
+	raise UserWarning("@mention Invalid stat. Use `!stages` for information on what stages you can train!")
+
 
 # Pokemon natures
 natures = {
@@ -80,43 +128,61 @@ natures = {
 	"Quirky":	[1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
 }
 
-#
+
+# ?
 unique = []
 
-ailments = ['burn', 'freeze', 'poison', 'bad-poison', 'sleep', 'paralysis']
-"confusion"
 
-# Ailment
-ailmentMessages = {
-	"paralysis": [
-		["@opponent is paralyzed! It may be unable to move!"],
-		["@opponent is paralyzed! It can't move!"],
-	],
-	"sleep": [
-		["@opponent fell asleep!"],
-		["@opponent is fast asleep!"],
-		["@opponent woke up!"],
-	],
-	"freeze": [
-		["@opponent was frozen solid!"],
-		["@opponent is frozen solid!"],
-		["@opponent thawed out!"],
-	],
-	"burn": [
-		["@opponent was burned!"],
-		["@opponent is hurt by its burn!"],
-	],
-	"poison": [
-		["@opponent was poisoned!"],
-		["@opponent is hurt by poison!"],
-	],
-	"bad-poison": [
-		["@opponent was badly poisoned!"],
-		["@opponent is hurt by poison!"],
-	],
-	"confusion": [
-		["@opponent became confused!"],
-		["@opponent is confused!", "It hurt itself in its confusion!"],
-		["@opponent is confused!", "@opponent snapped out of its confusion!"],
-	],
+#--- Ailments ---#
+
+ailments = ["burn", "paralysis", "freeze", "sleep", "poison", "bad-poison", "confusion", "embargo", "perish-song", "ingrain", "leech-seed", "unknown", "nightmare", "yawn", "disable", "trap", "no-type-immunity", "torment", "heal-block", "infatuation"]
+ailmentsSpecial = ['burn', 'freeze', 'poison', 'bad-poison', 'sleep', 'paralysis']
+
+ailmentImmunities = {
+	'burn': ['fire'],
+	'freeze': ['ice'],
+	'poison': ['poison', 'steel'],
+	'bad-poison': ['poison', 'steel'],
+	'paralysis': ['electric'],
 }
+
+ailmentMessages = {
+	"paralysis": {
+		"start": "@ is paralyzed! It may be unable to move!",
+		"cont": "@ is paralyzed! It can't move!",
+	},
+	"sleep": {
+		"start": "@ fell asleep!",
+		"cont": "@ is fast asleep!",
+		"end": "@ woke up!",
+	},
+	"freeze": {
+		"start": "@ was frozen solid!",
+		"cont": "@ is frozen solid!",
+		"end": "@ thawed out!",
+	},
+	"burn": {
+		"start": "@ was burned!",
+		"hurt": "@ is hurt by its burn!",
+	},
+	"poison": {
+		"start": "@ was poisoned!",
+		"hurt": "@ is hurt by poison!",
+	},
+	"bad-poison": {
+		"start": "@ was badly poisoned!",
+		"hurt": "@ is hurt by poison!",
+	},
+	"confusion": {
+		"start": "@ became confused!",
+		"cont": "@ is confused!",
+		"hurt": "It hurt itself in its confusion!",
+		"end": "@ snapped out of its confusion!",
+	},
+}
+
+def getAilmentMessage(ailment, stage, attacker=True):
+	name = '@attacker' if attacker else '@defender'
+	message = ailmentMessages[ailment][stage]
+	message = message.replace('@', name)
+	return message
