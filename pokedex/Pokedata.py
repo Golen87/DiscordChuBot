@@ -216,8 +216,11 @@ class Pokedata:
 
 	def damage(self, damage):
 		self.hp -= damage
-		self.hp = max(0, self.hp)
+		self.hp = max(0, min(self.getStat('HP'), self.hp))
 		return self.hp
+
+	def heal(self, healing):
+		return self.damage(-healing)
 
 	# Reset hp, stages, status, pp.
 	# Could separate into smaller functions for more specific healing items
@@ -354,6 +357,17 @@ class Pokedata:
 		m += "To make space for {}, use `!learnmove *move* *1–4*`!".format(move)
 		raise UserWarning(m)
 
+	def useMove(self, move):
+		for i in range(len(self.moveset)):
+			if move.getTitle() == self.moveset[i]['move']:
+				self.moveset[i]['pp'] = max(0, self.moveset[i]['pp'] - 1)
+
+	def canUseMove(self, move):
+		if not self.knowsMove(move):
+			return False
+		for i in range(len(self.moveset)):
+			if move.getTitle() == self.moveset[i]['move']:
+				return self.moveset[i]['pp'] > 0
 
 	#--- Statistics ---#
 

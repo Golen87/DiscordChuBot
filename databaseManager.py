@@ -90,3 +90,9 @@ def loadPokedata(member, isMe=True):
 		m = "{} doesn't have a Pokemon yet. ".format(member.mention)
 		m += "Encourage them to use `!setpoke` to get started!"
 		raise UserWarning(m)
+
+#def setWeather(member, weather, isMe=True):
+#	pokedata = loadPokemon(member, isMe)
+#	pokedata['weather'] = weather
+#	savePokemon(member, pokedata)
+#	return

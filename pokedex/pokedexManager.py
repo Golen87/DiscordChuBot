@@ -138,12 +138,14 @@ def setAilment(pokeDef, move, log):
 	if not ailment:
 		return
 
+	print("YES", ailment)
 	if ailment in ailmentImmunities:
 		for type in pokeDef.getPokemon().getTypes():
 			if type in ailmentImmunities[ailment]:
 				log += ["The move failed!"]
 				return
 	if pokeDef.addStatus(ailment):
+		pokeDef.startTurnCount(ailment)
 		log += [getAilmentMessage(ailment, 'start', False)]
 	else:
 		log += ["The move failed!"]
@@ -171,6 +173,22 @@ def dotDmg(pokedata, log):
 		log += [getAilmentMessage('bad-poison', 'hurt')]
 		log += ['It now has ({}/{}) hp!'.format(pokedata.getHp(), maxHP)]
 
+	#if pokedata['weather'] == 'hail' and 'ice' not in types:
+	#	stats = getCurrentStats(pokedata, 'HP')
+	#	dmg = math.floor(stats/16.0)
+	#	newHp = max(0, pokedata['hp'] - dmg)
+	#	pokedata['hp'] = newHp
+	#	log +=["Your Pokemon got buffered by the hail."]
+	#	log +=['It now has ({}/{}) hp!'.format(newHp, stats)]
+	#
+	#if pokedata['weather'] == 'sandstorm' and 'steel' not in types and 'rock' not in types and 'ground' not in types:
+	#	stats = getCurrentStats(pokedata, 'HP')
+	#	dmg = math.floor(stats/16.0)
+	#	newHp = max(0, pokedata['hp'] - dmg)
+	#	pokedata['hp'] = newHp
+	#	log +=["Your Pokemon got hurt by the sandstorm."]
+	#	log +=['It now has ({}/{}) hp!'.format(newHp, stats)]
+
 def preAilmentCheck(pokedata, log):
 	if pokedata.toggleFlinch():
 		raise EndAttack("@attacker flinched and couldn't move.")
@@ -187,7 +205,8 @@ def preAilmentCheck(pokedata, log):
 		else:
 			log += [getAilmentMessage(ailment, 'cont')]
 			# No thanks
-			return attack(pokedata, pokedata, log, move='is_confused', confusion=True)
+			move = getMoveByName('is_confused')
+			return attack(pokedata, pokedata, log, move, confusion=True)
 
 	ailment = 'paralysis'
 	if pokedata.hasStatus(ailment):
@@ -214,57 +233,114 @@ def preAilmentCheck(pokedata, log):
 
 def attack(pokeAtk, pokeDef, log, move, confusion=False):
 	pokeAtk.incTurnCount()
-	#if not confusion:
-	preAilmentCheck(pokeAtk, log)
+	if not confusion:
+		preAilmentCheck(pokeAtk, log)
 
 	power = move.getPower()
 	acc = move.getAccuracy()
 
 	#if move not in unique:
 	log += ["@attacker used {}!".format(move)]
+	pokeAtk.useMove(move)
+
 	if acc is None:
 		acc = 100
 	else:
 		acc = acc * (pokeAtk.stageMod('Accuracy') / pokeDef.stageMod('Evasion'))
+	
 	dclass = move.getDamageClass()
-	if dclass != "status":
-		if chanceTest(acc):
-			if dclass == "physical":
-				a = pokeAtk.stageMod('Attack') * pokeAtk.getStat('Attack')
-				d = pokeDef.stageMod('Defense') * pokeDef.getStat('Defense')
-			elif dclass == "special":
-				a = pokeAtk.stageMod('Sp.Atk') * pokeAtk.getStat('Sp.Atk')
-				d = pokeDef.stageMod('Sp.Def') * pokeDef.getStat('Sp.Def')
-			damage = (((22.0*power*a/d)/50.0)+2.0)*modifier(pokeAtk, pokeDef, move)
-			damage = math.floor(damage)
-			effect = typeAdvantage(pokeDef, move)
-			if effect >= 2:
-				log += ["It's super effective!"]
-			if 0 < effect <= 0.5:
-				log += ["It's not very effective..."]
-			if effect == 0:
-				log += ["It has no effect on @defender!"]
-			newHp = pokeDef.damage(damage)
-			if move == "is_confused" and confusion:
-				log += ["It hurt itself in confusion."]
-			if damage != 0:
-				log += ['@defender took **{}** damage!'.format(damage)]
-			if newHp != pokeDef.getStat('HP'):
-				log += ['It now has ({}/{}) hp!'.format(newHp, pokeDef.getStat('HP'))]
-			flinchAttack(pokeDef, move)
-			ailmentAttack(pokeDef, move, log)
-			if move.getCategory() == 'damage+lower':
-				stageAttack(pokeDef, move, log, False)
-			if move.getCategory() == 'damage+raise':
-				stageAttack(pokeAtk, move, log, True)
-		else:
-			log += ["The move missed!"]
-	if dclass == "status" and "unique" not in move.getCategory():
-		if chanceTest(acc):
-			setAilment(pokeDef, move, log)
-		else:
-			log += ['The attack missed!']
-	dotDmg(pokeAtk, log)
+	
+	target = move.getTarget()
+	if target != "user":
+		if dclass != "status":
+			if chanceTest(acc):
+				if dclass == "physical":
+					a = pokeAtk.stageMod('Attack') * pokeAtk.getStat('Attack')
+					d = pokeDef.stageMod('Defense') * pokeDef.getStat('Defense')
+				elif dclass == "special":
+					a = pokeAtk.stageMod('Sp.Atk') * pokeAtk.getStat('Sp.Atk')
+					d = pokeDef.stageMod('Sp.Def') * pokeDef.getStat('Sp.Def')
+				damage = (((22.0*power*a/d)/50.0)+2.0)*modifier(pokeAtk, pokeDef, move)
+				damage = math.floor(damage)
+				effect = typeAdvantage(pokeDef, move)
+				if effect >= 2:
+					log += ["It's super effective!"]
+				if 0 < effect <= 0.5:
+					log += ["It's not very effective..."]
+				if effect == 0:
+					log += ["It has no effect on @defender!"]
+				newHp = pokeDef.damage(damage)
+				if move == "is_confused" and confusion:
+					log += ["It hurt itself in confusion."]
+				if damage != 0:
+					log += ['@defender took **{}** damage!'.format(damage)]
+				if pokeDef.getStat('HP') != newHp:
+					log += ['It now has ({}/{}) hp!'.format(newHp, pokeDef.getStat('HP'))]
+				flinchAttack(pokeDef, move)
+				ailmentAttack(pokeDef, move, log)
+				if move.getCategory() == 'damage+lower':
+					stageAttack(pokeDef, move, log, False)
+				if move.getCategory() == 'damage+raise':
+					stageAttack(pokeAtk, move, log, True)
+				if move.getDrain() > 0:
+					healing = math.floor(damage * move.getDrain()/100.0)
+					newhp = pokeAtk.heal(healing)
+					log += ["@attacker drained {} of @defender's hp.".format(healing)]
+					log += ["It now has It now has ({}/{}) hp!".format(newhp, pokeAtk.getStat('HP'))]
+				if move.getDrain() < 0:
+					healing = math.floor(damage * move.getDrain()/100.0)
+					newhp = pokeAtk.heal(healing)
+					log += ["@attacker got damaged by the recoil ({}).".format(healing)]
+					log += ["It now has ({}/{}) hp!".format(newhp, pokeAtk.getStat('HP'))]
+				dotDmg(pokeAtk, log)
+				return
+			else:
+				log += ["The move missed!"]
+				dotDmg(pokeAtk, log)
+				return
+		if dclass == "status" and "unique" not in move.getCategory():
+			if chanceTest(acc) and (move.getCategory() == "ailment"):
+				setAilment(pokeDef, move, log)
+				dotDmg(pokeAtk, log)
+				return
+			
+			if chanceTest(acc) and (move.getCategory() == "net-good-stats"):
+				for stat in move.getStatChanges():
+					stage = move.getStatChanges()[stat]
+					raiseStage(pokeDef, stage, stat, log, False)
+				dotDmg(pokeAtk, log)
+				return
+			if chanceTest(acc):
+				dotDmg(pokeAtk, log)
+				return
+			else:
+				log += ['The attack missed!']
+				dotDmg(pokeAtk, log)
+				return
+	else:
+		if move.getCategory() == "net-good-stats":
+			for stat in move.getStatChanges():
+				stage = move.getStatChanges()[stat]
+				raiseStage(pokeAtk, stage, stat, log)
+			dotDmg(pokeAtk, log)
+			return
+		if move.getCategory() == 'heal':
+				mod = 1
+				if move.getName() in ['morning-sun', 'synthesis', 'moonlight']:
+					pass
+					#if pokeAtk['weather'] == 'sunny':
+					#	mod = 4/3
+					#if pokeAtk['weather'] != '':
+					#	mod = 1/2
+				healing = math.floor(mod * pokeAtk.getStat('HP') * move.getHealing()/100.0)
+				newhp = pokeAtk.heal(healing)
+				log += ["@attacker healed itself by {} hp.".format(healing)]
+				log += ["It now has ({}/{}) hp!".format(newhp, pokeAtk.getStat('HP'))]
+				dotDmg(pokeAtk, log)
+				return
+		dotDmg(pokeAtk, log)
+		return
+
 
 def raiseStage(pokedata, value, stat, log=[], attacker=True):
 	stat = checkStageStat(stat)

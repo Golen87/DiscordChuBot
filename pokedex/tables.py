@@ -186,3 +186,6 @@ def getAilmentMessage(ailment, stage, attacker=True):
 	message = ailmentMessages[ailment][stage]
 	message = message.replace('@', name)
 	return message
+
+
+weather = ['sandstorm', 'sunny day', 'rain dance', 'hail']

@@ -163,6 +163,11 @@ def findMember(message, name):
 			return m
 	raise UserWarning("@mention Invalid target. I don't know who _{}_ is!".format(name))
 
+@client.event
+async def bwark(message, send):
+	a = getContent(message)
+	if a == "":
+		return await send("Bwark!")
 
 # Help
 async def help(message, send):
@@ -424,10 +429,16 @@ async def attack(message, send):
 	elif getCommand(message) == 'use':
 		# !use MOVE on USER
 		result = re.search('(.*)\son\s(.*)', content)
-		if not result:
-			return await send(commandlist[getCommand(message)][1])
-		move = pokedex.getMoveByName(result.group(1))
-		other = findMember(message, result.group(2))
+		if result:
+			move = pokedex.getMoveByName(result.group(1))
+			other = findMember(message, result.group(2))
+		else:
+			result = re.search('(.*)', content)
+			if result:
+				move = pokedex.getMoveByName(result.group(1))
+				other = message.author
+			else:
+				return await send(commandlist[getCommand(message)][1])
 	else:
 		return await send(commandlist[getCommand(message)][1])
 
@@ -441,6 +452,8 @@ async def attack(message, send):
 
 	if not pokeAtk.knowsMove(move):
 		raise UserWarning("Your @pokemon doesn't know that move yet. Use `!learnmove` to learn it!")
+	if not pokeAtk.canUseMove(move):
+		raise UserWarning("{} is out of PP!".format(move.getName()))
 
 	if pokeAtk.getHp() == 0:
 		raise UserWarning("Your @pokemon is unable to fight. Use `!heal` first!".format())
@@ -487,6 +500,26 @@ async def attack(message, send):
 		log = log.replace('@defender', str(pokeDef))
 		return await send(log)
 
+###
+#	this whole section works but is dumb af since dot is not getting applied IN TURN. but no clue how to fix that.	
+#	if move.getTitle() == 'Sunny Day':	
+#		for users in database.loadAllUsers():
+#			database.setWeather(users, 'sunny')
+#		log += ["The sunlight turned harsh!"]
+#	if move.getTitle() == 'Hail':
+#		print("test", move)
+#		for users in database.loadAllUsers():
+#			database.setWeather(users, 'hail')
+#		log += ["It started to hail!"]
+#	if move.getTitle() == 'Rain Dance':
+#		for users in database.loadAllUsers():
+#			database.setWeather(users, 'rain')
+#		log += ["TIt started to rain!"]
+#	if move.getTitle() == 'Sandstorm':
+#		for users in database.loadAllUsers():
+#			database.setWeather(users, 'sandstorm')
+#		log += ["A sandstorm came up! DUDUDUDUDUDU."]
+###
 
 async def battles(message, send):
 	pokedata = database.loadPokedata(message.author)
@@ -613,7 +646,7 @@ commandlist = {
 	'stats': [stats, '!stats', 'content'],
 	'moveset': [moveset, '!moveset', 'content'],
 	'attack': [attack, '!attack *username* with *attack*', 'content'],
-	'use': [attack, '!use *attack* on *username*', 'content'],
+	'use': [attack, '!use *attack* [on *username*]', 'content'],
 	'heal': [heal, '!heal', 'args'],
 	'learnmove': [learnmove, '!learnmove *move* [*1–4*]', 'content'],
 	'trainev': [trainev, '!trainev *1–252* *stat*', 'args'],
@@ -638,6 +671,7 @@ commandlist = {
 	#'beg': [beg, '!beg', 'args'],
 	#'daily': [claimDaily, '!daily', 'args'],
 	#'slot': [slotmachine, '!slot *10*|*20*|*30*', 'args'],
+	'bwark': [bwark, "bwark", "content"],
 }
 
 
