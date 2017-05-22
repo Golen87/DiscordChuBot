@@ -151,43 +151,42 @@ def setAilment(pokeDef, move, log):
 		log += ["The move failed!"]
 
 # Damage Over Time from ailments
-def dotDmg(pokedata, log):
+def dotDmg(pokedata, log, weather):
 	maxHP = pokedata.getStat('HP')
 
 	if pokedata.hasStatus('poison'):
 		damage = maxHP // 8
 		pokedata.damage(damage)
 		log += [getAilmentMessage('poison', 'hurt')]
-		log += ['It now has ({}/{}) hp!'.format(pokedata.getHp(), maxHP)]
+		showHP(pokedata, log)
 
 	if pokedata.hasStatus('burn'):
 		damage = maxHP // 16
 		pokedata.damage(damage)
 		log += [getAilmentMessage('burn', 'hurt')]
-		log += ['It now has ({}/{}) hp!'.format(pokedata.getHp(), maxHP)]
+		showHp(pokedata, log)
 
 	if pokedata.hasStatus('bad-poison'):
 		turn = 1 + pokedata.getTurnCount('bad-poison')
 		damage = turn * maxHP // 16
 		pokedata.damage(damage)
 		log += [getAilmentMessage('bad-poison', 'hurt')]
-		log += ['It now has ({}/{}) hp!'.format(pokedata.getHp(), maxHP)]
+		showHp(pokedata, log)
 
-	#if pokedata['weather'] == 'hail' and 'ice' not in types:
-	#	stats = getCurrentStats(pokedata, 'HP')
-	#	dmg = math.floor(stats/16.0)
-	#	newHp = max(0, pokedata['hp'] - dmg)
-	#	pokedata['hp'] = newHp
-	#	log +=["Your Pokemon got buffered by the hail."]
-	#	log +=['It now has ({}/{}) hp!'.format(newHp, stats)]
-	#
-	#if pokedata['weather'] == 'sandstorm' and 'steel' not in types and 'rock' not in types and 'ground' not in types:
-	#	stats = getCurrentStats(pokedata, 'HP')
-	#	dmg = math.floor(stats/16.0)
-	#	newHp = max(0, pokedata['hp'] - dmg)
-	#	pokedata['hp'] = newHp
-	#	log +=["Your Pokemon got hurt by the sandstorm."]
-	#	log +=['It now has ({}/{}) hp!'.format(newHp, stats)]
+	if not weather['current']:
+		return
+
+	# Skip weather below if immune to weather
+	if weather['current'] in weatherImmunities:
+		for type in pokedata.getPokemon().getTypes():
+			if type in weatherImmunities[weather['current']]:
+				return
+
+	if 'hurt' in weatherMessages[weather['current']]:
+		damage = maxHP // 16
+		pokedata.damage(damage)
+		log += [getWeatherMessage(weather['current'], 'hurt')]
+		showHp(pokedata, log)
 
 def preAilmentCheck(pokedata, log):
 	if pokedata.toggleFlinch():
@@ -206,7 +205,7 @@ def preAilmentCheck(pokedata, log):
 			log += [getAilmentMessage(ailment, 'cont')]
 			# No thanks
 			move = getMoveByName('is_confused')
-			return attack(pokedata, pokedata, log, move, confusion=True)
+			return attack(pokedata, pokedata, log, move)
 
 	ailment = 'paralysis'
 	if pokedata.hasStatus(ailment):
@@ -231,10 +230,10 @@ def preAilmentCheck(pokedata, log):
 		else:
 			raise EndAttack(getAilmentMessage(ailment, 'cont'))
 
-def attack(pokeAtk, pokeDef, log, move, confusion=False):
+def attack(pokeAtk, pokeDef, log, move, weather):
 	pokeAtk.incTurnCount()
-	if not confusion:
-		preAilmentCheck(pokeAtk, log)
+	#if not confusion:
+	preAilmentCheck(pokeAtk, log)
 
 	power = move.getPower()
 	acc = move.getAccuracy()
@@ -247,9 +246,9 @@ def attack(pokeAtk, pokeDef, log, move, confusion=False):
 		acc = 100
 	else:
 		acc = acc * (pokeAtk.stageMod('Accuracy') / pokeDef.stageMod('Evasion'))
-	
+
 	dclass = move.getDamageClass()
-	
+
 	target = move.getTarget()
 	if target != "user":
 		if dclass != "status":
@@ -270,12 +269,12 @@ def attack(pokeAtk, pokeDef, log, move, confusion=False):
 				if effect == 0:
 					log += ["It has no effect on @defender!"]
 				newHp = pokeDef.damage(damage)
-				if move == "is_confused" and confusion:
+				if move == "is_confused":# and confusion:
 					log += ["It hurt itself in confusion."]
 				if damage != 0:
 					log += ['@defender took **{}** damage!'.format(damage)]
 				if pokeDef.getStat('HP') != newHp:
-					log += ['It now has ({}/{}) hp!'.format(newHp, pokeDef.getStat('HP'))]
+					showHp(pokeDef, log)
 				flinchAttack(pokeDef, move)
 				ailmentAttack(pokeDef, move, log)
 				if move.getCategory() == 'damage+lower':
@@ -286,60 +285,50 @@ def attack(pokeAtk, pokeDef, log, move, confusion=False):
 					healing = math.floor(damage * move.getDrain()/100.0)
 					newhp = pokeAtk.heal(healing)
 					log += ["@attacker drained {} of @defender's hp.".format(healing)]
-					log += ["It now has It now has ({}/{}) hp!".format(newhp, pokeAtk.getStat('HP'))]
+					showHp(pokeAtk, log)
 				if move.getDrain() < 0:
 					healing = math.floor(damage * move.getDrain()/100.0)
 					newhp = pokeAtk.heal(healing)
 					log += ["@attacker got damaged by the recoil ({}).".format(healing)]
-					log += ["It now has ({}/{}) hp!".format(newhp, pokeAtk.getStat('HP'))]
-				dotDmg(pokeAtk, log)
-				return
+					showHp(pokeAtk, log)
 			else:
 				log += ["The move missed!"]
-				dotDmg(pokeAtk, log)
-				return
-		if dclass == "status" and "unique" not in move.getCategory():
-			if chanceTest(acc) and (move.getCategory() == "ailment"):
-				setAilment(pokeDef, move, log)
-				dotDmg(pokeAtk, log)
-				return
-			
-			if chanceTest(acc) and (move.getCategory() == "net-good-stats"):
-				for stat in move.getStatChanges():
-					stage = move.getStatChanges()[stat]
-					raiseStage(pokeDef, stage, stat, log, False)
-				dotDmg(pokeAtk, log)
-				return
+		elif dclass == "status" and "unique" not in move.getCategory():
 			if chanceTest(acc):
-				dotDmg(pokeAtk, log)
-				return
+				if move.getCategory() == "ailment":
+					setAilment(pokeDef, move, log)
+
+				elif move.getCategory() == "net-good-stats":
+					for stat in move.getStatChanges():
+						stage = move.getStatChanges()[stat]
+						raiseStage(pokeDef, stage, stat, log, False)
+
+				elif move.getCategory() == "whole-field-effect":
+					if move.getName() in weatherMessages:
+						weather['current'] = move.getName()
+						weather['new'] = move.getName()
+						log += [getWeatherMessage(move.getName(), 'start')]
 			else:
 				log += ['The attack missed!']
-				dotDmg(pokeAtk, log)
-				return
 	else:
 		if move.getCategory() == "net-good-stats":
 			for stat in move.getStatChanges():
 				stage = move.getStatChanges()[stat]
 				raiseStage(pokeAtk, stage, stat, log)
-			dotDmg(pokeAtk, log)
-			return
 		if move.getCategory() == 'heal':
-				mod = 1
-				if move.getName() in ['morning-sun', 'synthesis', 'moonlight']:
-					pass
-					#if pokeAtk['weather'] == 'sunny':
-					#	mod = 4/3
-					#if pokeAtk['weather'] != '':
-					#	mod = 1/2
-				healing = math.floor(mod * pokeAtk.getStat('HP') * move.getHealing()/100.0)
-				newhp = pokeAtk.heal(healing)
-				log += ["@attacker healed itself by {} hp.".format(healing)]
-				log += ["It now has ({}/{}) hp!".format(newhp, pokeAtk.getStat('HP'))]
-				dotDmg(pokeAtk, log)
-				return
-		dotDmg(pokeAtk, log)
-		return
+			mod = 1
+			if move.getName() in ['morning-sun', 'synthesis', 'moonlight']:
+				pass
+				if weather['current'] == 'sunny-day':
+					mod = 4/3
+				elif weather['current']:
+					mod = 1/2
+			healing = math.floor(mod * pokeAtk.getStat('HP') * move.getHealing()/100.0)
+			newhp = pokeAtk.heal(healing)
+			log += ["@attacker healed itself by {} hp.".format(healing)]
+			showHp(pokeAtk, log)
+
+	dotDmg(pokeAtk, log, weather)
 
 
 def raiseStage(pokedata, value, stat, log=[], attacker=True):
@@ -362,9 +351,20 @@ def resetStage(pokedata, stat=None):
 	else:
 		pokedata['stage'] = {stat: 0 for stat in stageStats}
 
+def showHp(pokedata, log):
+	hp = pokedata.getHp()
+	maxHp = pokedata.getStat('HP')
+	for message in log:
+		if message.startswith('It now has ('):
+			log.remove(message)
+	log += ['It now has ({}/{}) hp!'.format(hp, maxHp)]
+
 
 def getAttackCooldown(pokedata):
 	mod = pokedata.stageMod('Speed')
 	speed = pokedata.getStat('Speed')
 	time = 30.0 - speed*mod/51.0
 	return time
+
+def stopWeather(weather):
+	return getWeatherMessage(weather, 'end')

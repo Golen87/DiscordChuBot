@@ -2,6 +2,7 @@ import json
 import os.path
 
 from User import User
+from Channel import Channel
 
 DBPath = 'database.json'
 
@@ -16,6 +17,7 @@ def repair(data, template):
 def createDatabase():
 	return {
 		'users': {},
+		'channels': {},
 	}
 
 # Save dictionary to json database
@@ -28,6 +30,8 @@ def loadDatabase():
 	if os.path.isfile(DBPath):
 		with open(DBPath) as f:
 			database = json.load(f)
+			if type(database) != dict:
+				database = {}
 			repair(database, createDatabase())
 			return database
 	return createDatabase()
@@ -69,6 +73,24 @@ def getTopList():
 	return scoreMap
 
 
+#--- Channels ---#
+
+# Save channel to database
+def saveChannel(channelObj):
+	database = loadDatabase()
+	database['channels'][channelObj.getId()] = channelObj.serialize()
+	saveDatabase(database)
+
+# Load channel from database
+def loadChannel(channel):
+	database = loadDatabase()
+	channelObj = Channel(channel.id, channel.name)
+	if channel.id in database['channels']:
+		channelObj.deserialize(database['channels'][channel.id])
+	return channelObj
+
+
+#--- Pokemon ---#
 
 # Create new pokemon data for the user
 def createPokemon(member):

@@ -10,6 +10,8 @@ AttackCooldown = 10
 LearnCooldown = 1
 SetpokeCooldown = 1
 
+WeatherDuration = 150
+
 
 colors = True
 
