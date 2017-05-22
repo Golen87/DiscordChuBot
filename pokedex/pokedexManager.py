@@ -231,6 +231,7 @@ def preAilmentCheck(pokedata, log):
 			raise EndAttack(getAilmentMessage(ailment, 'cont'))
 
 def attack(pokeAtk, pokeDef, log, move, weather):
+	a, d = 1, 1
 	pokeAtk.incTurnCount()
 	#if not confusion:
 	preAilmentCheck(pokeAtk, log)
@@ -244,6 +245,8 @@ def attack(pokeAtk, pokeDef, log, move, weather):
 
 	if acc is None:
 		acc = 100
+	if move.getCategory() == 'ohko':
+		acc = 30
 	else:
 		acc = acc * (pokeAtk.stageMod('Accuracy') / pokeDef.stageMod('Evasion'))
 
@@ -259,8 +262,13 @@ def attack(pokeAtk, pokeDef, log, move, weather):
 				elif dclass == "special":
 					a = pokeAtk.stageMod('Sp.Atk') * pokeAtk.getStat('Sp.Atk')
 					d = pokeDef.stageMod('Sp.Def') * pokeDef.getStat('Sp.Def')
+				if move.getCategory() == 'ohko':
+					power = 1
 				damage = (((22.0*power*a/d)/50.0)+2.0)*modifier(pokeAtk, pokeDef, move)
 				damage = math.floor(damage)
+				if move.getCategory() == 'ohko':
+					damage = pokeDef.getStat('HP')
+					log += ["A OHKO-move."]
 				effect = typeAdvantage(pokeDef, move)
 				if effect >= 2:
 					log += ["It's super effective!"]
