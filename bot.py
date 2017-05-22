@@ -52,8 +52,9 @@ async def on_message(message):
 			return
 		if not response:
 			print(RED + 'Warning: Function "{}" did not return sent message!'.format(command) + WHI)
-		response_history.append((message, response))
-		response_history = response_history[-100:]
+		else:
+			response_history.append((message, response))
+			response_history = response_history[-100:]
 
 @client.event
 async def on_message_edit(oldMessage, newMessage):
@@ -453,7 +454,7 @@ async def attack(message, send):
 	if not pokeAtk.knowsMove(move):
 		raise UserWarning("Your @pokemon doesn't know that move yet. Use `!learnmove` to learn it!")
 	if not pokeAtk.canUseMove(move):
-		raise UserWarning("{} is out of PP!".format(move.getName()))
+		raise UserWarning("{} is out of PP!".format(move))
 
 	if pokeAtk.getHp() == 0:
 		raise UserWarning("Your @pokemon is unable to fight. Use `!heal` first!".format())
@@ -469,7 +470,13 @@ async def attack(message, send):
 	# Attack start
 	try:
 		log = []
-		pokedex.attack(pokeAtk, pokeDef, log, move)
+
+		channel = database.loadChannel(message.channel)
+
+		clearOldWeather(message, send)
+		weather = {'current': channel.getWeather(), 'new': None}
+
+		pokedex.attack(pokeAtk, pokeDef, log, move, weather)
 
 		if pokeAtk == pokeDef and pokeAtk.getHp() == 0:
 			log += ["Your @attacker fainted!"]
@@ -489,37 +496,45 @@ async def attack(message, send):
 					defender.incCaps(1)
 					log += ["{} You earned a bottlecap! Use it to `!hypertrain`.".format(other.mention)]
 		raise pokedex.EndAttack()
-	except pokedex.EndAttack as message:
+	except pokedex.EndAttack as msg:
 		database.saveUser(attacker)
 		database.saveUser(defender)
 
-		if str(message):
-			log += [str(message)]
+		if str(msg):
+			log += [str(msg)]
 		log = '\n'.join(log)
 		log = log.replace('@attacker', str(pokeAtk))
 		log = log.replace('@defender', str(pokeDef))
-		return await send(log)
+		await send(log)
 
-###
-#	this whole section works but is dumb af since dot is not getting applied IN TURN. but no clue how to fix that.	
-#	if move.getTitle() == 'Sunny Day':	
-#		for users in database.loadAllUsers():
-#			database.setWeather(users, 'sunny')
-#		log += ["The sunlight turned harsh!"]
-#	if move.getTitle() == 'Hail':
-#		print("test", move)
-#		for users in database.loadAllUsers():
-#			database.setWeather(users, 'hail')
-#		log += ["It started to hail!"]
-#	if move.getTitle() == 'Rain Dance':
-#		for users in database.loadAllUsers():
-#			database.setWeather(users, 'rain')
-#		log += ["TIt started to rain!"]
-#	if move.getTitle() == 'Sandstorm':
-#		for users in database.loadAllUsers():
-#			database.setWeather(users, 'sandstorm')
-#		log += ["A sandstorm came up! DUDUDUDUDUDU."]
-###
+	if weather['new']:
+		await activateWeather(message, send, weather['new'])
+
+def clearOldWeather(message, send):
+	channel = database.loadChannel(message.channel)
+	current = channel.getWeather()
+	if current:
+		remaining = channel.getTimeRemaining('weather', WeatherDuration)
+		if remaining < 0:
+			channel.setWeather(None)
+			database.saveChannel(channel)
+
+async def activateWeather(message, send, weather):
+	channel = database.loadChannel(message.channel)
+	channel.setWeather(weather)
+	channel.setTimestamp('weather')
+	database.saveChannel(channel)
+
+	await asyncio.sleep(WeatherDuration)
+
+	channel = database.loadChannel(message.channel)
+	oldWeather = channel.getWeather()
+	if oldWeather:
+		remaining = channel.getTimeRemaining('weather', WeatherDuration)
+		if remaining < 0:
+			channel.setWeather(None)
+			database.saveChannel(channel)
+			await send(pokedex.stopWeather(oldWeather))
 
 async def battles(message, send):
 	pokedata = database.loadPokedata(message.author)

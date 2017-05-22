@@ -188,4 +188,48 @@ def getAilmentMessage(ailment, stage, attacker=True):
 	return message
 
 
-weather = ['sandstorm', 'sunny day', 'rain dance', 'hail']
+#--- Weather ---#
+
+weather = ['sandstorm', 'sunny-day', 'rain-dance', 'hail', 'shadow-sky']
+
+weatherImmunities = {
+	'sandstorm': ['steel', 'rock', 'ground'],
+	'hail': ['ice'],
+}
+
+weatherMessages = {
+	"sandstorm": {
+		"start": "A sandstorm kicked up! :desert:",
+		"hurt": "@ is buffeted by the sandstorm!",
+		"end": "The sandstorm subsided.",
+	},
+	"sunny-day": {
+		"start": "The sunlight turned harsh! :sunny:",
+		"end": "The sunlight faded.",
+	},
+	"rain-dance": {
+		"start": "It started to rain! :cloud_rain:",
+		"end": "The rain stopped.",
+	},
+	"hail": {
+		"start": "It started to hail! :cloud_snow:",
+		"hurt": "@ is buffeted by the hail!",
+		"end": "The hail stopped.",
+	},
+	"shadow-sky": {
+		"start": "A shadowy aura filled the sky! :ghost:",
+		"hurt": "The flashing light strikes @!",
+		"end": "The shadowy aura faded away!",
+	},
+	# Terrain?
+	#"mud-sport": {
+	#	"start": "Electricity's power was weakened!",
+	#	"end": "Electricity's power was returned to normal!",
+	#}
+}
+
+def getWeatherMessage(weather, stage, attacker=True):
+	name = '@attacker' if attacker else '@defender'
+	message = weatherMessages[weather][stage]
+	message = message.replace('@', name)
+	return message
