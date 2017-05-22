@@ -530,6 +530,8 @@ async def battles(message, send):
 # Heal your pokemon to full max health
 async def heal(message, send):
 	pokedata = database.loadPokedata(message.author)
+	if pokedata.getHp() != 0:
+		return await send("Your Pokemon can still fight! Only fainted Pokemon are able to `!heal`.")
 	pokedata.fullRestore()
 	database.savePokedata(pokedata)
 

@@ -103,7 +103,7 @@ def critMod(move):
 
 def modifier(pokeAtk, pokeDef, move):
 	eff = typeAdvantage(pokeDef, move)
-	rand = random.randint(85,100) / 100
+	rand = random.randint(85,100) / 100.0
 	stab = 1
 	if move.getType() in pokeAtk.getPokemon().getTypes():
 		stab = 1.5
