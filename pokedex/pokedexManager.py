@@ -230,12 +230,50 @@ def preAilmentCheck(pokedata, log):
 		else:
 			raise EndAttack(getAilmentMessage(ailment, 'cont'))
 
+def dmgCalc(pokeAtk, pokeDef, move):
+	dclass = move.getDamageClass()
+	power = move.getPower()
+	if dclass == "physical":
+		a = pokeAtk.stageMod('Attack') * pokeAtk.getStat('Attack')
+		d = pokeDef.stageMod('Defense') * pokeDef.getStat('Defense')
+	elif dclass == "special":
+		a = pokeAtk.stageMod('Sp.Atk') * pokeAtk.getStat('Sp.Atk')
+		d = pokeDef.stageMod('Sp.Def') * pokeDef.getStat('Sp.Def')
+	if move.getCategory() == 'ohko':
+		power = 1
+	damage = (((22.0*power*a/d)/50.0)+2.0)*modifier(pokeAtk, pokeDef, move)
+	damage = math.floor(damage)
+	return damage
+
+def multiHit(move):
+	if move.getHits():
+		i = random.randint(1,300)
+		maxhits = move.getHits()[1]
+		if maxhits == 5:
+			if 1 <= i <= 100:
+				return 2
+			if 101 <= i <= 200:
+				return 3
+			if 201 <= i <= 250:
+				return 4
+			if 251 <= i <= 300:
+				return 5
+		if maxhits == 3:
+			return 3
+		if maxhits == 2:
+			return 2
+		if maxhits == 6:
+			return 1
+		else:
+			return 0
+	else:
+		return 0
 def attack(pokeAtk, pokeDef, log, move, weather):
 	a, d = 1, 1
 	pokeAtk.incTurnCount()
 	#if not confusion:
 	preAilmentCheck(pokeAtk, log)
-
+	damage = 0
 	power = move.getPower()
 	acc = move.getAccuracy()
 
@@ -256,16 +294,26 @@ def attack(pokeAtk, pokeDef, log, move, weather):
 	if target != "user":
 		if dclass != "status":
 			if chanceTest(acc):
-				if dclass == "physical":
-					a = pokeAtk.stageMod('Attack') * pokeAtk.getStat('Attack')
-					d = pokeDef.stageMod('Defense') * pokeDef.getStat('Defense')
-				elif dclass == "special":
-					a = pokeAtk.stageMod('Sp.Atk') * pokeAtk.getStat('Sp.Atk')
-					d = pokeDef.stageMod('Sp.Def') * pokeDef.getStat('Sp.Def')
-				if move.getCategory() == 'ohko':
-					power = 1
-				damage = (((22.0*power*a/d)/50.0)+2.0)*modifier(pokeAtk, pokeDef, move)
-				damage = math.floor(damage)
+				multi = multiHit(move)
+				if multi == 3:
+					damage += dmgCalc(pokeAtk, pokeDef, move)
+					multi -= 1
+					for n in range(multi):
+						if chanceTest(acc):
+							damage += dmgCalc(pokeAtk, pokeDef, move)
+							
+						else:
+							break
+					n = n + 2
+					multi = 3
+					log += ["It hit {} times.".format(n)]
+				if multi != 0 and multi !=3 :
+					for n in range(multi):
+						damage += dmgCalc(pokeAtk, pokeDef, move)
+					log += ["It hit {} times.".format(multi)]
+				
+				if multi == 0:
+					damage = dmgCalc(pokeAtk, pokeDef, move)
 				if move.getCategory() == 'ohko':
 					damage = pokeDef.getStat('HP')
 					log += ["A OHKO-move."]
