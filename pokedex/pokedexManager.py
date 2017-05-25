@@ -317,6 +317,8 @@ def attack(pokeAtk, pokeDef, log, move, weather):
 				if move.getCategory() == 'ohko':
 					damage = pokeDef.getStat('HP')
 					log += ["A OHKO-move."]
+				if move.getCategory() == 'fixed-damage':
+					damage = power
 				effect = typeAdvantage(pokeDef, move)
 				if effect >= 2:
 					log += ["It's super effective!"]

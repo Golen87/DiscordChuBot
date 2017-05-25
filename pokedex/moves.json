@@ -1531,7 +1531,7 @@
 	{
 		"pp": 20,
 		"name": "sonic-boom",
-		"power": null,
+		"power": 20,
 		"title": "Sonic Boom",
 		"effect_short": "Inflicts 20 points of damage.",
 		"effect_chance": null,
@@ -1541,7 +1541,7 @@
 		"priority": 0,
 		"damage_class": "special",
 		"meta": {
-			"category": "damage",
+			"category": "fixed-damage",
 			"max_turns": null,
 			"drain": 0,
 			"ailment": "none",
@@ -2565,7 +2565,7 @@
 	{
 		"pp": 10,
 		"name": "dragon-rage",
-		"power": null,
+		"power": 40,
 		"title": "Dragon Rage",
 		"effect_short": "Inflicts 40 points of damage.",
 		"effect_chance": null,
@@ -2575,7 +2575,7 @@
 		"priority": 0,
 		"damage_class": "special",
 		"meta": {
-			"category": "damage",
+			"category": "fixed-damage",
 			"max_turns": null,
 			"drain": 0,
 			"ailment": "none",
